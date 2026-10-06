@@ -1,0 +1,55 @@
+{
+  "status": "draft for review; not saved or published in WordPress",
+  "baseline": "live WordPress site, reviewed 7 October 2026",
+  "doctors": [
+    {
+      "name": "Dr. C.N. Murthy",
+      "existing_url": "https://www.prasanthihospitals.com/doctor/dr-cn-murthy/",
+      "qualification": "BAMS",
+      "role": "Founder · Family Physician",
+      "excerpt": "Dr. Murthy founded Prasanthi Hospitals and continues to provide family physician consultations, working alongside Dr. Aditya in the hospital’s day-to-day care.",
+      "profile": "Prasanthi Hospitals began with Dr. C.N. Murthy. He remains part of its everyday care, seeing patients as a family physician and working alongside Dr. C.S.K. Aditya.\n\nFor patients and families returning to Prasanthi, that continuity is part of the hospital’s personal approach to care.\n\nIf you would like to consult Dr. Murthy, call the hospital team to confirm his availability. Bring earlier prescriptions and reports, if you have them, so they can be reviewed during your visit.",
+      "availability": "Please call the hospital to confirm Dr. Murthy’s consultation time before visiting."
+    },
+    {
+      "name": "Dr. C.S.K. Aditya",
+      "existing_url": "https://www.prasanthihospitals.com/doctor/dr-csk-aditya/",
+      "qualification": "M.D. (General Medicine)",
+      "role": "General Physician",
+      "excerpt": "Dr. Aditya provides general medicine consultations and coordinates medical daycare and inpatient care at Prasanthi Hospitals.",
+      "profile": "Whether you are feeling unwell or returning for follow-up, you can consult Dr. C.S.K. Aditya for general medical care at Prasanthi Hospitals.\n\nHe provides outpatient consultations and coordinates medical daycare and inpatient care, working alongside Dr. C.N. Murthy and the hospital team.\n\nYour visit is an opportunity to discuss your symptoms, previous treatment and questions about your care. Bring earlier prescriptions and test reports, if you have them.\n\nPlease call the hospital before visiting to confirm Dr. Aditya’s consultation time.",
+      "availability": "Please call the hospital to confirm Dr. Aditya’s consultation time before visiting."
+    },
+    {
+      "name": "Dr. Nishteshwar",
+      "existing_url": "https://www.prasanthihospitals.com/doctor/dr-nishteshwar/",
+      "qualification": "M.D. (Ayurveda)",
+      "role": "Ayurveda Physician",
+      "excerpt": "Dr. Nishteshwar provides Ayurvedic consultations as part of Prasanthi’s integrative approach. Please call to confirm his consultation time; he is not available for evening OPD.",
+      "profile": "Dr. Nishteshwar provides Ayurvedic outpatient consultations at Prasanthi Hospitals. These consultations are part of the hospital’s integrative approach, alongside its modern medical care.\n\nIf you would like to consult him, contact the hospital team before travelling. You can ask about his availability and what to bring to your visit.\n\nDr. Nishteshwar is not available for evening OPD.",
+      "availability": "Not available for evening OPD. Please call the hospital to confirm his consultation time."
+    },
+    {
+      "name": "Dr. Sarath Chandrabhatla",
+      "proposed_slug": "dr-sarath-chandrabhatla",
+      "qualification": "M.S. (General Surgery)",
+      "role": "General Surgeon",
+      "training": "Currently pursuing M.Ch. in Surgical Gastroenterology.",
+      "excerpt": "Dr. Sarath Chandrabhatla is a general surgeon with an M.S. in General Surgery. He is currently pursuing M.Ch. in Surgical Gastroenterology. Call the hospital to enquire about consultation availability.",
+      "profile": "Dr. Sarath Chandrabhatla holds an M.S. in General Surgery and is currently pursuing M.Ch. in Surgical Gastroenterology.\n\nIf you would like to discuss a general surgical concern with him, contact Prasanthi Hospitals to enquire about a consultation. The team can confirm his availability before you travel.\n\nBring previous prescriptions, scans and reports, if you have them, for your consultation.",
+      "availability": "Please call the hospital to confirm Dr. Sarath Chandrabhatla’s availability before visiting.",
+      "confirmation": "Name and qualifications confirmed directly by Aditya on 7 October 2026. M.Ch. is in progress, not a completed qualification. Individual schedule and portrait are not yet confirmed."
+    },
+    {
+      "name": "Dr. Sreya Bhuvanagiri",
+      "proposed_slug": "dr-sreya-bhuvanagiri",
+      "qualification": "M.S. (Gynaecology)",
+      "role": "Gynaecologist",
+      "excerpt": "Dr. Sreya Bhuvanagiri holds an M.S. in Gynaecology. Contact the hospital to enquire about a gynaecology consultation and confirm her availability.",
+      "profile": "Dr. Sreya Bhuvanagiri is a gynaecologist with an M.S. in Gynaecology.\n\nIf you have a concern about your gynaecological health or would like to arrange a consultation, contact the Prasanthi Hospitals team. They can help you confirm her availability before your visit.\n\nBring previous prescriptions and relevant reports, if you have them, along with any questions you would like to discuss.",
+      "availability": "Please call the hospital to confirm Dr. Sreya Bhuvanagiri’s availability before visiting.",
+      "confirmation": "Latest name spelling and M.S. (Gynaecology) confirmed directly by Aditya on 7 October 2026. Individual schedule and portrait are not yet confirmed. Do not add obstetric, fertility, delivery or procedure offerings without confirmation."
+    }
+  ],
+  "format_note": "Portable editorial content, not a WordPress REST or import schema. Existing URLs are public references; proposed slugs are not published URLs."
+}
