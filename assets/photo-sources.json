@@ -1,0 +1,30 @@
+{
+  "retrieved": "2026-10-06",
+  "place": "Prasanthi Hospitals, Governorpet, Vijayawada",
+  "listing_url": "https://www.google.com/maps/place/Prasanthi+Hospitals/@16.5087785,80.6269991,17z/data=!3m1!4b1!4m6!3m5!1s0x3a35fab1403de667:0x22655d921ff62c2!8m2!3d16.5087785!4d80.6269991!16s%2Fg%2F1t_thqj0",
+  "use": "Exterior photographs in the local website draft. Confirm permission for public reuse or replace with hospital-owned originals before publication.",
+  "photos": [
+    {
+      "file": "hospital-exterior.jpg",
+      "description": "Daytime exterior with hospital signage",
+      "dimensions": [
+        381,
+        677
+      ],
+      "displayed_photo_date": "Apr 2021",
+      "photographer": "Not displayed in the accessible listing",
+      "asset_url": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm41Ptv0GzIdnbcG3BhFEGke0Jr17ZZM_SdIj1lDhKr1Gg8tWl9jVUCBDMf3d-Qh8_Bf0QnbAhhPHiOZnxJiWT1uU6kxRA4tNKWJhcl1NS3yfro1oZHKN9sS08JAXMqh0lSl883AA=s677-k-no"
+    },
+    {
+      "file": "hospital-entrance.jpg",
+      "description": "Nighttime entrance and illuminated signage",
+      "dimensions": [
+        516,
+        290
+      ],
+      "displayed_photo_date": null,
+      "photographer": "Not verified",
+      "asset_url": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkfIzB5fXN4u0MjZClHLxzCeezZFqyM51exiL4BiXZ_U5KBDcXKeTWLQeMrcwhGx3VO9macVKHQqqAS8uWSUi8xwXEMg8B6ix8I0EOwQAugzutQdn-SMBMI2xrTqBpJmeoF66rKNQ=s516-k-no"
+    }
+  ]
+}
