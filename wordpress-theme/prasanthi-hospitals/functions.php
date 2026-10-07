@@ -21,7 +21,7 @@ function prasanthi_setup() {
 add_action('after_setup_theme', 'prasanthi_setup');
 
 function prasanthi_assets() {
-    wp_enqueue_style('prasanthi-style', get_stylesheet_uri(), array(), '1.0.0');
+    wp_enqueue_style('prasanthi-style', get_stylesheet_uri(), array(), '1.0.2');
 }
 add_action('wp_enqueue_scripts', 'prasanthi_assets');
 

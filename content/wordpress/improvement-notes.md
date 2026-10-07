@@ -58,7 +58,7 @@ Keep card copy brief and make the full profile add information rather than repea
 
 **Developer follow-up**
 
-The reviewed mobile homepage footer extended to 476 pixels at a 390-pixel viewport because of the address column. Track this as a separate responsive fix with Lakshmi Narasimha; the content pass preserves the template markup and CSS. Mobile horizontal overflow remains visible in the latest review; fixing it is outside this copy pass.
+The earlier mobile footer overflow has been fixed in the authorised formatting pass. Footer columns stack on phones, long contact text wraps, and the five primary pages fit the checked 390-pixel viewport. Doctor-card images are smaller and contained to avoid cropping faces. See the [formatting record](formatting-record.md); complete deployed theme/source alignment remains a developer follow-up.
 
 **Sources**
 

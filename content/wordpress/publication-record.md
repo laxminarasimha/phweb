@@ -30,7 +30,7 @@ Git is the review record for Lakshmi Narasimha. A branch push or merge does not 
 
 **Open content and developer items**
 
-Approved portraits, individual doctor schedules, operating days and first-visit arrangements need confirmation. The existing “30+ years” experience figure remains unchanged pending its basis. Mobile horizontal footer overflow remains a developer item; no CSS or layout fix was attempted.
+Approved portraits, individual doctor schedules, operating days and first-visit arrangements need confirmation. The existing “30+ years” experience figure remains unchanged pending its basis. The subsequent authorised [formatting pass](formatting-record.md) fixed mobile footer and email overflow and reduced oversized images; the content pass itself changed no CSS.
 
 **Public checks**
 
