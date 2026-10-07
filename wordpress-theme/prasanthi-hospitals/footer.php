@@ -7,8 +7,8 @@
       <h3>Prasanthi Hospitals</h3>
 
       <p>
-        A family-run modern medicine hospital centred on personal care,
-        with an integrative approach that includes Ayurvedic care.
+        Personal care in Governorpet, Vijayawada. Modern medical consultations
+        and hospital care, with Ayurvedic consultations also available.
       </p>
 
     </div>

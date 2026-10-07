@@ -1,6 +1,6 @@
 # Prasanthi Hospitals — content facts
 
-Reference for the proposed website copy. These are hospital details confirmed by Dr. Aditya and the reviewed public site; they describe content, not a verified WordPress field schema.
+Reference for the published website copy. These are hospital details confirmed by Dr. Aditya and the reviewed public site; they describe content, not a verified WordPress field schema.
 
 **Hospital identity and contact**
 
@@ -28,11 +28,11 @@ OPD hours apply to the hospital generally. They do not establish every clinician
 | Dr. Sarath Chandrabhatla | M.S. (General Surgery) | General Surgeon; currently pursuing M.Ch. in Surgical Gastroenterology; individual schedule and portrait unconfirmed |
 | Dr. Sreya Bhuvanagiri | M.S. (Gynaecology) | Gynaecologist; individual schedule and portrait unconfirmed |
 
-The two new profiles are proposed additions. M.Ch. in Surgical Gastroenterology is training in progress, not a completed credential. The latest corrected names above govern all drafts and proposed slugs.
+The two new profiles are published WordPress doctor posts. M.Ch. in Surgical Gastroenterology is training in progress, not a completed credential. The latest corrected names above govern all content and published names.
 
-**Service scope used in the draft**
+**Service scope used in the published copy**
 
-The proposed copy describes outpatient consultations, medical daycare, medical inpatient care, selected surgical care, routine in-house laboratory tests with specialised testing through external laboratories, and an on-site pharmacy. Individual clinician, test and procedure availability should be confirmed with the hospital. Patients needing ICU care or care beyond these facilities are referred elsewhere.
+The published copy describes outpatient consultations, medical daycare, medical inpatient care, selected surgical care, routine in-house laboratory tests with specialised testing through external laboratories, and an on-site pharmacy. Individual clinician, test and procedure availability should be confirmed with the hospital. Patients needing ICU care or care beyond these facilities are referred elsewhere.
 
 Gynaecology consultations may be described. Specific obstetric, fertility, delivery and gynaecological procedure offerings have not been confirmed and are not added.
 
@@ -40,7 +40,7 @@ Gynaecology consultations may be described. Specific obstetric, fertility, deliv
 
 Confirm operating days, individual consultation schedules, portraits for the two new doctors, appointment and walk-in arrangements, reception directions, and any accessibility or parking details before writing specific claims. Review the basis of the published experience figure separately. Do not infer a founding year from the Gmail address.
 
-Dr. Aditya is the source for clinical and operational facts and approved photographs. Lakshmi Narasimha maintains the website design and development. Application to the actual WordPress fields remains a separate step.
+Dr. Aditya is the source for clinical and operational facts and approved photographs. Lakshmi Narasimha maintains the website design and development. The profiles were applied through the WordPress doctor editor; core text was applied in the existing theme templates and publicly verified on 7 October 2026.
 
 **Sources**
 

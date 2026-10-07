@@ -1,10 +1,11 @@
 {
-  "status": "draft for review; not saved or published in WordPress",
-  "baseline": "live WordPress site, reviewed 7 October 2026",
+  "status": "published in WordPress; all five doctor profiles publicly read back on 7 October 2026",
+  "baseline": "live WordPress site, updated and verified 7 October 2026",
   "doctors": [
     {
       "name": "Dr. C.N. Murthy",
-      "existing_url": "https://www.prasanthihospitals.com/doctor/dr-cn-murthy/",
+      "wordpress_post_id": 13,
+      "published_url": "https://www.prasanthihospitals.com/doctor/dr-cn-murthy/",
       "qualification": "BAMS",
       "role": "Founder · Family Physician",
       "excerpt": "Dr. Murthy founded Prasanthi Hospitals and continues to provide family physician consultations, working alongside Dr. Aditya in the hospital’s day-to-day care.",
@@ -13,7 +14,8 @@
     },
     {
       "name": "Dr. C.S.K. Aditya",
-      "existing_url": "https://www.prasanthihospitals.com/doctor/dr-csk-aditya/",
+      "wordpress_post_id": 14,
+      "published_url": "https://www.prasanthihospitals.com/doctor/dr-csk-aditya/",
       "qualification": "M.D. (General Medicine)",
       "role": "General Physician",
       "excerpt": "Dr. Aditya provides general medicine consultations and coordinates medical daycare and inpatient care at Prasanthi Hospitals.",
@@ -22,7 +24,8 @@
     },
     {
       "name": "Dr. Nishteshwar",
-      "existing_url": "https://www.prasanthihospitals.com/doctor/dr-nishteshwar/",
+      "wordpress_post_id": 15,
+      "published_url": "https://www.prasanthihospitals.com/doctor/dr-nishteshwar/",
       "qualification": "M.D. (Ayurveda)",
       "role": "Ayurveda Physician",
       "excerpt": "Dr. Nishteshwar provides Ayurvedic consultations as part of Prasanthi’s integrative approach. Please call to confirm his consultation time; he is not available for evening OPD.",
@@ -31,7 +34,8 @@
     },
     {
       "name": "Dr. Sarath Chandrabhatla",
-      "proposed_slug": "dr-sarath-chandrabhatla",
+      "wordpress_post_id": 53,
+      "published_url": "https://www.prasanthihospitals.com/doctor/dr-sarath-chandrabhatla/",
       "qualification": "M.S. (General Surgery)",
       "role": "General Surgeon",
       "training": "Currently pursuing M.Ch. in Surgical Gastroenterology.",
@@ -42,7 +46,8 @@
     },
     {
       "name": "Dr. Sreya Bhuvanagiri",
-      "proposed_slug": "dr-sreya-bhuvanagiri",
+      "wordpress_post_id": 54,
+      "published_url": "https://www.prasanthihospitals.com/doctor/dr-sreya-bhuvanagiri/",
       "qualification": "M.S. (Gynaecology)",
       "role": "Gynaecologist",
       "excerpt": "Dr. Sreya Bhuvanagiri holds an M.S. in Gynaecology. Contact the hospital to enquire about a gynaecology consultation and confirm her availability.",
@@ -51,5 +56,5 @@
       "confirmation": "Latest name spelling and M.S. (Gynaecology) confirmed directly by Aditya on 7 October 2026. Individual schedule and portrait are not yet confirmed. Do not add obstetric, fertility, delivery or procedure offerings without confirmation."
     }
   ],
-  "format_note": "Portable editorial content, not a WordPress REST or import schema. Existing URLs are public references; proposed slugs are not published URLs."
+  "format_note": "Portable editorial content, not a WordPress REST or import schema. Post IDs and published URLs are verified record references; they do not define API fields or import behaviour."
 }

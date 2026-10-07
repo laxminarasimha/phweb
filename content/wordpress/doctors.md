@@ -1,8 +1,16 @@
 # Prasanthi WordPress doctor content
 
-Prepared against the live WordPress site and Aditya’s confirmations. This copy has not yet been saved or published in WordPress. Keep the current doctor cards and profile layout; replace only their text fields.
+Status: published and publicly read back on 7 October 2026.
 
-**Doctors directory introduction**
+All five doctor profiles and their content fields have been saved and published in WordPress using Aditya’s confirmed facts. The current doctor-card and profile layout is retained. Individual schedules and portraits for the two new clinicians remain content gaps; the published timing text asks patients to call for availability.
+
+**Doctors directory introduction — live copy unchanged**
+
+Experienced doctors providing personal, accessible care.
+
+The directory's existing introduction in `archive-doctor.php` was retained. Its proposed replacement below has not been applied.
+
+**Proposed directory introduction — not applied**
 
 Meet the doctors you can speak with at Prasanthi. Call us before your visit so we can confirm who is available and help you plan your consultation.
 
@@ -102,11 +110,11 @@ Consultation timing: Please call the hospital to confirm Dr. Sreya Bhuvanagiri�
 
 **WordPress implementation notes**
 
-Inspect the current WordPress editor and map the proposed qualification, role, excerpt, profile, availability and image content to the fields actually present. The doctor content type and field names have not yet been verified. Existing doctors have published profile URLs; the two new slugs are proposals only. Preserve the current template, navigation, colour palette and contact actions.
+The `doctor` content type and its editor fields have been verified and used. The title supplies the name, the main editor supplies the full profile, Featured Image supplies the portrait, and Doctor Details supplies qualification, role, short introduction and consultation timing. The [CMS editor map](cms-editor-map.md) records the observed UI names, verified Home metadata reads and published post IDs. The [portable JSON](doctor-content.json) records the actual public URLs and publication status; it is an editorial reference rather than an API/import schema.
 
 Aditya’s latest display spellings are Dr. Sarath Chandrabhatla and Dr. Sreya Bhuvanagiri. Their consultation days and times have not been supplied. Use a call-to-confirm message rather than the hospital’s general OPD hours as their personal schedule. M.Ch. in Surgical Gastroenterology must remain labelled as training in progress. New portraits still need selection or confirmation; do not reuse another doctor’s photograph.
 
-No claims about seniority, outcomes, accreditations, specific procedures or hospital services beyond the confirmed scope have been added. The “30+ years” experience text currently published for Dr. Murthy is left out of this proposed replacement pending direct confirmation.
+No claims about seniority, outcomes, accreditations, specific procedures or hospital services beyond the confirmed scope have been added. The former “30+ years” experience claim in Dr. Murthy's profile was omitted from the published replacement pending direct confirmation.
 
 **Sources**
 
@@ -114,4 +122,6 @@ No claims about seniority, outcomes, accreditations, specific procedures or hosp
 - [Dr. C.N. Murthy’s current profile](https://www.prasanthihospitals.com/doctor/dr-cn-murthy/)
 - [Dr. C.S.K. Aditya’s current profile](https://www.prasanthihospitals.com/doctor/dr-csk-aditya/)
 - [Dr. Nishteshwar’s current profile](https://www.prasanthihospitals.com/doctor/dr-nishteshwar/)
+- [Dr. Sarath Chandrabhatla’s published profile](https://www.prasanthihospitals.com/doctor/dr-sarath-chandrabhatla/)
+- [Dr. Sreya Bhuvanagiri’s published profile](https://www.prasanthihospitals.com/doctor/dr-sreya-bhuvanagiri/)
 - Aditya’s direct OPD, role and qualification confirmations in this conversation, including the two additions on 7 October 2026.

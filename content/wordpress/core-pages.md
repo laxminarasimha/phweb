@@ -1,8 +1,8 @@
-# Prasanthi Hospitals — core page copy draft
+# Prasanthi Hospitals — published core page copy
 
-Prepared on 7 October 2026 from the reviewed live WordPress pages and Aditya's confirmed facts. This is replacement copy for the existing page sections. It has not been published.
+Applied in live WordPress on 7 October 2026 from the existing site and Aditya's confirmed facts. Home, About Us, Services, Contact Us and the shared footer were saved and publicly read back. The captured theme templates are the exact applied source.
 
-Keep the current sections, cards, navigation, images, buttons and contact links. The Services card grouping below is a proposal for the six existing slots; reconcile the text with the actual WordPress editor before applying it. Editorial notes belong in the working draft.
+The existing sections, cards, navigation, images, buttons, icons and contact links were preserved. The Services grouping below matches the existing icons. Editorial notes remain outside the public page text.
 
 **Home**
 
@@ -25,7 +25,7 @@ Evening OPD: 6:00 PM – 9:00 PM
 
 Existing contact strip: Appointments & doctor availability: 895 6969 895 · Call or WhatsApp before your visit.
 
-Editorial note: These are general OPD hours. Dr. Nishteshwar is not available for evening OPD. Include that exception in his existing Home profile description, which is being prepared separately. Confirm visiting and specialist consultation times by phone.
+Editorial note: These are general OPD hours. Dr. Nishteshwar is not available for evening OPD. That exception is included in his published Home profile description. Confirm visiting and specialist consultation times by phone.
 
 **About Prasanthi Hospitals**
 
@@ -45,7 +45,7 @@ Paragraph 2: If you need ICU care or treatment beyond our facilities, we arrange
 
 Meet the doctors at Prasanthi Hospitals and find out about the consultations they provide. Please confirm your doctor's availability before visiting.
 
-Editorial note: Doctor names, qualifications and individual profiles are handled in the companion doctor draft. Do not introduce a total roster count here.
+Editorial note: Doctor names, qualifications and individual profiles are recorded in the companion published doctor content. Do not introduce a total roster count here.
 
 **Our Services**
 
@@ -99,7 +99,7 @@ Paragraph 3: Ayurvedic consultations are also available as part of our integrati
 
 **Existing metrics row**
 
-The existing experience figure needs confirmation before replacement. Keep the current row during draft review. Verify the basis of the existing “30+ years” claim separately. The existing three-doctor count should become five only after the two new profiles have actually been published.
+The existing “30+ years” experience figure remains unchanged and needs a separately confirmed basis. The doctor count is now five, after both new profiles were published. The one patient-centred approach figure remains unchanged.
 
 **Our Approach to Care**
 
@@ -157,20 +157,20 @@ Heading: Our Services
 
 Introduction: From a consultation to daycare or a medical admission, the care you need depends on your doctor's assessment. Call ahead about doctor, test and procedure availability.
 
-**Proposed grouping within the existing six service-card slots**
+**Published grouping within the existing six service-card slots**
 
-This keeps six cards and their existing order positions. It gives selected surgery and pharmacy their own descriptions, while keeping Ayurvedic and gynaecology consultations in the outpatient card. This is a content proposal, not an assumption about the editor's field names.
+The existing icons, six-card footprint and destinations are preserved. Pharmacy shares the daycare card; the plant icon retains Ayurvedic consultations. The heart icon introduces further care and referral, including surgical assessment, without claiming cardiac services.
 
-| Existing slot | Proposed heading | Replacement body |
+| Existing icon | Published heading | Published body |
 |---|---|---|
-| General Medicine | Outpatient Consultations | General medicine, family physician and gynaecology consultations are available. We also offer Ayurvedic consultations as part of the hospital's integrative approach. Call to confirm the doctor and consultation time. |
-| Inpatient Care | Medical Inpatient Care | Medical admissions provide care within the hospital's facilities. Patients who need ICU care or services beyond these facilities are referred to an appropriate hospital. |
-| Medical Daycare | Medical Daycare | Treatment and observation with admission and discharge on the same day, when recommended by your doctor. The doctor will advise whether daycare or an overnight admission is appropriate. |
-| Ayurveda | Selected Surgical Care | Selected surgical procedures following assessment by the attending surgeon. Please call to confirm the surgeon's availability and the procedure you wish to discuss. |
-| Diagnostics | Laboratory Services | Routine tests are performed in-house. Specialised testing is arranged through external laboratories when needed. Call ahead for test availability and preparation instructions. |
-| Preventive Healthcare | On-site Pharmacy | An on-site pharmacy supports medicines prescribed for hospital patients. Contact the hospital if you have a question about a prescribed medicine's availability. |
+| 🩺 | Outpatient Consultations | General medicine, family physician and gynaecology consultations are available. Call to confirm the doctor and consultation time. |
+| 🏥 | Medical Inpatient Care | Medical admissions provide care within the hospital's facilities. Patients who need ICU care or services beyond these facilities are referred to an appropriate hospital. |
+| 💊 | Medical Daycare & Pharmacy | Treatment and observation with admission and discharge on the same day, when recommended by your doctor. Our on-site pharmacy supports medicines prescribed for hospital patients. |
+| 🌿 | Ayurvedic Consultations | Modern medicine remains central to our care. Ayurvedic consultations are also available with Dr. Nishteshwar, M.D. (Ayurveda). He is not available for evening OPD; please call to confirm his consultation time. |
+| 🔬 | Laboratory Services | Routine tests are performed in-house. Specialised testing is arranged through external laboratories when needed. Call ahead for test availability and preparation instructions. |
+| ❤️ | Further Care & Referral | Selected surgical care follows assessment by the attending surgeon. Call to confirm the surgeon and procedure availability. We arrange a referral when the care needed is beyond our facilities. |
 
-Each existing “Book / Enquire” button: Enquire About This Service
+Each service button: Enquire About This Service
 
 Editorial note: Keep the existing working button destinations. Do not imply an instant booking or appointment confirmation.
 
@@ -209,9 +209,8 @@ Landline: 0866-7960268
 Hospital Address:
 
 Ksheerasagar Hospital Road,\
-beside N.T.R. Sahakara Bhavan,\
-Governorpet, Vijayawada – 520002,\
-Andhra Pradesh, India.
+Beside N.T.R. Sahakara Bhavan,\
+Governorpet, Vijayawada – 520002, Andhra Pradesh, India
 
 **Need an Appointment?**
 
@@ -247,13 +246,13 @@ Button: WhatsApp Us
 
 The public copy needs confirmed operating days and individual consultation schedules. General OPD hours should not be presented as every doctor's fixed availability. Dr. Nishteshwar's evening restriction is confirmed; the two newly confirmed clinicians' consultation times remain unspecified.
 
-The About metrics need separate verification. Keep them untouched during this draft pass; update the doctor count only when the new profiles are live. Do not add a founding year, a total experience figure, accreditation, 24-hour service, guaranteed outcomes, cashless coverage or insurer empanelment without a confirmed basis.
+The About metrics need separate verification. The experience figure remains untouched; the doctor count is five following verified publication. Do not add a founding year, a total experience figure, accreditation, 24-hour service, guaranteed outcomes, cashless coverage or insurer empanelment without a confirmed basis.
 
 Both email addresses are official. Retain info@prasanthihospitals.com as the existing primary contact; the Gmail address is an optional second official contact in the same Contact page area.
 
-Gynaecology consultation is confirmed. Obstetric, fertility and specific gynaecological procedure offerings have not been supplied and are not included. The new doctor's surgical gastroenterology training is in progress; it must not be presented as a completed M.Ch. qualification. The doctor-profile draft owns those details.
+Gynaecology consultation is confirmed. Obstetric, fertility and specific gynaecological procedure offerings have not been supplied and are not included. The new doctor's surgical gastroenterology training is in progress; it must not be presented as a completed M.Ch. qualification. The published doctor-profile content records those details.
 
-The Services proposal uses the current six-card footprint and the confirmed hospital service scope. Test, procedure, surgeon and medicine availability should be confirmed directly with the hospital.
+The published Services copy uses the current six-card footprint and the confirmed hospital service scope. Test, procedure, surgeon and medicine availability should be confirmed directly with the hospital.
 
 **Sources**
 

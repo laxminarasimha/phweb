@@ -29,8 +29,7 @@
           <div class="section-heading">
             <h2>Our Services</h2>
             <p>
-              Comprehensive healthcare services focused on accessible,
-              compassionate and patient-centred care.
+              From a consultation to daycare or a medical admission, the care you need depends on your doctor's assessment. Call ahead about doctor, test and procedure availability.
             </p>
           </div>
 
@@ -38,83 +37,77 @@
 
             <article class="service-card">
               <div class="service-icon">🩺</div>
-              <h3>General Medicine</h3>
+              <h3>Outpatient Consultations</h3>
               <p>
-                Comprehensive medical consultations for common illnesses,
-                infections, chronic conditions and general health concerns.
+                General medicine, family physician and gynaecology consultations are available. Call to confirm the doctor and consultation time.
               </p>
               <a   href="https://wa.me/918956969895?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20an%20appointment%20at%20Prasanthi%20Hospitals."
   target="_blank"
   rel="noopener">
-                Book / Enquire
+                Enquire About This Service
               </a>
             </article>
 
             <article class="service-card">
               <div class="service-icon">🏥</div>
-              <h3>Inpatient Care</h3>
+              <h3>Medical Inpatient Care</h3>
               <p>
-                Personalised inpatient care with medical supervision,
-                nursing support and attention to each patient's needs.
+                Medical admissions provide care within the hospital's facilities. Patients who need ICU care or services beyond these facilities are referred to an appropriate hospital.
               </p>
               <a   href="https://wa.me/918956969895?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20an%20appointment%20at%20Prasanthi%20Hospitals."
   target="_blank"
   rel="noopener">
-                Book / Enquire
+                Enquire About This Service
               </a>
             </article>
 
             <article class="service-card">
               <div class="service-icon">💊</div>
-              <h3>Medical Daycare</h3>
+              <h3>Medical Daycare &amp; Pharmacy</h3>
               <p>
-                Daycare medical services for patients requiring observation,
-                treatment or procedures without overnight admission.
+                Treatment and observation with admission and discharge on the same day, when recommended by your doctor. Our on-site pharmacy supports medicines prescribed for hospital patients.
               </p>
               <a href="<?php echo esc_url(home_url('/#contact')); ?>">
-                Book / Enquire
+                Enquire About This Service
               </a>
             </article>
 
             <article class="service-card">
               <div class="service-icon">🌿</div>
-              <h3>Ayurveda</h3>
+              <h3>Ayurvedic Consultations</h3>
               <p>
-                Ayurvedic consultations supporting a holistic and
-                integrative approach to health and well-being.
+                Modern medicine remains central to our care. Ayurvedic consultations are also available with Dr. Nishteshwar, M.D. (Ayurveda). He is not available for evening OPD; please call to confirm his consultation time.
               </p>
               <a   href="https://wa.me/918956969895?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20an%20appointment%20at%20Prasanthi%20Hospitals."
   target="_blank"
   rel="noopener">
-                Book / Enquire
+                Enquire About This Service
               </a>
             </article>
 
             <article class="service-card">
               <div class="service-icon">🔬</div>
-              <h3>Diagnostics</h3>
+              <h3>Laboratory Services</h3>
               <p>
-                Diagnostic support to help doctors evaluate symptoms,
-                identify health concerns and plan appropriate treatment.
+                Routine tests are performed in-house. Specialised testing is arranged through external laboratories when needed. Call ahead for test availability and preparation instructions.
               </p>
               <a   href="https://wa.me/918956969895?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20an%20appointment%20at%20Prasanthi%20Hospitals."
   target="_blank"
   rel="noopener">
-                Book / Enquire
+                Enquire About This Service
               </a>
             </article>
 
             <article class="service-card">
               <div class="service-icon">❤️</div>
-              <h3>Preventive Healthcare</h3>
+              <h3>Further Care &amp; Referral</h3>
               <p>
-                Guidance focused on preventive health, lifestyle,
-                early identification of health concerns and overall wellness.
+                Selected surgical care follows assessment by the attending surgeon. Call to confirm the surgeon and procedure availability. We arrange a referral when the care needed is beyond our facilities.
               </p>
               <a   href="https://wa.me/918956969895?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20an%20appointment%20at%20Prasanthi%20Hospitals."
   target="_blank"
   rel="noopener">
-                Book / Enquire
+                Enquire About This Service
               </a>
             </article>
 
@@ -128,32 +121,29 @@
         <div class="container">
 
           <div class="section-heading">
-            <h2>Why Choose Prasanthi Hospitals?</h2>
+            <h2>What to expect from your care.</h2>
           </div>
 
           <div class="about-grid">
 
             <div>
-              <h3>Personalised Care</h3>
+              <h3>A conversation about your needs.</h3>
               <p>
-                We focus on understanding each patient's needs and providing
-                care that is personal, accessible and compassionate.
+                Discuss your symptoms, medical history and concerns with your doctor. Bring earlier prescriptions and reports to help explain your health history.
               </p>
             </div>
 
             <div>
-              <h3>Experienced Doctors</h3>
+              <h3>Advice on the next step.</h3>
               <p>
-                Our doctors bring experience across general medicine and
-                Ayurveda, supporting a comprehensive approach to patient care.
+                Your doctor will advise whether you need tests, outpatient treatment, daycare, admission or assessment by another specialist.
               </p>
             </div>
 
             <div>
-              <h3>Patient-Centred Approach</h3>
+              <h3>Referral when needed.</h3>
               <p>
-                From consultation to treatment and follow-up, we aim to make
-                the healthcare experience clear, comfortable and supportive.
+                When you need ICU care or treatment beyond the hospital's facilities, we arrange a referral to an appropriate hospital.
               </p>
             </div>
 
@@ -178,25 +168,18 @@
 
               <p class="doctor-role">ABOUT PRASANTHI HOSPITALS</p>
 
-              <h2>A Personal Approach to Healthcare</h2>
+              <h2>A family-run hospital, focused on your care.</h2>
 
               <p>
-                Prasanthi Hospitals is committed to providing accessible,
-                compassionate and personalised healthcare for individuals
-                and families.
+                Prasanthi Hospitals is a family-run hospital in Governorpet, Vijayawada, founded by Dr. C.N. Murthy, BAMS. Modern medical care is at the centre of the hospital's work.
               </p>
 
               <p>
-                Our approach is centred on understanding each patient's
-                health concerns, providing appropriate medical guidance and
-                supporting patients throughout their healthcare journey.
+                You may be visiting us for a new health concern, a follow-up or care that needs a short stay. Discuss your concerns with your doctor and ask about the next steps, whether that means treatment during your visit, daycare or a medical admission.
               </p>
 
               <p>
-                With experienced doctors providing general medicine and
-                Ayurvedic consultations, Prasanthi Hospitals brings together
-                different approaches to patient care while keeping the
-                individual patient's needs at the centre.
+                Ayurvedic consultations are also available as part of our integrative approach. Contact the hospital to confirm the doctor and consultation time before visiting.
               </p>
 
             </div>
@@ -211,7 +194,7 @@
               </div>
 
               <div class="about-highlight-box">
-                <span class="about-highlight-number">3</span>
+                <span class="about-highlight-number">5</span>
                 <span class="about-highlight-label">
                   Doctors &amp; Medical Practitioners
                 </span>
@@ -238,7 +221,7 @@
           <div class="section-heading">
             <h2>Our Approach to Care</h2>
             <p>
-              Healthcare that focuses on the person, not just the condition.
+              Tell us what is troubling you, ask questions and discuss the next steps with your doctor.
             </p>
           </div>
 
@@ -246,29 +229,25 @@
 
             <article class="about-value-card">
               <div class="about-value-icon">❤️</div>
-              <h3>Compassionate Care</h3>
+              <h3>Space to discuss your concerns.</h3>
               <p>
-                We believe patients deserve to be treated with respect,
-                empathy and understanding at every stage of their care.
+                Your symptoms, medical history and questions matter. Share what has changed and bring previous prescriptions or reports that may help your consultation.
               </p>
             </article>
 
             <article class="about-value-card">
               <div class="about-value-icon">🩺</div>
-              <h3>Experienced Medical Care</h3>
+              <h3>Care guided by medical assessment.</h3>
               <p>
-                Our doctors focus on careful evaluation, appropriate medical
-                guidance and personalised treatment based on individual needs.
+                Your doctor assesses your needs and advises on consultation, tests, treatment or admission. We refer patients when the care needed is beyond our facilities.
               </p>
             </article>
 
             <article class="about-value-card">
               <div class="about-value-icon">🌿</div>
-              <h3>Integrative Approach</h3>
+              <h3>Ayurvedic consultations.</h3>
               <p>
-                General medicine and Ayurveda consultations are available,
-                supporting an approach that considers the patient's overall
-                health and well-being.
+                Modern medicine remains central to the hospital's care. Ayurvedic consultations are also available with Dr. Nishteshwar. Please call to confirm his consultation time; he is not available for evening OPD.
               </p>
             </article>
 
@@ -286,23 +265,18 @@
             <div>
               <p class="doctor-role">OUR COMMITMENT</p>
 
-              <h2>Care That Builds Trust</h2>
+              <h2>Helping you understand your care.</h2>
 
               <p>
-                Good healthcare begins with listening. We aim to understand
-                our patients' concerns, explain their care clearly and help
-                them make informed decisions about their health.
+                Good care begins with a conversation. Tell your doctor about your concerns and ask about the care being recommended.
               </p>
 
               <p>
-                Our focus is on creating a comfortable and supportive
-                healthcare experience for patients and their families.
+                Our aim is to help you understand the next steps, whether that means treatment during an outpatient visit, further testing, daycare or a medical admission.
               </p>
 
               <p>
-                From consultation and diagnosis to treatment and follow-up,
-                we strive to provide care that is personal, responsible and
-                centred around the patient's needs.
+                If you need care elsewhere, the hospital arranges an appropriate referral. Bring your prescriptions and medical reports when you return for a consultation.
               </p>
             </div>
 
@@ -311,11 +285,11 @@
               <h3>Our Focus</h3>
 
               <ul>
-                <li>Personalised medical consultations</li>
-                <li>Accessible healthcare</li>
-                <li>Clear communication with patients</li>
-                <li>Comprehensive general medical care</li>
-                <li>Support for overall health and well-being</li>
+                <li>Medical consultations based on your concerns</li>
+                <li>Clear discussion of the recommended care</li>
+                <li>Information to prepare for tests or a visit</li>
+                <li>Daycare and medical admission when advised</li>
+                <li>Referral for care beyond our facilities</li>
               </ul>
 
             </div>
@@ -332,8 +306,7 @@
           <div class="section-heading">
             <h2>Meet Our Doctors</h2>
             <p>
-              Experienced medical practitioners committed to providing
-              personal and accessible care.
+              Read about our doctors and the consultations they provide at Prasanthi Hospitals.
             </p>
 
             <a
@@ -353,11 +326,10 @@
 
           <div class="about-cta">
 
-            <h2>Need Medical Assistance?</h2>
+            <h2>Planning a visit?</h2>
 
             <p>
-              Contact Prasanthi Hospitals to enquire about consultations
-              and available healthcare services.
+              Contact the hospital to check your doctor's availability and ask about the services you may need.
             </p>
 
             <a
@@ -383,8 +355,7 @@
           <div class="section-heading">
             <h2>Contact Prasanthi Hospitals</h2>
             <p>
-              For appointments, consultations and general enquiries,
-              please contact us directly.
+              Call or WhatsApp to arrange a consultation, check your doctor's availability or ask about a test or hospital service.
             </p>
           </div>
 
@@ -425,7 +396,7 @@
                       target="_blank"
                       rel="noopener"
                     >
-                      Chat with us on WhatsApp
+                      Chat with the hospital
                     </a>
                   </p>
                 </div>
@@ -444,6 +415,7 @@
                     <a href="mailto:info@prasanthihospitals.com">
                       info@prasanthihospitals.com
                     </a>
+                    Alternate official email: PrashantiHospitals1985@gmail.com
                   </p>
                 </div>
 
@@ -477,7 +449,7 @@
                   <p>
                     Ksheerasagar Hospital Road,<br>
                     Beside N.T.R. Sahakara Bhavan,<br>
-                    Governorpet, Vijayawada
+                    Governorpet, Vijayawada – 520002, Andhra Pradesh, India
                   </p>
                 </div>
 
@@ -495,8 +467,7 @@
               <h2>Need an Appointment?</h2>
 
               <p>
-                For appointments and enquiries, the quickest way to reach
-                us is through WhatsApp.
+                Call or message the hospital with the doctor you wish to see. Confirm the consultation time with the team before travelling.
               </p>
 
               <a
@@ -528,8 +499,7 @@
           <div class="section-heading">
             <h2>OPD Timings</h2>
             <p>
-              Please contact the hospital before visiting to confirm
-              the doctor's availability.
+              These are the hospital's general OPD hours. Please check individual doctor availability before your visit. Dr. Nishteshwar is not available for evening OPD. Please call to confirm his consultation time and other specialist appointments.
             </p>
           </div>
 
@@ -560,7 +530,7 @@
           <div class="section-heading">
             <h2>Find Us</h2>
             <p>
-              Visit Prasanthi Hospitals at Governorpet, Vijayawada.
+              Use the map to plan your route. The hospital is beside N.T.R. Sahakara Bhavan on Ksheerasagar Hospital Road, Governorpet.
             </p>
           </div>
 
@@ -594,8 +564,7 @@
             <h2>We're Here to Help</h2>
 
             <p>
-              For appointments and healthcare enquiries, contact us
-              directly through WhatsApp or phone.
+              Have a question about a test or an upcoming visit? Call or WhatsApp the hospital team before you set out.
             </p>
 
             <a

@@ -14,13 +14,13 @@
 
       <h1>
         Personal care.<br>
-        <span>Trusted healthcare.</span>
+        <span>For you and your family.</span>
       </h1>
 
       <p>
-        A family-run modern medicine hospital in Governorpet, Vijayawada,
-        centred on personal care with an integrative approach that also
-        includes Ayurvedic consultations.
+        At our family-run hospital in Governorpet, Vijayawada, you can talk
+        to a doctor about what’s troubling you and ask about the next steps.
+        We provide modern medical care, with Ayurvedic consultations also available.
       </p>
 
 
@@ -30,7 +30,7 @@
           class="button"
           href="tel:8956969895"
         >
-          Call for Appointment
+          Call for an Appointment
         </a>
 
         <a
@@ -95,24 +95,24 @@
 </section>
 
 <div class="notice">
-  <div class="container"><strong>Appointments & enquiries:</strong> <a href="tel:8956969895" style="color:#fff;">895 6969 895</a> &nbsp; · &nbsp; WhatsApp available</div>
+  <div class="container"><strong>Appointments & doctor availability:</strong> <a href="tel:8956969895" style="color:#fff;">895 6969 895</a> &nbsp; · &nbsp; Call or WhatsApp before your visit</div>
 </div>
 
 <section id="about" class="section">
   <div class="container">
     <div class="section-heading">
       <h2>About Prasanthi Hospitals</h2>
-      <p>A hospital rooted in personal care.</p>
+      <p>A family-run hospital in Governorpet.</p>
     </div>
     <div class="about-grid">
       <div>
-        <p>Founded by <strong>Dr. C.N. Murthy, BAMS</strong>, in Governorpet, Vijayawada, Prasanthi Hospitals continues family physician consultations alongside <strong>Dr. C.S.K. Aditya, M.D. (General Medicine)</strong>.</p>
-        <p>Modern medical care is at the centre of the hospital's approach. Integrative care also includes Ayurvedic consultations with <strong>Dr. Nishteshwar, M.D. (Ayurveda)</strong>.</p>
+        <p>Prasanthi Hospitals was founded by <strong>Dr. C.N. Murthy, BAMS</strong>. He provides family physician consultations alongside <strong>Dr. C.S.K. Aditya, M.D. (General Medicine)</strong>, who oversees general medicine consultations, medical daycare and inpatient care.</p>
+        <p>Ayurvedic consultations with <strong>Dr. Nishteshwar, M.D. (Ayurveda)</strong> are also available. Please call to confirm his consultation time; he is not available for evening OPD.</p>
       </div>
       <div class="card">
         <h3>Our approach</h3>
-        <p>Facilities support outpatient consultations, daycare, acute medical inpatient care and selected surgical work. Laboratory and pharmacy support day-to-day care.</p>
-        <p>When ICU care or treatment beyond available facilities is needed, referral to an appropriate hospital is arranged.</p>
+        <p>Depending on your doctor's assessment, you may need an outpatient consultation, a daycare visit or a medical admission. Routine laboratory testing, an on-site pharmacy and selected surgical care support the hospital's work.</p>
+        <p>If you need ICU care or treatment beyond our facilities, we arrange a referral to a hospital with the appropriate services.</p>
       </div>
     </div>
   </div>
@@ -123,7 +123,7 @@
 
     <div class="section-heading">
       <h2>Our Doctors</h2>
-      <p>Experienced doctors providing personal, accessible care.</p>
+      <p>Meet the doctors at Prasanthi Hospitals and find out about the consultations they provide. Please confirm your doctor's availability before visiting.</p>
     </div>
 
     <?php
@@ -231,15 +231,15 @@
   <div class="container">
     <div class="section-heading">
       <h2>Our Services</h2>
-      <p>Core hospital services available at Prasanthi Hospitals.</p>
+      <p>Find out about the care available and what to confirm before your visit.</p>
     </div>
     <div class="services-grid">
-      <div class="service-card"><h3>Outpatient Consultations</h3><p>General medicine and family physician consultations, with Ayurvedic consultations as part of the integrative approach.</p></div>
-      <div class="service-card"><h3>Daycare</h3><p>Care, treatment and observation with same-day admission and discharge when recommended by the doctor.</p></div>
-      <div class="service-card"><h3>Medical Inpatient Care</h3><p>Acute medical admissions within available facilities. ICU or care beyond facilities is referred appropriately.</p></div>
-      <div class="service-card"><h3>Surgical Care</h3><p>Selected procedures within available facilities after consultation. Contact the hospital regarding surgeon and procedure availability.</p></div>
-      <div class="service-card"><h3>Laboratory Services</h3><p>Routine tests in-house, with specialised tests arranged through external laboratories where required.</p></div>
-      <div class="service-card"><h3>On-site Pharmacy</h3><p>Pharmacy support for day-to-day patient care and prescriptions.</p></div>
+      <div class="service-card"><h3>Outpatient Consultations</h3><p>General medicine, family physician and gynaecology consultations, with Ayurvedic consultations also available. Call to confirm the doctor and consultation time.</p></div>
+      <div class="service-card"><h3>Daycare</h3><p>Treatment and observation without an overnight stay, when your doctor recommends admission and discharge on the same day.</p></div>
+      <div class="service-card"><h3>Medical Inpatient Care</h3><p>Medical admissions within the hospital's facilities. When ICU care or other services are needed, we arrange an appropriate referral.</p></div>
+      <div class="service-card"><h3>Surgical Care</h3><p>Selected procedures following a surgical consultation. Please call to confirm the surgeon's availability and the procedure you wish to discuss.</p></div>
+      <div class="service-card"><h3>Laboratory Services</h3><p>Routine tests are performed in-house. Specialised testing is arranged through external laboratories when needed.</p></div>
+      <div class="service-card"><h3>On-site Pharmacy</h3><p>Our on-site pharmacy supports the medicines prescribed for hospital patients.</p></div>
     </div>
   </div>
 </section>
@@ -248,7 +248,7 @@
   <div class="container">
     <div class="section-heading">
       <h2>Contact & Location</h2>
-      <p>Contact us for appointments, doctor availability and service enquiries.</p>
+      <p>Call or WhatsApp to arrange a visit, check your doctor's availability or ask about a hospital service.</p>
     </div>
     <div class="contact-grid">
       <div class="card">
@@ -256,7 +256,7 @@
         <ul class="contact-list">
           <li><strong>Appointments:</strong> <a href="tel:8956969895">895 6969 895</a></li>
           <li><strong>Landline:</strong> 0866-7960268</li>
-          <li><strong>WhatsApp:</strong> <a href="https://wa.me/918956969895" target="_blank" rel="noopener">Chat on WhatsApp</a></li>
+          <li><strong>WhatsApp:</strong> <a href="https://wa.me/918956969895" target="_blank" rel="noopener">Chat with the hospital</a></li>
           <li><strong>Email:</strong> <a href="mailto:info@prasanthihospitals.com">info@prasanthihospitals.com</a></li>
           <li><strong>Address:</strong> Ksheerasagar Hospital Road, beside N.T.R. Sahakara Bhavan, Governorpet, Vijayawada – 520002, Andhra Pradesh.</li>
         </ul>
