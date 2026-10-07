@@ -26,6 +26,10 @@ Lead with personal care and modern medicine, with Ayurvedic consultations as par
 
 The Services page retains its six existing icons. Daycare and pharmacy share one card, Ayurvedic consultations retain the plant icon, and further care/referral explains surgical assessment. Both official email addresses are present on Contact; the existing primary email link remains unchanged.
 
+**Patient education next**
+
+The [bilingual Patient Guides prototype and plan](patient-guides/README.md) add English/Telugu topic navigation, search, six article ideas and a rice-and-diabetes pilot draft. This is a local preview and editorial pack; no new article or blog route is published in WordPress.
+
 **Next content**
 
 Approved portraits and individual schedules for the two new doctors are still needed. Operating days, first-visit arrangements and the basis of the existing experience figure need confirmation. The mobile footer and Contact email overflow have been fixed in the authorised formatting pass; all five primary pages fit the checked 390-pixel phone viewport.

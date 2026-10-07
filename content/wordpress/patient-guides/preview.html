@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Patient Guides · Prasanthi Hospitals · Local preview</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --purple: #6b2c91;
+      --purple-dark: #4b1e66;
+      --orange: #f28c28;
+      --ink: #292333;
+      --muted: #62596d;
+      --line: #e5dfe9;
+      --surface: #fff;
+      --soft: #f7f3fa;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #fcfafc;
+      color: var(--ink);
+      font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Telugu", sans-serif;
+    }
+    body.modal-open { overflow: hidden; }
+    button, input { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { cursor: pointer; }
+    button:disabled { cursor: default; }
+    a { color: var(--purple); text-underline-offset: 3px; }
+    :focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
+    [hidden] { display: none !important; }
+    .wrap { width: min(1100px, calc(100% - 48px)); margin-inline: auto; }
+    .skip-link { position: absolute; top: -80px; left: 20px; padding: 10px 16px; background: var(--purple); color: white; z-index: 5; }
+    .skip-link:focus { top: 12px; }
+    .site-header { background: white; border-bottom: 1px solid var(--line); }
+    .header-inner { display: flex; gap: 20px; align-items: center; justify-content: space-between; padding-block: 18px; }
+    .brand { text-decoration: none; color: var(--purple); line-height: 1.25; }
+    .brand strong { display: block; font-size: 21px; font-weight: 750; letter-spacing: -.4px; }
+    .brand span { display: block; font-size: 12px; margin-top: 5px; color: var(--muted); }
+    .header-controls { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .preview-label { font-size: 12px; font-weight: 650; color: var(--muted); }
+    .language-switch { display: inline-flex; gap: 3px; padding: 4px; background: var(--soft); border: 1px solid var(--line); border-radius: 10px; }
+    .language-switch button { border: 0; padding: 6px 10px; border-radius: 7px; background: transparent; color: var(--muted); font-size: 14px; }
+    .language-switch button[aria-pressed="true"] { color: white; background: var(--purple); }
+    .intro { padding-block: 38px 24px; max-width: 760px; }
+    .eyebrow { color: var(--purple); font-weight: 650; font-size: 13px; margin: 0 0 9px; }
+    h1 { font-size: clamp(29px, 4vw, 40px); line-height: 1.23; letter-spacing: -.8px; margin: 0 0 14px; }
+    .intro p:last-child { margin: 0; color: var(--muted); font-size: 17px; max-width: 690px; }
+    .review-note { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border: 1px solid #e6d5f0; border-radius: 12px; background: var(--soft); color: var(--purple-dark); font-size: 14px; margin-bottom: 28px; }
+    .note-symbol { display: flex; justify-content: center; align-items: center; flex: 0 0 24px; height: 24px; border-radius: 50%; background: white; border: 1px solid #d5bddf; font-weight: 700; font-family: Georgia, serif; line-height: 1; }
+    .review-note p { margin: 0; }
+    .browse-tools { background: white; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+    .search-row { display: flex; gap: 16px; align-items: flex-end; }
+    .search-field { flex: 1; min-width: 0; }
+    .search-field label { display: block; font-weight: 650; font-size: 14px; margin-bottom: 7px; }
+    .search-field input { width: 100%; background: #fcfafc; color: var(--ink); padding: 11px 14px; border: 1px solid #cfc5d6; border-radius: 10px; line-height: 1.45; }
+    .search-field input::placeholder { color: #766c7f; }
+    .clear-button { border: 1px solid var(--line); padding: 11px 15px; border-radius: 10px; background: white; color: var(--purple); font-size: 14px; line-height: 1.65; }
+    .clear-button:disabled { color: var(--muted); background: #f8f6f9; }
+    .category-label { display: block; margin-top: 18px; margin-bottom: 9px; font-size: 13px; color: var(--muted); }
+    .categories { display: flex; gap: 8px; flex-wrap: wrap; }
+    .category-chip { border: 1px solid var(--line); color: var(--muted); background: white; padding: 6px 12px; border-radius: 999px; font-size: 13px; line-height: 1.5; min-height: 36px; }
+    .category-chip[aria-pressed="true"] { background: var(--purple); border-color: var(--purple); color: white; }
+    .category-chip:hover:not([aria-pressed="true"]), .clear-button:hover:not(:disabled) { background: var(--soft); border-color: #bba9c8; }
+    .results-header { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-block: 26px 14px; }
+    .results-header h2 { font-size: 22px; line-height: 1.3; letter-spacing: -.3px; margin: 0; }
+    .result-count { font-size: 13px; color: var(--muted); margin: 0; text-align: right; }
+    .guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .guide-card { border: 1px solid var(--line); border-radius: var(--radius); background: white; display: flex; flex-direction: column; padding: 21px; min-width: 0; }
+    .card-topic { margin: 0 0 9px; color: var(--purple); font-size: 12px; font-weight: 700; }
+    .guide-card h3 { margin: 0 0 11px; font-size: 20px; line-height: 1.4; letter-spacing: -.25px; }
+    .guide-card .excerpt { margin: 0 0 16px; font-size: 14px; color: var(--muted); }
+    .card-bottom { margin-top: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 13px; }
+    .status-badge { display: inline-block; font-size: 11px; font-weight: 650; line-height: 1.5; padding: 4px 8px; background: #f5f2f7; color: #5c5168; border-radius: 6px; }
+    .status-badge.draft { background: #fff1df; color: #7b450b; }
+    .read-button { display: inline-flex; gap: 8px; align-items: center; background: var(--purple); color: white; border: 1px solid var(--purple); border-radius: 9px; padding: 8px 12px; font-size: 14px; font-weight: 600; }
+    .read-button:hover { background: var(--purple-dark); }
+    .read-button span[aria-hidden] { font-size: 16px; }
+    .empty-state, .load-message { padding: 32px 20px; border: 1px dashed #d4c5de; border-radius: var(--radius); background: white; text-align: center; color: var(--muted); }
+    .empty-state strong, .load-message strong { color: var(--ink); display: block; margin-bottom: 7px; }
+    .empty-state p, .load-message p { margin: 0; font-size: 14px; }
+    .site-footer { border-top: 1px solid var(--line); margin-top: 38px; padding-block: 20px 26px; font-size: 12px; color: var(--muted); }
+    .site-footer p { margin: 0; }
+    dialog { border: 1px solid var(--line); border-radius: 18px; padding: 0; width: min(760px, calc(100% - 32px)); max-height: min(88vh, 900px); color: var(--ink); background: white; box-shadow: 0 20px 80px #28133038; overflow: auto; }
+    dialog::backdrop { background: #24142dcc; }
+    .dialog-top { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 16px 24px; background: var(--soft); border-bottom: 1px solid var(--line); }
+    .dialog-close { padding: 7px 12px; border: 1px solid #cdbed8; background: white; color: var(--purple); font-size: 13px; border-radius: 8px; }
+    .dialog-content { padding: 24px 28px 30px; }
+    .dialog-content > h2 { font-size: 27px; line-height: 1.35; letter-spacing: -.4px; margin: 0 0 16px; }
+    .dialog-note { padding: 12px 14px; background: #fff6e9; border-left: 3px solid var(--orange); color: #6a441a; font-size: 13px; margin-bottom: 22px; }
+    .article-body { overflow-wrap: anywhere; font-size: 16px; line-height: 1.8; }
+    .article-body h2 { font-size: 21px; line-height: 1.45; margin: 25px 0 10px; }
+    .article-body h3 { font-size: 18px; line-height: 1.5; margin: 21px 0 8px; }
+    .article-body p { margin: 0 0 15px; }
+    .article-body ul, .article-body ol { padding-left: 22px; margin: 10px 0 20px; }
+    .article-body li { padding-left: 3px; margin-bottom: 7px; }
+    .article-body img { max-width: 100%; height: auto; }
+    .article-body blockquote { margin: 20px 0; padding: 12px 16px; background: var(--soft); border-left: 3px solid var(--purple); }
+    .article-body table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .article-body td, .article-body th { padding: 10px; border: 1px solid var(--line); text-align: left; }
+    .sources { border-top: 1px solid var(--line); margin-top: 25px; padding-top: 18px; }
+    .sources h3 { font-size: 15px; margin: 0 0 9px; }
+    .sources ul { margin: 0; padding-left: 19px; font-size: 13px; }
+    .sources li { margin-bottom: 6px; overflow-wrap: anywhere; }
+    @media (max-width: 980px) { .guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 620px) {
+      .wrap { width: calc(100% - 32px); }
+      .header-inner { align-items: flex-start; flex-direction: column; gap: 14px; padding-block: 16px; }
+      .header-controls { width: 100%; justify-content: space-between; gap: 10px; }
+      .intro { padding-block: 28px 22px; }
+      h1 { font-size: 30px; letter-spacing: -.5px; }
+      .intro p:last-child { font-size: 16px; }
+      .review-note { padding: 13px; margin-bottom: 20px; }
+      .browse-tools { padding: 16px; }
+      .search-row { display: block; }
+      .clear-button { margin-top: 10px; padding: 7px 11px; }
+      .category-label { margin-top: 15px; }
+      .category-chip { padding-inline: 10px; }
+      .results-header { align-items: flex-start; margin-top: 24px; }
+      .results-header h2 { font-size: 20px; }
+      .guide-grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+      .guide-card { padding: 19px; }
+      .dialog-top { padding: 12px 16px; }
+      .dialog-content { padding: 20px 18px 24px; }
+      .dialog-content > h2 { font-size: 24px; }
+      .article-body { font-size: 15px; }
+      .site-footer { margin-top: 28px; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      button { transition: background-color .12s ease, border-color .12s ease; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main" id="skip-link">Skip to patient guides</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="https://www.prasanthihospitals.com/">
+        <strong>Prasanthi Hospitals</strong>
+        <span id="brand-caption">For patients and families</span>
+      </a>
+      <div class="header-controls">
+        <span class="preview-label" id="preview-label">Local content preview</span>
+        <div class="language-switch" role="group" aria-label="Guide language" id="language-switch">
+          <button type="button" data-language="en" aria-pressed="true" lang="en">English</button>
+          <button type="button" data-language="te" aria-pressed="false" lang="te">తెలుగు</button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="wrap" id="main">
+    <div class="intro">
+      <p class="eyebrow" id="eyebrow">Understand your health, one question at a time</p>
+      <h1 id="section-title">Patient Guides</h1>
+      <p id="introduction">Practical explanations for the questions patients and families ask.</p>
+    </div>
+    <aside class="review-note" aria-label="Content status" id="review-note">
+      <span class="note-symbol" aria-hidden="true">i</span>
+      <p id="review-copy">A preview of our patient education library. The first article is a draft for clinical review; the other topics are outlines.</p>
+    </aside>
+    <section class="browse-tools" aria-label="Find a guide" id="browse-tools" hidden>
+      <div class="search-row">
+        <div class="search-field">
+          <label for="guide-search" id="search-label">Search guides</label>
+          <input id="guide-search" type="search" placeholder="Try diabetes, thyroid or food…" autocomplete="off" aria-controls="guide-grid">
+        </div>
+        <button type="button" class="clear-button" id="clear-filters" disabled>Clear filters</button>
+      </div>
+      <span class="category-label" id="category-label">Choose a topic</span>
+      <div class="categories" role="group" aria-label="Topic filters" id="categories"></div>
+    </section>
+    <section aria-labelledby="browse-heading" id="guide-results" aria-busy="true">
+      <div class="results-header">
+        <h2 id="browse-heading">Questions we can help you understand</h2>
+        <p class="result-count" id="result-count" role="status" aria-live="polite" aria-atomic="true">Loading guides…</p>
+      </div>
+      <div class="load-message" id="load-message"><p id="load-copy">Loading the local content file…</p></div>
+      <div class="guide-grid" id="guide-grid"></div>
+      <div class="empty-state" id="empty-state" hidden><strong id="empty-title">No guides match this search.</strong><p id="empty-copy">Try another word or clear the filters.</p></div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="wrap"><p id="footer-copy">Local preview only · Clinical review pending · No articles have been published from this preview.</p></div></footer>
+  <dialog id="guide-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-note">
+    <div class="dialog-top"><span class="status-badge" id="dialog-status"></span><button type="button" class="dialog-close" id="dialog-close" autofocus>Close</button></div>
+    <div class="dialog-content">
+      <h2 id="dialog-title"></h2>
+      <div class="dialog-note" id="dialog-note"></div>
+      <div class="article-body" id="article-body"></div>
+      <section class="sources" id="sources" aria-labelledby="sources-heading" hidden><h3 id="sources-heading"></h3><ul id="source-list"></ul></section>
+    </div>
+  </dialog>
+  <script>
+    'use strict';
+    const $ = (id) => document.getElementById(id);
+    const state = { language: 'en', category: '', query: '', data: null, error: false, opener: null };
+    const labels = {
+      en: {
+        skip: 'Skip to patient guides', caption: 'For patients and families', preview: 'Local content preview', language: 'Guide language',
+        eyebrow: 'Understand your health, one question at a time', title: 'Patient Guides', introMissing: 'The introduction is not available in this preview.',
+        review: 'A preview of our patient education library. Drafts need clinical review; outlines show what we plan to write.',
+        reviewLabel: 'Content status', find: 'Find a guide', search: 'Search guides', placeholder: 'Try diabetes, thyroid or food…',
+        clear: 'Clear filters', choose: 'Choose a topic', filters: 'Topic filters', all: 'All topics', browse: 'Questions we can help you understand',
+        count: (n) => `${n} ${n === 1 ? 'guide' : 'guides'}`, loading: 'Loading guides…', loadCopy: 'Loading the local content file…',
+        emptyTitle: 'No guides match this search.', emptyCopy: 'Try another word or clear the filters.',
+        footer: 'Local preview only · Clinical review pending · No articles have been published from this preview.',
+        draft: 'Draft for clinical review', outline: 'Article outline', read: 'Read draft', view: 'View outline', close: 'Close',
+        draftNote: 'This is an unpublished draft. It has not been marked as clinically reviewed.',
+        outlineNote: 'This is a writing outline, not a finished patient article. Clinical content and review are still pending.',
+        planned: 'Questions planned for this article', outlineIntro: 'We plan to cover these questions in a future draft:',
+        unavailable: 'English content is not available yet.', unavailableTitle: 'English draft unavailable', unknownTopic: 'Topic',
+        sources: 'Background sources', errorTitle: 'The guides could not be loaded.',
+        errorCopy: 'Open this preview through a local web server, with articles.json beside preview.html. Once the content file is available, reload this page.'
+      },
+      te: {
+        skip: 'ఆరోగ్య వ్యాసాలకు వెళ్లండి', caption: 'రోగులు, కుటుంబ సభ్యుల కోసం', preview: 'స్థానిక నమూనా', language: 'వ్యాసాల భాష',
+        eyebrow: 'మీ ఆరోగ్యాన్ని అర్థం చేసుకునేందుకు', title: 'రోగుల కోసం ఆరోగ్య సమాచారం', introMissing: 'తెలుగు పరిచయ సమాచారం ఇంకా అందుబాటులో లేదు.',
+        review: 'ఇది రోగుల కోసం ఆరోగ్య సమాచార నమూనా. ముసాయిదాలకు వైద్య సమీక్ష అవసరం. ప్రణాళికలు మేము రాయబోయే విషయాలను చూపిస్తాయి.',
+        reviewLabel: 'వ్యాసాల స్థితి', find: 'వ్యాసాన్ని వెతకండి', search: 'వ్యాసాల్లో వెతకండి', placeholder: 'మధుమేహం, థైరాయిడ్ లేదా ఆహారం…',
+        clear: 'ఫిల్టర్లు తొలగించండి', choose: 'విషయాన్ని ఎంచుకోండి', filters: 'విషయాల ఫిల్టర్లు', all: 'అన్ని విషయాలు', browse: 'మీ సందేహాలను అర్థం చేసుకుందాం',
+        count: (n) => `${n} ${n === 1 ? 'వ్యాసం' : 'వ్యాసాలు'}`, loading: 'వ్యాసాలను లోడ్ చేస్తున్నాం…', loadCopy: 'స్థానిక సమాచార ఫైల్‌ను లోడ్ చేస్తున్నాం…',
+        emptyTitle: 'ఈ శోధనకు వ్యాసాలు లేవు.', emptyCopy: 'వేరే పదంతో వెతకండి లేదా ఫిల్టర్లు తొలగించండి.',
+        footer: 'స్థానిక నమూనా మాత్రమే · వైద్య సమీక్ష ఇంకా పూర్తికాలేదు · ఈ నమూనా నుంచి వ్యాసాలు ప్రచురించలేదు.',
+        draft: 'వైద్య సమీక్ష కోసం ముసాయిదా', outline: 'వ్యాస ప్రణాళిక', read: 'ముసాయిదా చదవండి', view: 'ప్రణాళిక చూడండి', close: 'మూసివేయండి',
+        draftNote: 'ఇది ఇంకా ప్రచురించని ముసాయిదా. దీనికి వైద్య సమీక్ష పూర్తయినట్లు గుర్తించలేదు.',
+        outlineNote: 'ఇది వ్యాస రచనకు ప్రణాళిక మాత్రమే. పూర్తి వ్యాసం కాదు. వైద్య సమాచారం, సమీక్ష ఇంకా సిద్ధం చేయాలి.',
+        planned: 'ఈ వ్యాసంలో చర్చించబోయే ప్రశ్నలు', outlineIntro: 'రాబోయే ముసాయిదాలో ఈ ప్రశ్నలను చర్చించాలని అనుకుంటున్నాం:',
+        unavailable: 'తెలుగు సమాచారం ఇంకా అందుబాటులో లేదు.', unavailableTitle: 'తెలుగు ముసాయిదా ఇంకా అందుబాటులో లేదు', unknownTopic: 'విషయం',
+        sources: 'సమాచార ఆధారాలు', errorTitle: 'వ్యాసాలను లోడ్ చేయలేకపోయాం.',
+        errorCopy: 'articles.json ఫైల్ preview.html పక్కన ఉండాలి. ఈ నమూనాను స్థానిక వెబ్ సర్వర్ ద్వారా తెరవండి. సమాచార ఫైల్ సిద్ధమైన తర్వాత పేజీని మళ్లీ లోడ్ చేయండి.'
+      }
+    };
+    const ui = () => labels[state.language];
+    const text = (node, value) => { node.textContent = value; };
+    function content(object, key) {
+      const value = object[state.language === 'te' ? `${key}Te` : key];
+      return typeof value === 'string' && value.trim() ? value : null;
+    }
+    function topics(article) {
+      const value = article[state.language === 'te' ? 'topicsTe' : 'topics'];
+      return Array.isArray(value) ? value.filter((item) => typeof item === 'string' && item.trim()) : [];
+    }
+    function isDraft(article) { return /draft/i.test(article.status); }
+    function make(tag, className, value) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (value != null) text(node, value);
+      return node;
+    }
+    function updateLabels() {
+      const l = ui();
+      document.documentElement.lang = state.language;
+      document.title = `${state.data ? content(state.data, 'sectionTitle') || l.title : l.title} · Prasanthi Hospitals · ${l.preview}`;
+      const values = { 'skip-link': l.skip, 'brand-caption': l.caption, 'preview-label': l.preview, eyebrow: l.eyebrow,
+        'section-title': state.data ? content(state.data, 'sectionTitle') || l.title : l.title,
+        introduction: state.data ? content(state.data, 'introduction') || l.introMissing : l.introMissing,
+        'review-copy': l.review, 'search-label': l.search, 'clear-filters': l.clear, 'category-label': l.choose,
+        'browse-heading': l.browse, 'empty-title': l.emptyTitle, 'empty-copy': l.emptyCopy,
+        'footer-copy': l.footer, 'dialog-close': l.close, 'sources-heading': l.sources };
+      Object.entries(values).forEach(([id, value]) => text($(id), value));
+      $('language-switch').setAttribute('aria-label', l.language);
+      $('review-note').setAttribute('aria-label', l.reviewLabel);
+      $('browse-tools').setAttribute('aria-label', l.find);
+      $('categories').setAttribute('aria-label', l.filters);
+      $('guide-search').placeholder = l.placeholder;
+      document.querySelectorAll('[data-language]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.language === state.language)));
+      if (!state.data) {
+        text($('result-count'), state.error ? '' : l.loading);
+        if (state.error) showLoadError(); else text($('load-copy'), l.loadCopy);
+      }
+    }
+    function renderCategories() {
+      const holder = $('categories');
+      holder.replaceChildren();
+      const keys = [...new Set(state.data.articles.map((article) => article.category))];
+      ['', ...keys].forEach((key) => {
+        const example = state.data.articles.find((article) => article.category === key);
+        const label = key ? content(example, 'category') || ui().unknownTopic : ui().all;
+        const button = make('button', 'category-chip', label);
+        button.type = 'button';
+        button.setAttribute('aria-pressed', String(state.category === key));
+        button.setAttribute('aria-controls', 'guide-grid');
+        button.addEventListener('click', () => {
+          state.category = key;
+          // Keep the clicked button in the DOM so keyboard focus is preserved.
+          [...holder.children].forEach((chip) => chip.setAttribute('aria-pressed', String(chip === button)));
+          renderCards();
+        });
+        holder.append(button);
+      });
+    }
+    function matches(article) {
+      if (state.category && article.category !== state.category) return false;
+      if (!state.query) return true;
+      const words = [article.title, article.titleTe, article.excerpt, article.excerptTe, article.category, article.categoryTe,
+        ...(article.topics || []), ...(article.topicsTe || [])].filter((value) => typeof value === 'string').join(' ').toLocaleLowerCase();
+      return words.includes(state.query.toLocaleLowerCase());
+    }
+    function renderCards() {
+      const l = ui();
+      const list = state.data.articles.filter(matches);
+      const holder = $('guide-grid');
+      holder.replaceChildren();
+      list.forEach((article) => {
+        const draft = isDraft(article);
+        const card = make('article', 'guide-card');
+        const title = content(article, 'title') || l.unavailableTitle;
+        const heading = make('h3', '', title);
+        card.append(make('p', 'card-topic', content(article, 'category') || l.unknownTopic), heading,
+          make('p', 'excerpt', content(article, 'excerpt') || l.unavailable));
+        const bottom = make('div', 'card-bottom');
+        const badge = make('span', `status-badge${draft ? ' draft' : ''}`, draft ? l.draft : l.outline);
+        const button = make('button', 'read-button');
+        button.type = 'button';
+        button.setAttribute('aria-haspopup', 'dialog');
+        button.setAttribute('aria-label', `${draft ? l.read : l.view}: ${title}`);
+        button.append(make('span', '', draft ? l.read : l.view));
+        const arrow = make('span', '', '→');
+        arrow.setAttribute('aria-hidden', 'true');
+        button.append(arrow);
+        button.addEventListener('click', () => openArticle(article, button));
+        bottom.append(badge, button);
+        card.append(bottom);
+        holder.append(card);
+      });
+      text($('result-count'), l.count(list.length));
+      $('empty-state').hidden = list.length > 0;
+      $('clear-filters').disabled = !state.query && !state.category;
+    }
+    function openArticle(article, opener) {
+      const l = ui();
+      const draft = isDraft(article);
+      state.opener = opener;
+      text($('dialog-title'), content(article, 'title') || l.unavailableTitle);
+      text($('dialog-status'), draft ? l.draft : l.outline);
+      $('dialog-status').className = `status-badge${draft ? ' draft' : ''}`;
+      text($('dialog-note'), draft ? l.draftNote : l.outlineNote);
+      const body = $('article-body');
+      body.replaceChildren();
+      const html = content(article, 'html');
+      if (draft && html) {
+        // The adjacent JSON contains the team's curated local article HTML.
+        // All metadata uses textContent; HTML is accepted only for a draft body.
+        body.innerHTML = html;
+      } else if (!draft && topics(article).length) {
+        body.append(make('p', '', l.outlineIntro), make('h3', '', l.planned));
+        const list = make('ul');
+        topics(article).forEach((topic) => list.append(make('li', '', topic)));
+        body.append(list);
+      } else {
+        body.append(make('p', '', l.unavailable));
+      }
+      const sources = $('source-list');
+      sources.replaceChildren();
+      if (!draft) {
+        (article.sourceUrls || []).forEach((source) => {
+          if (!source || typeof source.url !== 'string' || typeof source.label !== 'string') return;
+          let url;
+          try { url = new URL(source.url); } catch { return; }
+          if (!['https:', 'http:'].includes(url.protocol)) return;
+          const link = make('a', '', source.label);
+          link.href = url.href;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          const item = make('li');
+          item.append(link);
+          sources.append(item);
+        });
+      }
+      $('sources').hidden = sources.children.length === 0;
+      document.body.classList.add('modal-open');
+      $('guide-dialog').showModal();
+    }
+    function showLoadError() {
+      const box = $('load-message');
+      box.replaceChildren(make('strong', '', ui().errorTitle), make('p', '', ui().errorCopy));
+      box.setAttribute('role', 'alert');
+    }
+    $('guide-search').addEventListener('input', (event) => { state.query = event.target.value.trim(); renderCards(); });
+    $('clear-filters').addEventListener('click', () => {
+      state.category = ''; state.query = ''; $('guide-search').value = '';
+      renderCategories(); renderCards(); $('guide-search').focus();
+    });
+    document.querySelectorAll('[data-language]').forEach((button) => button.addEventListener('click', () => {
+      state.language = button.dataset.language;
+      updateLabels();
+      if (state.data) { renderCategories(); renderCards(); }
+    }));
+    $('dialog-close').addEventListener('click', () => $('guide-dialog').close());
+    $('guide-dialog').addEventListener('close', () => {
+      document.body.classList.remove('modal-open');
+      if (state.opener && state.opener.isConnected) state.opener.focus();
+    });
+    async function loadGuides() {
+      try {
+        const response = await fetch('./articles.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error('Content file unavailable');
+        const data = await response.json();
+        if (!data || !Array.isArray(data.articles) || data.articles.some((article) => !article ||
+          typeof article.title !== 'string' || typeof article.category !== 'string' || typeof article.status !== 'string')) {
+          throw new Error('Invalid content format');
+        }
+        state.data = data;
+        updateLabels(); renderCategories(); renderCards();
+        $('browse-tools').hidden = false;
+        $('load-message').hidden = true;
+      } catch (error) {
+        state.error = true;
+        updateLabels();
+        console.error('Patient Guides preview: the adjacent articles.json could not be loaded.');
+      } finally {
+        $('guide-results').setAttribute('aria-busy', 'false');
+      }
+    }
+    loadGuides();
+  </script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+{
+  "sectionTitle": "Patient Guides",
+  "sectionTitleTe": "మీ ఆరోగ్యానికి మార్గదర్శకాలు",
+  "introduction": "Clear answers to everyday health questions. Read in English or Telugu, and bring your questions to your next consultation.",
+  "introductionTe": "రోజువారీ ఆరోగ్య సందేహాలకు సులభమైన వివరణలు. ఇంగ్లీష్ లేదా తెలుగులో చదివి, మీ సందేహాలను తర్వాత వైద్యుడిని కలిసినప్పుడు అడగండి.",
+  "articles": [
+    {
+      "id": "rice-and-diabetes",
+      "category": "Diabetes & food",
+      "categoryTe": "మధుమేహం — ఆహారం",
+      "title": "Can I eat rice if I have diabetes?",
+      "titleTe": "మధుమేహం ఉంటే అన్నం తినవచ్చా?",
+      "excerpt": "A practical starting point for everyday Andhra meals, portions and questions to ask at your next visit.",
+      "excerptTe": "మన రోజువారీ ఆంధ్ర భోజనం, ఆహార పరిమాణం, వైద్యుడిని అడగాల్సిన సందేహాల గురించి సులభమైన పరిచయం.",
+      "status": "Draft for clinical review",
+      "topics": [
+        "A balanced plate",
+        "Pappu supplies both protein and carbohydrate",
+        "Meal timing and medicines",
+        "Questions for your next visit"
+      ],
+      "topicsTe": [
+        "సమతుల్యమైన భోజన ప్లేటు",
+        "పప్పులో ప్రోటీన్‌తో పాటు పిండి పదార్థాలు కూడా ఉంటాయి",
+        "భోజన వేళలు, మందులు",
+        "తర్వాత వైద్యుడిని కలిసినప్పుడు అడగాల్సిన ప్రశ్నలు"
+      ],
+      "html": "<p>Having diabetes does not mean that every familiar food has to disappear from your plate. Rice can fit into a meal plan; the amount and the rest of your meal matter. Your plan should suit your medicines, health needs and routine. <a href=\"https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes\" target=\"_blank\" rel=\"noopener noreferrer\">NIDDK</a></p>\n<h2>Start with the whole plate</h2>\n<p>A useful starting point is a roughly 23-centimetre dinner plate:</p>\n<ul><li>Half: non-starchy vegetables.</li><li>One quarter: protein foods.</li><li>One quarter: carbohydrate foods, including rice.</li></ul>\n<p>For an everyday Andhra meal, discuss vegetables, rice and your usual protein foods with your care team. Pappu and other pulses provide carbohydrate as well as protein; they are not unlimited extras. These are local examples, and this plate is a guide rather than a fixed prescription. <a href=\"https://www.cdc.gov/diabetes/healthy-eating/diabetes-meal-planning.html\" target=\"_blank\" rel=\"noopener noreferrer\">CDC meal planning</a></p>\n<h2>Keep meals and medicines working together</h2>\n<p>Skipping meals can cause low blood sugar when you take insulin or certain diabetes medicines. Ask your doctor how your meals should fit your treatment and workday. <a href=\"https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes\" target=\"_blank\" rel=\"noopener noreferrer\">NIDDK</a></p>\n<h2>Bring your everyday questions</h2>\n<p>At your next visit, describe a usual breakfast, lunch and dinner. Ask: “How much rice suits me?”, “How should I include pappu?” and “What should I do when a meal is delayed?” A plan you understand is easier to use at home.</p>\n<h2>A word about remedies</h2>\n<p>Discuss Ayurvedic products or supplements with your treating doctor before adding them. Avoid delaying diabetes assessment while trying a remedy. <a href=\"https://www.nccih.nih.gov/health/ayurvedic-medicine-in-depth\" target=\"_blank\" rel=\"noopener noreferrer\">NCCIH</a></p>\n<p>General information for adults. It does not replace an individual meal plan or consultation.</p>\n<h2>Sources</h2>\n<ul><li><a href=\"https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes\" target=\"_blank\" rel=\"noopener noreferrer\">NIDDK — Healthy Living with Diabetes</a></li><li><a href=\"https://www.cdc.gov/diabetes/healthy-eating/diabetes-meal-planning.html\" target=\"_blank\" rel=\"noopener noreferrer\">CDC — Diabetes Meal Planning</a></li><li><a href=\"https://www.nccih.nih.gov/health/ayurvedic-medicine-in-depth\" target=\"_blank\" rel=\"noopener noreferrer\">NCCIH — Ayurvedic Medicine: In Depth</a></li></ul>",
+      "htmlTe": "<p>మధుమేహం (షుగర్) ఉందంటే మనకు అలవాటైన ఆహారాలన్నీ మానేయాలని కాదు. మీ ఆహార ప్రణాళికలో అన్నం కూడా ఉండవచ్చు. ఎంత తింటున్నాం, దానితో పాటు ఏమి తింటున్నాం అనేవి ముఖ్యం. మీ మందులు, ఆరోగ్య అవసరాలు, రోజువారీ పనులకు సరిపోయేలా ఆహార ప్రణాళిక ఉండాలి. <a href=\"https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes\" target=\"_blank\" rel=\"noopener noreferrer\">NIDDK</a></p>\n<h2>ప్లేటులో ఉన్న ఆహారమంతా చూసుకోండి</h2>\n<p>సుమారు 23 సెంటీమీటర్ల వెడల్పు ఉన్న భోజన ప్లేటుతో ఇలా మొదలుపెట్టవచ్చు:</p>\n<ul><li>సగం ప్లేటు: పిండి పదార్థాలు తక్కువగా ఉండే కూరగాయలు.</li><li>నాలుగో వంతు: ప్రోటీన్ అందించే ఆహారాలు.</li><li>నాలుగో వంతు: అన్నంతో సహా పిండి పదార్థాలు ఉండే ఆహారాలు.</li></ul>\n<p>మన రోజువారీ ఆంధ్ర భోజనంలో కూరగాయలు, అన్నం, మనం సాధారణంగా తినే ప్రోటీన్ ఆహారాలను ఎలా కలుపుకోవాలో మీ వైద్య బృందంతో మాట్లాడండి. పప్పు, ఇతర పప్పుధాన్యాల్లో ప్రోటీన్‌తో పాటు పిండి పదార్థాలు కూడా ఉంటాయి. కాబట్టి వాటిని అదనంగా ఎంతైనా తినవచ్చని అనుకోకండి. ఇవి మన భోజనానికి సంబంధించిన ఉదాహరణలు మాత్రమే. ఈ ప్లేటు పద్ధతి ఒక మార్గదర్శకం; అందరికీ ఒకే విధంగా వర్తించే ఆహార సూచన కాదు. <a href=\"https://www.cdc.gov/diabetes/healthy-eating/diabetes-meal-planning.html\" target=\"_blank\" rel=\"noopener noreferrer\">CDC ఆహార ప్రణాళిక</a></p>\n<h2>భోజనం, మందులు ఒకదానికొకటి సరిపోయేలా చూసుకోండి</h2>\n<p>ఇన్సులిన్ లేదా కొన్ని రకాల మధుమేహం మందులు వాడుతున్నప్పుడు భోజనం మానేస్తే రక్తంలో చక్కెర స్థాయి తగ్గిపోవచ్చు. మీ చికిత్సకు, రోజువారీ పనులకు సరిపోయేలా భోజన వేళలు ఎలా ఉండాలో మీ వైద్యుడిని అడగండి. <a href=\"https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes\" target=\"_blank\" rel=\"noopener noreferrer\">NIDDK</a></p>\n<h2>రోజూ ఎదురయ్యే సందేహాలు అడగండి</h2>\n<p>తర్వాత వైద్యుడిని కలిసినప్పుడు మీరు సాధారణంగా ఉదయం, మధ్యాహ్నం, రాత్రి ఏమి తింటారో చెప్పండి. “నేను ఎంత అన్నం తినవచ్చు?”, “పప్పును నా భోజనంలో ఎలా కలుపుకోవాలి?”, “భోజనం ఆలస్యమైతే ఏం చేయాలి?” అని అడగండి. మీకు అర్థమైన ఆహార ప్రణాళికను ఇంట్లో పాటించడం సులభం.</p>\n<h2>ఇతర చికిత్సలు ప్రయత్నించే ముందు</h2>\n<p>ఆయుర్వేద మందులు లేదా సప్లిమెంట్లు మొదలుపెట్టే ముందు మీకు చికిత్స చేస్తున్న వైద్యుడితో మాట్లాడండి. ఏదైనా చిట్కా లేదా చికిత్స ప్రయత్నిస్తున్నారని మధుమేహం గురించి వైద్యుడిని సంప్రదించడం ఆలస్యం చేయకండి. <a href=\"https://www.nccih.nih.gov/health/ayurvedic-medicine-in-depth\" target=\"_blank\" rel=\"noopener noreferrer\">NCCIH</a></p>\n<p>పెద్దల కోసం ఇచ్చిన సాధారణ సమాచారం ఇది. మీకు తగిన వ్యక్తిగత ఆహార ప్రణాళికకు లేదా వైద్య సలహాకు ఇది ప్రత్యామ్నాయం కాదు.</p>\n<h2>ఆధారాలు</h2>\n<ul><li><a href=\"https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes\" target=\"_blank\" rel=\"noopener noreferrer\">NIDDK — మధుమేహంతో ఆరోగ్యంగా జీవించడం</a></li><li><a href=\"https://www.cdc.gov/diabetes/healthy-eating/diabetes-meal-planning.html\" target=\"_blank\" rel=\"noopener noreferrer\">CDC — మధుమేహంలో ఆహార ప్రణాళిక</a></li><li><a href=\"https://www.nccih.nih.gov/health/ayurvedic-medicine-in-depth\" target=\"_blank\" rel=\"noopener noreferrer\">NCCIH — ఆయుర్వేద వైద్యంపై సమాచారం</a></li></ul>",
+      "sourceUrls": [
+        {
+          "label": "NIDDK — Healthy Living with Diabetes",
+          "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/healthy-living-with-diabetes"
+        },
+        {
+          "label": "CDC — Diabetes Meal Planning",
+          "url": "https://www.cdc.gov/diabetes/healthy-eating/diabetes-meal-planning.html"
+        },
+        {
+          "label": "NCCIH — Ayurvedic Medicine",
+          "url": "https://www.nccih.nih.gov/health/ayurvedic-medicine-in-depth"
+        }
+      ],
+      "clinicalReview": "pending",
+      "author": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "published": false
+    },
+    {
+      "id": "blood-pressure-next-steps",
+      "category": "Blood pressure",
+      "categoryTe": "రక్తపోటు",
+      "title": "My BP is high, but I feel fine. What next?",
+      "titleTe": "బీపీ ఎక్కువగా ఉంది, కానీ ఇబ్బంది లేదు. ఇప్పుడు ఏం చేయాలి?",
+      "excerpt": "Understand your readings and prepare useful questions about monitoring, medicines and everyday food.",
+      "excerptTe": "బీపీ రీడింగులను అర్థం చేసుకోవడం, పరీక్షలు, మందులు, రోజువారీ ఆహారం గురించి వైద్యుడిని అడగాల్సిన ప్రశ్నలు.",
+      "topics": [
+        "Why feeling well does not rule out high BP",
+        "Checking readings and follow-up",
+        "Salt in pickles, papad and packaged snacks",
+        "Medicine questions and when to seek help"
+      ],
+      "topicsTe": [
+        "ఇబ్బంది లేకున్నా బీపీ ఎందుకు పరీక్షించాలి?",
+        "బీపీ రీడింగులు, తదుపరి పరీక్షలు",
+        "పచ్చళ్లు, అప్పడాలు, ప్యాకెట్ చిరుతిళ్లలో ఉప్పు",
+        "మందుల గురించి సందేహాలు, ఎప్పుడు సహాయం తీసుకోవాలి?"
+      ],
+      "sourceUrls": [
+        {
+          "label": "WHO — Hypertension",
+          "url": "https://www.who.int/news-room/fact-sheets/detail/hypertension"
+        },
+        {
+          "label": "WHO — Sodium reduction",
+          "url": "https://www.who.int/news-room/fact-sheets/detail/sodium-reduction"
+        }
+      ],
+      "status": "Outline",
+      "html": null,
+      "htmlTe": null,
+      "clinicalReview": "pending",
+      "author": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "published": false
+    },
+    {
+      "id": "healthy-weight-small-changes",
+      "category": "Healthy weight",
+      "categoryTe": "ఆరోగ్యకరమైన బరువు",
+      "title": "Trying to lose weight? Start with changes you can keep",
+      "titleTe": "బరువు తగ్గాలనుకుంటున్నారా? కొనసాగించగల చిన్న మార్పులతో మొదలుపెట్టండి",
+      "excerpt": "A supportive guide to food, movement and routines that fit your life.",
+      "excerptTe": "మీ జీవన విధానానికి సరిపోయే ఆహారం, కదలిక, రోజువారీ అలవాట్ల గురించి ప్రోత్సాహకరమైన మార్గదర్శకం.",
+      "topics": [
+        "Start with achievable changes",
+        "Food, activity and sleep routines",
+        "Recognise progress beyond the scale",
+        "When to discuss medical support"
+      ],
+      "topicsTe": [
+        "సాధ్యమైన చిన్న మార్పులతో మొదలుపెట్టడం",
+        "ఆహారం, కదలిక, నిద్ర అలవాట్లు",
+        "బరువుతో పాటు ఇతర మార్పులను గమనించడం",
+        "వైద్య సహాయం గురించి ఎప్పుడు మాట్లాడాలి?"
+      ],
+      "sourceUrls": [
+        {
+          "label": "NIDDK — Changing Your Habits for Better Health",
+          "url": "https://www.niddk.nih.gov/health-information/diet-nutrition/changing-habits-better-health"
+        }
+      ],
+      "status": "Outline",
+      "html": null,
+      "htmlTe": null,
+      "clinicalReview": "pending",
+      "author": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "published": false
+    },
+    {
+      "id": "thyroid-symptoms-tests",
+      "category": "Thyroid health",
+      "categoryTe": "థైరాయిడ్ ఆరోగ్యం",
+      "title": "Could my tiredness or weight change be related to my thyroid?",
+      "titleTe": "అలసట లేదా బరువు మార్పుకు థైరాయిడ్ కారణమా?",
+      "excerpt": "What thyroid tests can help explain, and what to discuss before starting a treatment or supplement.",
+      "excerptTe": "థైరాయిడ్ పరీక్షలు ఏమి తెలియజేస్తాయి? చికిత్స లేదా సప్లిమెంట్లు మొదలుపెట్టే ముందు ఏం అడగాలి?",
+      "topics": [
+        "Symptoms can have different causes",
+        "Tests and their interpretation",
+        "Treatment depends on the diagnosis",
+        "Questions about iodine and supplements"
+      ],
+      "topicsTe": [
+        "ఒకే లక్షణానికి వేర్వేరు కారణాలు ఉండవచ్చు",
+        "పరీక్షలు, వాటి ఫలితాలను అర్థం చేసుకోవడం",
+        "నిర్ధారణకు తగిన చికిత్స",
+        "అయోడిన్, సప్లిమెంట్ల గురించి సందేహాలు"
+      ],
+      "sourceUrls": [
+        {
+          "label": "NIDDK — Hypothyroidism",
+          "url": "https://www.niddk.nih.gov/health-information/endocrine-diseases/hypothyroidism"
+        }
+      ],
+      "status": "Outline",
+      "html": null,
+      "htmlTe": null,
+      "clinicalReview": "pending",
+      "author": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "published": false
+    },
+    {
+      "id": "joint-pain-morning-stiffness",
+      "category": "Joint health",
+      "categoryTe": "కీళ్ల ఆరోగ్యం",
+      "title": "Joint pain and morning stiffness: when should I get checked?",
+      "titleTe": "కీళ్ల నొప్పి, ఉదయం బిగుతు: ఎప్పుడు వైద్యుడిని కలవాలి?",
+      "excerpt": "Notice swelling, stiffness and daily limitations, and prepare for an assessment.",
+      "excerptTe": "వాపు, బిగుతు, రోజువారీ పనుల్లో ఇబ్బందులను గమనించి వైద్య పరీక్షకు సిద్ధం కావడం.",
+      "topics": [
+        "Joint pain and inflammatory arthritis",
+        "Swelling and morning stiffness",
+        "Why timely assessment matters",
+        "Supportive care alongside appropriate treatment"
+      ],
+      "topicsTe": [
+        "కీళ్ల నొప్పి, వాపుతో కూడిన ఆర్థ్రైటిస్",
+        "వాపు, ఉదయం కీళ్ల బిగుతు",
+        "సమయానికి వైద్య పరీక్ష ఎందుకు ముఖ్యం?",
+        "తగిన చికిత్సతో పాటు సహాయక సంరక్షణ"
+      ],
+      "sourceUrls": [
+        {
+          "label": "NHS — Rheumatoid arthritis symptoms",
+          "url": "https://www.nhs.uk/conditions/rheumatoid-arthritis/symptoms/"
+        },
+        {
+          "label": "NHS — Rheumatoid arthritis treatment",
+          "url": "https://www.nhs.uk/conditions/rheumatoid-arthritis/treatment/"
+        }
+      ],
+      "status": "Outline",
+      "html": null,
+      "htmlTe": null,
+      "clinicalReview": "pending",
+      "author": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "published": false
+    },
+    {
+      "id": "ayurvedic-care-questions",
+      "category": "Ayurveda & wellbeing",
+      "categoryTe": "ఆయుర్వేదం — ఆరోగ్య జీవనం",
+      "title": "Thinking about Ayurvedic care? Questions to ask first",
+      "titleTe": "ఆయుర్వేద చికిత్స గురించి ఆలోచిస్తున్నారా? ముందుగా అడగాల్సిన ప్రశ్నలు",
+      "excerpt": "A conversation about your current medicines, the evidence and how care can be coordinated.",
+      "excerptTe": "మీ ప్రస్తుత మందులు, పరిశోధన ఆధారాలు, వైద్య సంరక్షణను సమన్వయం చేసుకోవడం గురించి మాట్లాడుకుందాం.",
+      "topics": [
+        "Describe all current medicines and products",
+        "Traditional use and researched evidence",
+        "Discuss product quality and possible interactions",
+        "Coordinate care without delaying assessment"
+      ],
+      "topicsTe": [
+        "మీరు వాడుతున్న అన్ని మందులు, ఉత్పత్తులను చెప్పడం",
+        "సంప్రదాయ వాడకం, పరిశోధన ఆధారాలు",
+        "ఉత్పత్తి నాణ్యత, మందుల పరస్పర ప్రభావాల గురించి అడగడం",
+        "వైద్య పరీక్ష ఆలస్యం చేయకుండా చికిత్సను సమన్వయం చేసుకోవడం"
+      ],
+      "sourceUrls": [
+        {
+          "label": "NCCIH — Ayurvedic Medicine",
+          "url": "https://www.nccih.nih.gov/health/ayurvedic-medicine-in-depth"
+        }
+      ],
+      "status": "Outline",
+      "html": null,
+      "htmlTe": null,
+      "clinicalReview": "pending",
+      "author": null,
+      "reviewer": null,
+      "reviewedAt": null,
+      "published": false
+    }
+  ]
+}
