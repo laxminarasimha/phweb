@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Prasanthi Hospitals Appointments
  * Description: Appointment request form and front-desk appointment management for Prasanthi Hospitals.
- * Version: 1.2.0
+ * Version: 1.3.0
  * Author: Prasanthi Hospitals
  */
 
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'PH_APPOINTMENTS_VERSION', '1.2.0' );
+define( 'PH_APPOINTMENTS_VERSION', '1.3.0' );
 
 /**
  * ============================================================
@@ -99,6 +99,7 @@ function ph_appointments_create_table() {
         request_reference VARCHAR(30) NOT NULL,
         patient_name VARCHAR(150) NOT NULL,
         mobile VARCHAR(30) NOT NULL,
+        patient_id VARCHAR(30) NULL,
         doctor_id BIGINT UNSIGNED NULL,
         preferred_date DATE NULL,
         preferred_session VARCHAR(20) NULL,
@@ -139,9 +140,32 @@ function ph_appointments_create_table() {
  * ============================================================
  */
 
+function ph_appointments_ensure_patient_id_column() {
+
+    global $wpdb;
+
+    $table_name = ph_appointments_table();
+
+    $column = $wpdb->get_var(
+        $wpdb->prepare(
+            "SHOW COLUMNS FROM {$table_name} LIKE %s",
+            'patient_id'
+        )
+    );
+
+    if ( ! $column ) {
+        $wpdb->query(
+            "ALTER TABLE {$table_name}
+             ADD COLUMN patient_id VARCHAR(30) NULL
+             AFTER mobile"
+        );
+    }
+}
+
 function ph_appointments_activate() {
 
     ph_appointments_create_table();
+    ph_appointments_ensure_patient_id_column();
     ph_appointments_add_capabilities();
 
     flush_rewrite_rules();
@@ -172,6 +196,7 @@ function ph_appointments_maybe_upgrade() {
     ) ) {
 
         ph_appointments_create_table();
+        ph_appointments_ensure_patient_id_column();
         ph_appointments_add_capabilities();
     } else {
         /*
@@ -419,6 +444,33 @@ function ph_appointments_admin_styles( $hook ) {
 
         .ph-back-link {
             margin-bottom: 15px;
+        }
+
+        .ph-patient-link-box {
+            background: #fff;
+            border: 1px solid #dcdcde;
+            border-radius: 8px;
+            padding: 24px;
+            margin-top: 20px;
+        }
+
+        .ph-patient-linked {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            padding: 15px;
+        }
+
+        .ph-patient-search-results {
+            margin-top: 15px;
+        }
+
+        .ph-patient-search-results table {
+            margin-top: 10px;
+        }
+
+        .ph-patient-search-results td {
+            vertical-align: middle;
         }
 
         @media (max-width: 900px) {
@@ -852,6 +904,184 @@ function ph_appointments_detail_page( $appointment_id ) {
         echo '</div>';
 
         return;
+    }
+
+    /*
+     * --------------------------------------------------------
+     * LINK PATIENT
+     * --------------------------------------------------------
+     */
+
+    if (
+        isset( $_POST['ph_link_patient'] )
+        &&
+        check_admin_referer(
+            'ph_link_patient_' . $appointment_id
+        )
+    ) {
+
+        $patient_reference = isset( $_POST['patient_reference'] )
+            ? sanitize_text_field(
+                wp_unslash( $_POST['patient_reference'] )
+            )
+            : '';
+
+        if ( empty( $patient_reference ) ) {
+
+            echo '<div class="notice notice-error is-dismissible">';
+            echo '<p>Please select a patient before linking.</p>';
+            echo '</div>';
+
+        } else {
+
+            $patient_table = $wpdb->prefix . 'ph_patients';
+
+            $patient = $wpdb->get_row(
+                $wpdb->prepare(
+                    "SELECT id, patient_reference, patient_name, mobile
+                     FROM {$patient_table}
+                     WHERE patient_reference = %s
+                     LIMIT 1",
+                    $patient_reference
+                )
+            );
+
+            if ( ! $patient ) {
+
+                echo '<div class="notice notice-error is-dismissible">';
+                echo '<p>The selected patient could not be found.</p>';
+                echo '</div>';
+
+            } else {
+
+                $updated = $wpdb->update(
+                    $table_name,
+                    array(
+                        'patient_id' => $patient->patient_reference,
+                        'updated_at' => current_time( 'mysql' ),
+                    ),
+                    array(
+                        'id' => $appointment_id,
+                    ),
+                    array(
+                        '%s',
+                        '%s',
+                    ),
+                    array(
+                        '%d',
+                    )
+                );
+
+                if ( false !== $updated ) {
+
+                    echo '<div class="notice notice-success is-dismissible">';
+                    echo '<p>Patient linked to the appointment successfully.</p>';
+                    echo '</div>';
+
+                    $appointment = $wpdb->get_row(
+                        $wpdb->prepare(
+                            "SELECT *
+                             FROM {$table_name}
+                             WHERE id = %d
+                             LIMIT 1",
+                            $appointment_id
+                        )
+                    );
+
+                } else {
+
+                    echo '<div class="notice notice-error is-dismissible">';
+                    echo '<p>The patient could not be linked. Please try again.</p>';
+                    echo '</div>';
+                }
+            }
+        }
+    }
+
+    /*
+     * --------------------------------------------------------
+     * UNLINK PATIENT
+     * --------------------------------------------------------
+     */
+
+    if (
+        isset( $_POST['ph_unlink_patient'] )
+        &&
+        check_admin_referer(
+            'ph_unlink_patient_' . $appointment_id
+        )
+    ) {
+
+        $updated = $wpdb->update(
+            $table_name,
+            array(
+                'patient_id' => null,
+                'updated_at' => current_time( 'mysql' ),
+            ),
+            array(
+                'id' => $appointment_id,
+            ),
+            array(
+                '%s',
+                '%s',
+            ),
+            array(
+                '%d',
+            )
+        );
+
+        if ( false !== $updated ) {
+
+            echo '<div class="notice notice-success is-dismissible">';
+            echo '<p>Patient unlinked from the appointment.</p>';
+            echo '</div>';
+
+            $appointment = $wpdb->get_row(
+                $wpdb->prepare(
+                    "SELECT *
+                     FROM {$table_name}
+                     WHERE id = %d
+                     LIMIT 1",
+                    $appointment_id
+                )
+            );
+        }
+    }
+
+    /*
+     * --------------------------------------------------------
+     * PATIENT SEARCH
+     * --------------------------------------------------------
+     */
+
+    $patient_search = isset( $_GET['patient_search'] )
+        ? sanitize_text_field(
+            wp_unslash( $_GET['patient_search'] )
+        )
+        : '';
+
+    $patient_results = array();
+
+    if ( $patient_search ) {
+
+        $patient_table = $wpdb->prefix . 'ph_patients';
+
+        $like = '%' . $wpdb->esc_like( $patient_search ) . '%';
+
+        $patient_results = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT id, patient_reference, patient_name, mobile
+                 FROM {$patient_table}
+                 WHERE patient_reference LIKE %s
+                    OR patient_name LIKE %s
+                    OR mobile LIKE %s
+                 ORDER BY patient_name ASC
+                 LIMIT 20",
+                $like,
+                $like,
+                $like
+            )
+        );
     }
 
     /*
@@ -1300,6 +1530,206 @@ function ph_appointments_detail_page( $appointment_id ) {
                 </div>
 
             </div>
+
+        </div>
+
+        <div class="ph-patient-link-box">
+
+            <h2>Patient Record</h2>
+
+            <?php
+            $linked_patient = null;
+
+            if ( ! empty( $appointment->patient_id ) ) {
+
+                $patient_table = $wpdb->prefix . 'ph_patients';
+
+                $linked_patient = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT id, patient_reference, patient_name, mobile
+                         FROM {$patient_table}
+                         WHERE patient_reference = %s
+                         LIMIT 1",
+                        $appointment->patient_id
+                    )
+                );
+            }
+            ?>
+
+            <?php if ( $linked_patient ) : ?>
+
+                <div class="ph-patient-linked">
+
+                    <p>
+                        <strong>Patient ID:</strong>
+                        <?php echo esc_html( $linked_patient->patient_reference ); ?>
+                    </p>
+
+                    <p>
+                        <strong>Name:</strong>
+                        <?php echo esc_html( $linked_patient->patient_name ); ?>
+                    </p>
+
+                    <p>
+                        <strong>Mobile:</strong>
+                        <?php echo esc_html( $linked_patient->mobile ); ?>
+                    </p>
+
+                    <form method="post">
+                        <?php
+                        wp_nonce_field(
+                            'ph_unlink_patient_' . $appointment_id
+                        );
+                        ?>
+                        <button
+                            type="submit"
+                            name="ph_unlink_patient"
+                            class="button"
+                        >
+                            Unlink Patient
+                        </button>
+                    </form>
+
+                </div>
+
+            <?php else : ?>
+
+                <p>
+                    This appointment is not linked to a registered patient.
+                    Search by Patient ID, name or mobile number.
+                </p>
+
+                <form method="get">
+
+                    <input
+                        type="hidden"
+                        name="page"
+                        value="ph-appointments"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="appointment_id"
+                        value="<?php echo esc_attr( $appointment_id ); ?>"
+                    >
+
+                    <p>
+                        <input
+                            type="search"
+                            name="patient_search"
+                            value="<?php echo esc_attr( $patient_search ); ?>"
+                            placeholder="Patient ID, name or mobile"
+                            class="regular-text"
+                        >
+
+                        <button
+                            type="submit"
+                            class="button"
+                        >
+                            Search Patient
+                        </button>
+                    </p>
+
+                </form>
+
+                <?php if ( $patient_search ) : ?>
+
+                    <div class="ph-patient-search-results">
+
+                        <?php if ( empty( $patient_results ) ) : ?>
+
+                            <p><strong>No patients found.</strong></p>
+
+                        <?php else : ?>
+
+                            <table class="wp-list-table widefat fixed striped">
+
+                                <thead>
+                                    <tr>
+                                        <th>Patient ID</th>
+                                        <th>Patient Name</th>
+                                        <th>Mobile</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    <?php foreach ( $patient_results as $patient_result ) : ?>
+
+                                        <tr>
+
+                                            <td>
+                                                <?php
+                                                echo esc_html(
+                                                    $patient_result->patient_reference
+                                                );
+                                                ?>
+                                            </td>
+
+                                            <td>
+                                                <?php
+                                                echo esc_html(
+                                                    $patient_result->patient_name
+                                                );
+                                                ?>
+                                            </td>
+
+                                            <td>
+                                                <?php
+                                                echo esc_html(
+                                                    $patient_result->mobile
+                                                );
+                                                ?>
+                                            </td>
+
+                                            <td>
+
+                                                <form method="post">
+
+                                                    <?php
+                                                    wp_nonce_field(
+                                                        'ph_link_patient_' . $appointment_id
+                                                    );
+                                                    ?>
+
+                                                    <input
+                                                        type="hidden"
+                                                        name="patient_reference"
+                                                        value="<?php
+                                                        echo esc_attr(
+                                                            $patient_result->patient_reference
+                                                        );
+                                                        ?>"
+                                                    >
+
+                                                    <button
+                                                        type="submit"
+                                                        name="ph_link_patient"
+                                                        class="button button-primary"
+                                                    >
+                                                        Link Patient
+                                                    </button>
+
+                                                </form>
+
+                                            </td>
+
+                                        </tr>
+
+                                    <?php endforeach; ?>
+
+                                </tbody>
+
+                            </table>
+
+                        <?php endif; ?>
+
+                    </div>
+
+                <?php endif; ?>
+
+            <?php endif; ?>
 
         </div>
 
