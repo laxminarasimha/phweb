@@ -1,0 +1,24 @@
+#
+# Canned response templates
+#
+---
+- isenabled: 1
+  title: What is Deskuss ?
+  response: |
+    Deskuss is a customer support and ticketing system. Deskuss offers you a simple yet feature rich Tickets, Tasks, Knowledgebase, SLA, Departments, Ticket Filters, Internal Notes from your colleagues, Live User tracking, Canned Replies, Email Piping, Multiple Email configuration, etc.
+  notes: |
+
+  attachments:
+    - name: Deskuss.txt
+      type: text/plain
+      data: Canned Attachments Rock!
+
+- isenabled: 1
+  title: Sample (with variables)
+  response: |
+    Hi %{ticket.name.first},
+    <br>
+    <br>
+    Your ticket #%{ticket.number} created on %{ticket.create_date} is in
+    %{ticket.dept.name} department.
+  notes: |

@@ -1,0 +1,639 @@
+<?php
+/**
+ * Plugin Name: Prasanthi Hospitals Core
+ * Description: Core content model for Prasanthi Hospitals, including editable doctor profiles.
+ * Version: 1.1.0
+ * Author: Prasanthi Hospitals
+ * License: GPL-2.0-or-later
+ */
+
+if (!defined('ABSPATH')) exit;
+
+
+/*
+|--------------------------------------------------------------------------
+| Register Doctor Custom Post Type
+|--------------------------------------------------------------------------
+*/
+
+function prasanthi_register_doctor_cpt() {
+
+    register_post_type('doctor', array(
+        'labels' => array(
+            'name'          => 'Doctors',
+            'singular_name' => 'Doctor',
+            'menu_name'     => 'Doctors',
+            'add_new'       => 'Add Doctor',
+            'add_new_item'  => 'Add New Doctor',
+            'edit_item'     => 'Edit Doctor',
+            'view_item'     => 'View Doctor',
+            'search_items'  => 'Search Doctors',
+            'not_found'     => 'No doctors found'
+        ),
+
+        'public'             => true,
+        'show_in_rest'       => true,
+        'menu_icon'          => 'dashicons-id',
+        'supports'           => array(
+            'title',
+            'editor',
+            'thumbnail',
+            'page-attributes',
+            'excerpt'
+        ),
+        'has_archive'        => true,
+        'rewrite'            => array(
+            'slug'       => 'doctor',
+            'with_front' => false
+        ),
+        'publicly_queryable' => true
+    ));
+
+}
+
+add_action('init', 'prasanthi_register_doctor_cpt');
+
+
+/*
+|--------------------------------------------------------------------------
+| Doctor Meta Box
+|--------------------------------------------------------------------------
+*/
+
+function prasanthi_doctor_meta_boxes() {
+
+    add_meta_box(
+        'prasanthi_doctor_details',
+        'Doctor Details',
+        'prasanthi_doctor_details_box',
+        'doctor',
+        'normal',
+        'high'
+    );
+
+}
+
+add_action('add_meta_boxes', 'prasanthi_doctor_meta_boxes');
+
+
+/*
+|--------------------------------------------------------------------------
+| Doctor Details Form
+|--------------------------------------------------------------------------
+*/
+
+function prasanthi_doctor_details_box($post) {
+
+    wp_nonce_field(
+        'prasanthi_save_doctor',
+        'prasanthi_doctor_nonce'
+    );
+
+    /*
+     * Existing fields
+     */
+
+    $qualification = get_post_meta(
+        $post->ID,
+        '_doctor_qualification',
+        true
+    );
+
+    $role = get_post_meta(
+        $post->ID,
+        '_doctor_role',
+        true
+    );
+
+    $short_intro = get_post_meta(
+        $post->ID,
+        '_doctor_short_intro',
+        true
+    );
+
+    $consultation = get_post_meta(
+        $post->ID,
+        '_doctor_consultation',
+        true
+    );
+
+
+    /*
+     * New fields
+     */
+
+    $doctor_type = get_post_meta(
+        $post->ID,
+        '_doctor_type',
+        true
+    );
+
+    $availability_status = get_post_meta(
+        $post->ID,
+        '_doctor_availability_status',
+        true
+    );
+
+    $next_available_date = get_post_meta(
+        $post->ID,
+        '_doctor_next_available_date',
+        true
+    );
+
+    $availability_note = get_post_meta(
+        $post->ID,
+        '_doctor_availability_note',
+        true
+    );
+
+
+    /*
+     * Defaults for existing doctors
+     */
+
+    if (!$doctor_type) {
+        $doctor_type = 'regular_opd';
+    }
+
+    if (!$availability_status) {
+        $availability_status = 'available';
+    }
+
+
+    /*
+     * Existing profile fields
+     */
+
+    echo '<h3 style="margin-top:0;">Basic Information</h3>';
+
+    echo '<p>';
+    echo '<label><strong>Qualification</strong></label><br>';
+    echo '<input type="text"
+        name="doctor_qualification"
+        value="' . esc_attr($qualification) . '"
+        style="width:100%;">';
+    echo '</p>';
+
+
+    echo '<p>';
+    echo '<label><strong>Role / Speciality</strong></label><br>';
+    echo '<input type="text"
+        name="doctor_role"
+        value="' . esc_attr($role) . '"
+        style="width:100%;">';
+    echo '</p>';
+
+
+    echo '<p>';
+    echo '<label><strong>Short introduction</strong></label><br>';
+    echo '<textarea
+        name="doctor_short_intro"
+        rows="4"
+        style="width:100%;">' .
+        esc_textarea($short_intro) .
+        '</textarea>';
+    echo '</p>';
+
+
+    echo '<p>';
+    echo '<label><strong>Consultation timing</strong></label><br>';
+    echo '<input type="text"
+        name="doctor_consultation"
+        value="' . esc_attr($consultation) . '"
+        style="width:100%;">';
+    echo '</p>';
+
+
+    /*
+     * Doctor type
+     */
+
+    echo '<hr style="margin:25px 0;">';
+
+    echo '<h3>Doctor Availability</h3>';
+
+    echo '<p>';
+    echo '<label><strong>Doctor Type</strong></label><br>';
+
+    echo '<select
+        name="doctor_type"
+        style="width:100%; max-width:400px;">';
+
+    $doctor_types = array(
+        'regular_opd'       => 'Regular OPD',
+        'consultant'        => 'Consultant',
+        'visiting_consultant' => 'Visiting Consultant'
+    );
+
+    foreach ($doctor_types as $value => $label) {
+
+        echo '<option value="' . esc_attr($value) . '" ' .
+            selected($doctor_type, $value, false) .
+            '>' .
+            esc_html($label) .
+            '</option>';
+
+    }
+
+    echo '</select>';
+    echo '</p>';
+
+
+    /*
+     * Availability status
+     */
+
+    echo '<p>';
+    echo '<label><strong>Availability Status</strong></label><br>';
+
+    echo '<select
+        name="doctor_availability_status"
+        style="width:100%; max-width:400px;">';
+
+    $availability_statuses = array(
+        'available'          => 'Available',
+        'unavailable'        => 'Unavailable',
+        'appointment_only'   => 'Appointment Only'
+    );
+
+    foreach ($availability_statuses as $value => $label) {
+
+        echo '<option value="' . esc_attr($value) . '" ' .
+            selected($availability_status, $value, false) .
+            '>' .
+            esc_html($label) .
+            '</option>';
+
+    }
+
+    echo '</select>';
+    echo '</p>';
+
+
+    /*
+     * Next available date
+     */
+
+    echo '<p>';
+    echo '<label><strong>Next Available Date</strong></label><br>';
+
+    echo '<input
+        type="date"
+        name="doctor_next_available_date"
+        value="' . esc_attr($next_available_date) . '"
+        style="width:100%; max-width:400px;">';
+
+    echo '<br>';
+    echo '<span style="color:#666;">
+        Use this for visiting or appointment-based doctors when a specific upcoming date is known.
+    </span>';
+
+    echo '</p>';
+
+
+    /*
+     * Availability note
+     */
+
+    echo '<p>';
+    echo '<label><strong>Availability Note</strong></label><br>';
+
+    echo '<textarea
+        name="doctor_availability_note"
+        rows="3"
+        style="width:100%;">' .
+        esc_textarea($availability_note) .
+        '</textarea>';
+
+    echo '<br>';
+    echo '<span style="color:#666;">
+        Example: Currently on leave. Please contact the hospital for the next available appointment.
+    </span>';
+
+    echo '</p>';
+
+
+    /*
+     * Professional profile information
+     */
+
+    echo '<hr style="margin:25px 0;">';
+
+    echo '<p>';
+    echo '<strong>Detailed professional profile:</strong>
+    Use the main WordPress editor above for education, experience,
+    expertise, achievements, awards, memberships and other profile content.
+    Use the Featured Image box for the doctor photo.';
+    echo '</p>';
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Save Doctor Data
+|--------------------------------------------------------------------------
+*/
+
+function prasanthi_save_doctor($post_id) {
+
+    if (
+        !isset($_POST['prasanthi_doctor_nonce']) ||
+        !wp_verify_nonce(
+            $_POST['prasanthi_doctor_nonce'],
+            'prasanthi_save_doctor'
+        )
+    ) {
+        return;
+    }
+
+
+    if (
+        defined('DOING_AUTOSAVE') &&
+        DOING_AUTOSAVE
+    ) {
+        return;
+    }
+
+
+    if (
+        !current_user_can('edit_post', $post_id)
+    ) {
+        return;
+    }
+
+
+    /*
+     * Existing text fields
+     */
+
+    $text_fields = array(
+        'qualification',
+        'role',
+        'short_intro',
+        'consultation'
+    );
+
+
+    foreach ($text_fields as $key) {
+
+        if (isset($_POST['doctor_' . $key])) {
+
+            update_post_meta(
+                $post_id,
+                '_doctor_' . $key,
+                sanitize_textarea_field(
+                    $_POST['doctor_' . $key]
+                )
+            );
+
+        }
+
+    }
+
+
+    /*
+     * Doctor type
+     */
+
+    if (isset($_POST['doctor_type'])) {
+
+        $allowed_types = array(
+            'regular_opd',
+            'consultant',
+            'visiting_consultant'
+        );
+
+        $doctor_type = sanitize_key(
+            $_POST['doctor_type']
+        );
+
+        if (in_array($doctor_type, $allowed_types, true)) {
+
+            update_post_meta(
+                $post_id,
+                '_doctor_type',
+                $doctor_type
+            );
+
+        }
+
+    }
+
+
+    /*
+     * Availability status
+     */
+
+    if (isset($_POST['doctor_availability_status'])) {
+
+        $allowed_statuses = array(
+            'available',
+            'unavailable',
+            'appointment_only'
+        );
+
+        $availability_status = sanitize_key(
+            $_POST['doctor_availability_status']
+        );
+
+        if (
+            in_array(
+                $availability_status,
+                $allowed_statuses,
+                true
+            )
+        ) {
+
+            update_post_meta(
+                $post_id,
+                '_doctor_availability_status',
+                $availability_status
+            );
+
+        }
+
+    }
+
+
+    /*
+     * Next available date
+     */
+
+    if (isset($_POST['doctor_next_available_date'])) {
+
+        $next_available_date = sanitize_text_field(
+            $_POST['doctor_next_available_date']
+        );
+
+        update_post_meta(
+            $post_id,
+            '_doctor_next_available_date',
+            $next_available_date
+        );
+
+    }
+
+
+    /*
+     * Availability note
+     */
+
+    if (isset($_POST['doctor_availability_note'])) {
+
+        update_post_meta(
+            $post_id,
+            '_doctor_availability_note',
+            sanitize_textarea_field(
+                $_POST['doctor_availability_note']
+            )
+        );
+
+    }
+
+}
+
+add_action(
+    'save_post_doctor',
+    'prasanthi_save_doctor'
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| Seed Initial Doctors
+|--------------------------------------------------------------------------
+*/
+
+function prasanthi_seed_doctors() {
+
+    if (get_option('prasanthi_doctors_seeded')) {
+        return;
+    }
+
+
+    $doctors = array(
+
+        array(
+            'title'         => 'Dr. C.N. Murthy',
+            'slug'          => 'dr-cn-murthy',
+            'qualification' => 'BAMS',
+            'role'          => 'Founder · Family Physician',
+            'short_intro'   => 'Founded Prasanthi Hospitals as a family-run multi-speciality centre. Provides family physician consultations and works alongside Dr. C.S.K. Aditya in the hospital’s personal and integrative approach to patient care.',
+            'consultation'  => 'Please contact the hospital for current consultation timings.',
+            'content'       => '<p>Founder of Prasanthi Hospitals and family physician.</p><h2>Professional Profile</h2><p>Detailed education, experience, achievements, awards, memberships and other professional information will be added here.</p>',
+            'order'         => 1
+        ),
+
+        array(
+            'title'         => 'Dr. C.S.K. Aditya',
+            'slug'          => 'dr-csk-aditya',
+            'qualification' => 'M.D. (General Medicine)',
+            'role'          => 'General Physician',
+            'short_intro'   => 'Provides general medicine consultations and oversees medical daycare and inpatient care. Works alongside Dr. C.N. Murthy in day-to-day patient care.',
+            'consultation'  => 'Please contact the hospital for current consultation timings.',
+            'content'       => '<p>General physician providing general medicine consultations and overseeing medical daycare and inpatient care.</p><h2>Professional Profile</h2><p>Detailed education, experience, achievements, awards, memberships and other professional information will be added here.</p>',
+            'order'         => 2
+        ),
+
+        array(
+            'title'         => 'Dr. Nishteshwar',
+            'slug'          => 'dr-nishteshwar',
+            'qualification' => 'M.D. (Ayurveda)',
+            'role'          => 'Ayurveda',
+            'short_intro'   => 'Provides Ayurvedic outpatient consultations as part of the hospital’s integrative approach. Not available for evening OPD; contact the hospital to confirm consultation time.',
+            'consultation'  => 'Not available for evening OPD. Please contact the hospital to confirm consultation time.',
+            'content'       => '<p>Ayurvedic physician providing outpatient consultations as part of the hospital’s integrative approach.</p><h2>Professional Profile</h2><p>Detailed education, experience, achievements, awards, memberships and other professional information will be added here.</p>',
+            'order'         => 3
+        )
+
+    );
+
+
+    foreach ($doctors as $d) {
+
+        if (
+            get_page_by_path(
+                $d['slug'],
+                OBJECT,
+                'doctor'
+            )
+        ) {
+            continue;
+        }
+
+
+        $id = wp_insert_post(
+            array(
+                'post_type'    => 'doctor',
+                'post_status'  => 'publish',
+                'post_title'   => $d['title'],
+                'post_name'    => $d['slug'],
+                'post_content' => $d['content'],
+                'menu_order'   => $d['order']
+            )
+        );
+
+
+        if (
+            $id &&
+            !is_wp_error($id)
+        ) {
+
+            update_post_meta(
+                $id,
+                '_doctor_qualification',
+                $d['qualification']
+            );
+
+            update_post_meta(
+                $id,
+                '_doctor_role',
+                $d['role']
+            );
+
+            update_post_meta(
+                $id,
+                '_doctor_short_intro',
+                $d['short_intro']
+            );
+
+            update_post_meta(
+                $id,
+                '_doctor_consultation',
+                $d['consultation']
+            );
+
+        }
+
+    }
+
+
+    update_option(
+        'prasanthi_doctors_seeded',
+        1
+    );
+
+    flush_rewrite_rules();
+
+}
+
+
+register_activation_hook(
+    __FILE__,
+    'prasanthi_seed_doctors'
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| Plugin Deactivation
+|--------------------------------------------------------------------------
+*/
+
+register_deactivation_hook(
+    __FILE__,
+    function() {
+        flush_rewrite_rules();
+    }
+);

@@ -1,0 +1,35 @@
+#loading {
+    background:#FAFAFA;
+    text-align:center;
+    border:1px solid #777;
+    border-radius: 3px;
+    padding: 0px;
+    width: 300px;
+    position: fixed;
+    display: none;
+    z-index: 3000;
+    box-shadow: 0 5px 40px #999;
+    vertical-align: middle;
+}
+
+#loading h4 { margin: 3px 0 0 0; padding: 0; color: #d80; }
+
+#logo {
+    height: 100%;
+}
+#header_logo img {
+  max-height: 48px;
+  max-width: 380px;
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+}
+
+/* Child heading needs to have a dark bg for better reading */
+div.panel .panel-body .panel-heading{
+	background: #F1F1F1;
+}
+
+.popover{
+z-index: 1060;
+}

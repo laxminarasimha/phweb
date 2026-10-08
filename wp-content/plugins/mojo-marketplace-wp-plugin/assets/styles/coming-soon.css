@@ -1,0 +1,99 @@
+:root {
+    --mdc-theme-primary: #0D47FB;
+    --mdc-theme-extra: #93C933;
+    --dc-theme-white: #ffffff;
+    --mdc-theme-error: #ff182f;
+    --dc-theme-success: #23c161;
+    --dc-theme-success--dark: #034a1d;
+}
+
+body {
+    background-color: #2D2A25;
+    background-image: url("../images/cs-mojo-bg.jpg");
+    background-position: top right;
+    background-repeat: no-repeat;
+    color: var(--dc-theme-white);
+}
+
+body,
+input {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.content {
+}
+
+#wrap h1 {
+    
+}
+
+#wrap h2 {
+    
+}
+
+footer p {
+    font-size: 14px;
+    line-height: 22px;
+    padding: 8px;
+}
+
+footer p a {
+    color: var(--dc-theme-white);
+}
+
+.btn {
+    background: var(--mdc-theme-extra);
+    color: var(--dc-theme-white);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 11px 30px;
+}
+
+.btn:hover {
+    background-color: var(--dc-theme-white);
+    color: var(--mdc-theme-extra);
+}
+
+#subscribe-text p {
+    line-height: 24px;
+    margin-bottom: 25px;
+}
+
+.status-message {
+    font-size: 14px;
+    line-height: 24px;
+    margin-bottom: 25px;
+    display: none;
+    padding: 8px 40px;
+}
+
+#success {
+    background: var(--dc-theme-success);
+    border: 5px solid var(--dc-theme-success--dark);
+}
+
+#error-invalid,
+#error-active {
+    border: 5px solid var(--mdc-theme-error);
+}
+
+form .inputs {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    transition: all 0.1s ease;
+}
+
+form .inputs label {
+    display: none;
+}
+
+form .inputs.email input[type="email"] {
+    color: #35393A;
+    font-size: 14px;
+    min-width: 240px;
+    padding: 14px 15px;
+    max-height: 45px;
+    transition: all 0.05s ease;
+}

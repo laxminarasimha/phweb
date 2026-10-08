@@ -1,0 +1,57 @@
+{
+    "name": "newfold-labs/wp-module-features",
+    "description": "A module for providing an interface for features.",
+    "type": "library",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Micah Wood",
+            "homepage": "https://wpscholar.com"
+        },
+        {
+            "name": "Evan Mullins",
+            "homepage": "https://evanmullins.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://newfold-labs.github.io/satis/",
+            "only": [
+                "newfold-labs/*"
+            ]
+        }
+    ],
+    "require": {
+        "wp-forge/wp-options": "^1.1.1"
+    },
+    "require-dev": {
+        "newfold-labs/wp-php-standards": "^1.2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "NewfoldLabs\\WP\\Module\\Features\\": "includes"
+        },
+        "files": [
+            "includes/functions.php"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "fix": [
+            "vendor/bin/phpcbf . --standard=phpcs.xml"
+        ],
+        "lint": [
+            "vendor/bin/phpcs . --standard=phpcs.xml -s"
+        ]
+    },
+    "scripts-descriptions": {
+        "fix": "Automatically fix coding standards issues where possible.",
+        "lint": "Check files against coding standards."
+    }
+}

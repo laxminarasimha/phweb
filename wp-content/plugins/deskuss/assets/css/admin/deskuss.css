@@ -1,0 +1,261 @@
+#loading, #upgrading {
+    background:#FAFAFA;
+    text-align:center;
+    border:1px solid #777;
+    border-radius: 3px;
+    padding: 0px;
+    width: 300px;
+    position: fixed;
+    display: none;
+    z-index: 3000;
+    box-shadow: 0 5px 40px #999;
+    vertical-align: middle;
+}
+
+#loading h1, #upgrading h4 { margin: 3px 0 0 0; padding: 0; color: #d80; }
+
+.typeahead{
+    z-index:1013;
+}
+
+.dialog.draggable div.drag-handle:hover {
+    cursor: move;
+}
+
+/* dialog */
+.dialog, .dialog * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.dialog {
+    position:fixed;
+    /* padding:1em; */
+    width:500px;
+    height:250px;
+    height:auto !important;
+    background:#FFFFFF;
+    display:none;
+    z-index:1011;
+    box-shadow: 0 5px 60px #999;
+    border-radius: 2px;
+    max-height: 72%;
+    min-height: 50px;
+    overflow-y: auto;
+}
+
+.dialog#popup {
+    width:650px;
+}
+
+.dialog.size-normal {
+    width:650px !important;
+}
+
+.dialog.size-large {
+    width:750px !important;
+}
+
+.dialog #popup-loading {
+    position:relative;
+    text-align:center;
+    background:rgba(255,255,255,0.8);
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    background:#FFFFFF;
+    z-index:1012;
+}
+
+.dialog#advanced-search {
+    width:640px !important;
+    height:360px;
+}
+
+.dialog form {
+    clear:both;
+    width:100%;
+}
+
+.dialog fieldset {
+    margin:0;
+    padding:0 0;
+    border:none;
+}
+
+.custom-field .field-label {
+    margin: 0 3px 4px;
+}
+.custom-field + .custom-field {
+    margin-top: 8px;
+}
+.dialog label.fixed-size {
+    width:100px;
+    display:inline-block;
+    text-align:right;
+    padding:10px;
+}
+
+.dialog.draggable h3.drag-handle:hover {
+    cursor: move;
+}
+
+.dialog form .quick-add {
+  min-height: 150px;
+}
+
+tr.disabled td,
+tr.disabled th {
+    opacity: 0.6;
+    background: #f5f5f5;
+}
+
+/* Child heading needs to have a dark bg for better reading */
+div.panel .panel-body .panel-heading{
+	background: #F1F1F1;
+	color: #464646;
+	border: none;
+}
+
+.info-banner { margin: 0; padding: 5px; margin-bottom: 10px; color: #3a87ad; border: 1px solid #bce8f1;  background-color: #d9edf7; }
+
+.pd-bt-10{
+	padding-bottom:20px;
+}
+.pd-tp-10{
+	padding-top:10px;
+}
+
+.internal_note, .internal_note:hover{
+	cursor:pointer;
+	color: inherit;
+}
+
+.sticky.bar.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  background-color: white;
+  background-color: rgba(255,255,255,0.95);
+  padding: 10px 20px;
+  box-sizing: border-box;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+.sticky.bar .content {
+  margin: auto;
+}
+.sticky.bar.fixed .notsticky {
+  display: none !important;
+}
+
+.sticky.bar.fixed .inline {
+    float:left;
+    display:inline;
+    margin:5px 10px 0 0;
+}
+
+.sticky.bar.opaque {
+  background-color: white;
+}
+.sticky.bar.fixed h2 {
+  margin: 0;
+}
+.sticky.bar:not(.fixed) .sticky.only {
+    display:none;
+}
+.scroll-up {
+  display:none;
+}
+@media screen and (min-width: 1040px) {
+  .scroll-up {
+    display: inline;
+    background-color: #eee;
+    background-color: rgba(0,0,0,0.1);
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    padding: 8px 8px 5px;
+    border-radius: 0 0 5px 5px;
+    border: 1px dotted #888;
+    border-top: none;
+    color: #888 !important;
+    box-shadow: 0 3px 8px -6px rgba(0,0,0,0.9);
+  }
+  .scroll-up:hover {
+    background-color: #444;
+    background-color: rgba(0,0,0,0.7);
+    color: #ddd !important;
+    color: rgba(255,255,255,0.8) !important;
+    border-color:transparent;
+  }
+}
+
+.message.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding: 9px 15px;
+  z-index: 9999;
+  background-color: white;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  opacity: 0.95;
+  max-width:100%;
+}
+.message.bar.bottom {
+  bottom: 0;
+  top: auto;
+  box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
+}
+.message.bar .avatar[class*=" oscar-"] {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  margin-right: 10px;
+  background-image: url(/admin/images/oscar-avatars.png);
+  background-repeat: no-repeat;
+  background-size: 180px 72px;
+}
+.avatar.oscar-boy {
+  background-position: -72px 0;
+}
+.avatar.oscar-borg {
+  background-position: 0 -36px;
+}
+.message.bar .title {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+.message.bar .body {
+  margin-left: 42px;
+}
+.message.bar.warning {
+	color: #8d7955;
+	border-color: #c9ba9b;
+	background-color: #fffaf3;
+	border-width: 1px;
+}
+
+.message.bar.danger {
+	color: #b05b59;
+	border-color: #e0b4b4;
+	background-color: #fff6f6;
+	border-width: 1px;
+}
+
+.message.bar .title .avatar {
+    width: auto;
+    max-height: 20px;
+    border-radius: 3px;
+    margin: -4px 0.3em 0;
+    vertical-align: middle;
+}
+
+label.inline.checkbox {
+    display: inline-block;
+}

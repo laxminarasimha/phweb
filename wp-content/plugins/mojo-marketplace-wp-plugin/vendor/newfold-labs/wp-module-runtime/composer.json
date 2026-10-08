@@ -1,0 +1,63 @@
+{
+  "name": "newfold-labs/wp-module-runtime",
+  "description": "Runtime for Newfold WP modules and plugins",
+  "type": "library",
+  "license": [
+    "GPL-2.0-or-later"
+  ],
+  "authors": [
+    {
+      "name": "Beyond",
+      "email": "team-spartans@newfold.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "NewfoldLabs\\WP\\Module\\Runtime\\": "includes"
+    },
+    "files": [
+      "bootstrap.php"
+    ]
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://newfold-labs.github.io/satis/",
+      "only": [
+        "newfold-labs/*"
+      ]
+    }
+  ],
+  "require": {},
+  "require-dev": {
+    "newfold-labs/wp-php-standards": "@stable",
+    "wp-cli/wp-cli-bundle": "@stable",
+    "wp-cli/i18n-command": "@stable"
+  },
+  "scripts": {
+    "fix": [
+      "vendor/bin/phpcbf --standard=phpcs.xml ."
+    ],
+    "lint": [
+      "vendor/bin/phpcs --standard=phpcs.xml -s ."
+    ]
+  },
+  "scripts-descriptions": {
+    "fix": "Automatically fix coding standards issues where possible.",
+    "lint": "Check files against coding standards."
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true,
+    "platform": {
+      "php": "7.0.0"
+    },
+    "preferred-install": {
+      "newfold-labs/*": "source",
+      "*": "dist"
+    },
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}

@@ -1,0 +1,662 @@
+/* Feed Container Spacing & Alignment (Matches YouTube) */
+.socialfeeds-instagram-feed,
+.socialfeeds-facebook-feed-wrapper,
+.socialfeeds-google-reviews-feed{
+width: 100%;
+max-width: 70% !important;
+margin-left: auto !important;
+margin-right: auto !important;
+box-sizing: border-box;
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+/* Alignment Utilities */
+.socialfeeds-align-center {
+margin-left: auto !important;
+margin-right: auto !important;
+}
+
+.socialfeeds-align-left {
+margin-left: 0 !important;
+margin-right: auto !important;
+}
+
+.socialfeeds-align-right {
+margin-left: auto !important;
+margin-right: 0 !important;
+}
+
+/* Width Utilities */
+.socialfeeds-width-100pct {
+max-width: 100% !important;
+}
+
+.socialfeeds-width-90pct {
+max-width: 90% !important;
+}
+
+.socialfeeds-width-80pct {
+max-width: 80% !important;
+}
+
+.socialfeeds-width-70pct {
+max-width: 70% !important;
+}
+
+.socialfeeds-width-60pct {
+max-width: 60% !important;
+}
+
+.socialfeeds-width-50pct {
+max-width: 50% !important;
+}
+
+/* Social Feeds Instagram Header Styles */
+.socialfeeds-instagram-header {
+display: flex;
+align-items: center;
+gap: 15px;
+margin-bottom: 20px;
+}
+
+.socialfeeds-instagram-header-info {
+display: flex;
+flex-direction: column;
+justify-content: center;
+text-align: left !important;
+}
+
+.socialfeeds-instagram-header-name{
+margin:0;
+font-size:1.2rem;
+color:#3C434A;
+}
+
+.socialfeeds-instagram-header-bio,
+.socialfeeds-instagram-header-followers {
+margin: 4px 0 0;
+font-size: 0.9rem;
+color: #666;
+}
+
+/* Header Positions */
+.socialfeeds-instagram-header-left {
+justify-content: flex-start;
+text-align: left;
+}
+
+.socialfeeds-instagram-header-middle {
+justify-content: center;
+text-align: center;
+}
+
+.socialfeeds-instagram-header-right {
+justify-content: flex-end;
+text-align: right;
+}
+
+.socialfeeds-instagram-header-middle .socialfeeds-instagram-header-info,
+.socialfeeds-instagram-header-right .socialfeeds-instagram-header-info {
+text-align: inherit;
+}
+
+/* Avatar styling */
+.socialfeeds-instagram-header-avatar {
+border-radius: 50%;
+object-fit: cover;
+}
+
+/* Hover Effects */
+.socialfeeds-hover-overlay {
+position: absolute;
+inset: 0;
+background: rgba(0, 0, 0, 0.4);
+opacity: 0;
+transition: opacity 0.25s ease;
+pointer-events: none;
+z-index: 10;
+}
+
+.socialfeeds-instagram-item.hover-overlay:hover .socialfeeds-hover-overlay,
+.socialfeeds-facebook-item.hover-overlay:hover .socialfeeds-hover-overlay,
+.socialfeeds-google-review-item.hover-overlay:hover .socialfeeds-hover-overlay {
+opacity: 1 !important;
+}
+
+.socialfeeds-instagram-item.hover-scale:hover .socialfeeds-instagram-media,
+.socialfeeds-facebook-item.hover-scale:hover .socialfeeds-facebook-media,
+.socialfeeds-google-review-item.hover-scale:hover {
+transform: scale(1.05);
+transition: transform 0.3s ease;
+}
+
+.socialfeeds-instagram-item.hover-shadow,
+.socialfeeds-facebook-item.hover-shadow,
+.socialfeeds-google-review-item.hover-shadow {
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.socialfeeds-instagram-item.hover-shadow:hover,
+.socialfeeds-facebook-item.hover-shadow:hover,
+.socialfeeds-google-review-item.hover-shadow:hover {
+transform: translateY(-4px);
+box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Post engagement settings */
+.socialfeeds-instagram-item {
+border-radius: 0;
+overflow: hidden;
+background: transparent;
+border: none;
+display: flex;
+flex-direction: column;
+}
+
+.socialfeeds-instagram-media,
+.socialfeeds-facebook-media {
+width: 100%;
+overflow: hidden;
+background: #f3f3f3;
+position: relative;
+}
+
+.socialfeeds-instagram-media img,
+.socialfeeds-instagram-media video,
+.socialfeeds-facebook-media img,
+.socialfeeds-facebook-media video {
+width: 100%;
+height: 100%;
+object-fit: cover;
+display: block;
+}
+
+.socialfeeds-instagram-media.aspect-square,
+.socialfeeds-instagram-media.aspect-instagram,
+.socialfeeds-facebook-media.aspect-square {
+aspect-ratio: 1 / 1;
+}
+
+.socialfeeds-instagram-media.aspect-portrait,
+.socialfeeds-facebook-media.aspect-portrait {
+aspect-ratio: 4 / 5;
+}
+
+.socialfeeds-instagram-stats {
+padding: 8px 10px;
+font-size: 13px;
+color: #000;
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+}
+
+.socialfeeds-instagram-stats .caption {
+width: 100%;
+line-height: 1.4;
+display: -webkit-box;
+-webkit-line-clamp: 2;
+line-clamp: 2;
+-webkit-box-orient: vertical;
+box-orient: vertical;
+overflow: hidden;
+}
+
+.socialfeeds-instagram-stats .likes,
+.socialfeeds-instagram-stats .comments,
+.socialfeeds-instagram-stats .views {
+font-size: 12px;
+color: #555;
+display: inline-flex;
+align-items: center;
+gap: 4px;
+}
+
+/* Layouts */
+.socialfeeds-instagram-inner.layout-grid {
+display: grid;
+}
+
+.socialfeeds-instagram-inner.layout-masonry {
+display: block;
+}
+
+.socialfeeds-instagram-inner.layout-masonry .socialfeeds-instagram-item {
+width: 100%;
+display: inline-block;
+break-inside: avoid;
+page-break-inside: avoid;
+}
+
+@media (max-width: 768px) {
+.socialfeeds-instagram-inner.layout-masonry {
+    column-count: 2 !important;
+}
+}
+
+@media (max-width: 480px) {
+.socialfeeds-instagram-inner.layout-masonry {
+    column-count: 1 !important;
+}
+}
+
+.socialfeeds-instagram-inner.layout-carousel {
+display: flex;
+overflow-x: auto;
+scrollbar-width: none;
+-ms-overflow-style: none;
+}
+
+.socialfeeds-instagram-inner.layout-carousel::-webkit-scrollbar {
+display: none;
+}
+
+.socialfeeds-instagram-inner.layout-carousel .socialfeeds-instagram-item {
+flex-shrink: 0;
+}
+
+/* Feed Container Schemes */
+.socialfeeds-instagram-feed.socialfeeds-scheme-dark {
+background: #0f0f0f;
+color: #ffffff;
+}
+
+.socialfeeds-instagram-feed.socialfeeds-scheme-light {
+background: #ffffff;
+color: #1d2327;
+}
+
+.socialfeeds-instagram-feed.socialfeeds-scheme-dark,
+.socialfeeds-instagram-feed.socialfeeds-scheme-light,
+.socialfeeds-instagram-feed.socialfeeds-scheme-custom {
+padding: 20px;
+border-radius: 8px;
+}
+
+.socialfeeds-instagram-feed.socialfeeds-scheme-dark .socialfeeds-instagram-stats {
+color: #ffffff;
+}
+
+.socialfeeds-instagram-feed.socialfeeds-scheme-dark .socialfeeds-instagram-stats .likes,
+.socialfeeds-instagram-feed.socialfeeds-scheme-dark .socialfeeds-instagram-stats .comments,
+.socialfeeds-instagram-feed.socialfeeds-scheme-dark .socialfeeds-instagram-stats .views {
+color: #cccccc;
+}
+
+/* Actions Section */
+.socialfeeds-instagram-actions {
+display: flex;
+justify-content: center;
+gap: 10px;
+margin-top: 20px;
+width: 100%;
+flex-wrap: wrap;
+}
+
+.socialfeeds-follow-btn,
+.socialfeeds-load-more-btn {
+padding: 10px 24px !important;
+display: inline-flex !important;
+align-items: center !important;
+justify-content: center !important;
+font-size: 14px !important;
+font-weight: 500 !important;
+border-radius: 4px !important;
+text-decoration: none !important;
+cursor: pointer !important;
+transition: all 0.2s ease;
+border: none !important;
+}
+
+.socialfeeds-follow-btn .dashicons {
+margin-right: 8px;
+}
+
+/* Play Icon Overlay (Circular with white arrow icon) */
+.socialfeeds-instagram-feed .socialfeeds-play-overlay,
+.socialfeeds-facebook-feed .socialfeeds-play-overlay {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 48px;
+height: 48px;
+background: rgba(0, 0, 0, 0.6) !important;
+border-radius: 50% !important;
+/* Circular for premium look */
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 5;
+pointer-events: none;
+transition: all 0.2s ease;
+border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.socialfeeds-instagram-feed .socialfeeds-play-overlay::before,
+.socialfeeds-instagram-feed .socialfeeds-play-overlay::after {
+content: none !important;
+display: none !important;
+}
+
+.socialfeeds-instagram-feed .socialfeeds-play-overlay .dashicons {
+color: #ffffff !important;
+font-size: 28px !important;
+width: 28px !important;
+height: 28px !important;
+line-height: 1 !important;
+margin-left: 2px;
+/* Visual center adjustment for the arrow */
+}
+
+.socialfeeds-instagram-item:hover .socialfeeds-play-overlay,
+.socialfeeds-facebook-item.hover-scale:hover .socialfeeds-play-overlay,
+.socialfeeds-facebook-item.hover-shadow:hover .socialfeeds-play-overlay {
+background: rgba(0, 0, 0, 0.8) !important;
+transform: translate(-50%, -50%) scale(1.1);
+}
+.socialfeeds-likes{
+color: #d76565 !important;
+}
+
+.socialfeeds-comments{
+color: #d76565 !important;
+}
+
+/* Facebook Header V2 Styles */
+.socialfeeds-fb-header-v2 {
+width: 100%;
+background: #fff;
+border-radius: 8px;
+overflow: hidden;
+box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+border: 1px solid #e2e8f0;
+margin-bottom: 25px;
+font-family: inherit;
+}
+
+.socialfeeds-fb-cover {
+width: 100%;
+height: 200px;
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+background-color: #f0f2f5;
+position: relative;
+}
+
+.socialfeeds-fb-cover.no-image {
+background: linear-gradient(to bottom, #1877f2, #0a56b2);
+}
+
+.socialfeeds-fb-header-content {
+display: flex;
+padding: 0 32px 24px;
+position: relative;
+z-index: 2;
+align-items: flex-start; /* Alignment matched to native Page headers */
+}
+
+.socialfeeds-fb-avatar-wrap {
+width: 110px;
+height: 110px;
+border-radius: 50%;
+background: #fff;
+padding: 4px;
+flex-shrink: 0;
+margin-top: -55px; /* Pull profile picture half-way up into the cover section */
+box-shadow: 0 0 0 4px #fff; /* Replaced simple padding with a crisp white border ring */
+position: relative;
+}
+
+.socialfeeds-fb-avatar {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+object-fit: cover;
+display: block;
+}
+
+.socialfeeds-fb-info-wrap {
+margin-left: 20px;
+margin-top: 15px; /* Offset text to vertically align better with the bottom half of the avatar */
+flex: 1;
+}
+
+.socialfeeds-fb-name {
+margin: 0 0 8px;
+font-size: 24px;
+font-weight: 700;
+color: #050505;
+}
+
+.socialfeeds-fb-caption {
+font-size: 15px;
+color: #65676b;
+margin-bottom: 8px;
+line-height: 1.4;
+max-width: 600px;
+}
+
+.socialfeeds-fb-stats {
+display: flex;
+align-items: center;
+gap: 8px;
+font-size: 14px;
+color: #65676b;
+}
+
+.socialfeeds-fb-stat-item strong {
+color: #050505;
+}
+
+.socialfeeds-fb-stat-sep {
+color: #65676b;
+}
+ 
+/* No Cover Header Variant */
+.socialfeeds-fb-header-v2.no-cover .socialfeeds-fb-header-content {
+padding: 24px 32px;
+}
+ 
+.socialfeeds-fb-header-v2.no-cover .socialfeeds-fb-avatar-wrap {
+margin-top: 0;
+}
+ 
+.socialfeeds-fb-header-v2.no-cover .socialfeeds-fb-info-wrap {
+margin-top: 0;
+}
+ 
+/* Albums & Events Badges */
+.socialfeeds-fb-album-count { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+.socialfeeds-fb-event-badge { position: absolute; top: 10px; left: 10px; background: #ef4444; color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 10; }
+.socialfeeds-fb-event-time, .socialfeeds-fb-event-place { font-size: 12px; color: #64748b; margin-top: 5px; display: flex; align-items: center; gap: 5px; }
+.socialfeeds-fb-event-time .dashicons, .socialfeeds-fb-event-place .dashicons { font-size: 14px; width: 14px; height: 14px; }
+.socialfeeds-fb-album-desc { font-size: 13px; color: #64748b; margin-top: 5px; }
+
+/* Facebook Post Cards */
+.socialfeeds-facebook-item { 
+background: #fff; 
+border: 1px solid #e2e8f0; 
+border-radius: 12px; 
+overflow: hidden; 
+display: flex;
+flex-direction: column;
+}
+.socialfeeds-facebook-content { 
+padding: 15px; 
+flex: 1;
+display: flex;
+flex-direction: column;
+}
+.socialfeeds-facebook-message { 
+margin-bottom: 8px; 
+font-size: 14px; 
+line-height: 1.5; 
+color: #1e293b; 
+}
+.socialfeeds-fb-engagement { 
+display: flex; 
+align-items: center; 
+gap: 12px; 
+padding: 8px 0; 
+border-top: 1px solid #f0f0f0; 
+margin-top: auto; 
+}
+.socialfeeds-fb-engagement span {
+display: flex;
+align-items: center;
+gap: 4px;
+color: #64748b;
+font-size: 12px;
+}
+.socialfeeds-fb-engagement .dashicons {
+font-size: 16px;
+width: 16px;
+height: 16px;
+}
+
+@media (max-width: 768px) {
+.socialfeeds-fb-cover {
+height: 150px;
+}
+.socialfeeds-fb-header-content {
+flex-direction: column;
+align-items: center;
+padding: 0 16px 24px;
+text-align: center;
+}
+.socialfeeds-fb-avatar-wrap {
+width: 80px;
+height: 80px;
+margin-top: -40px; /* Pull profile picture half-way up into the cover section on mobile */
+}
+.socialfeeds-fb-info-wrap {
+margin-left: 0;
+margin-top: 15px;
+margin-bottom: 0;
+}
+.socialfeeds-fb-name {
+font-size: 20px;
+}
+.socialfeeds-fb-stats {
+justify-content: center;
+}
+}
+/* Google Reviews Feed Styles */
+.socialfeeds-google-reviews-feed {
+width: 100%;
+max-width: 70%;
+margin: 0 auto;
+box-sizing: border-box;
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.socialfeeds-google-reviews-inner {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 16px;
+}
+
+.socialfeeds-google-reviews-inner.layout-carousel {
+display: flex;
+overflow-x: auto;
+scrollbar-width: none;
+-ms-overflow-style: none;
+scroll-snap-type: x mandatory;
+}
+
+.socialfeeds-google-reviews-inner.layout-carousel::-webkit-scrollbar {
+display: none;
+}
+
+.socialfeeds-google-review-item {
+background: #fff;
+border: 1px solid #e5e7eb;
+border-radius: 8px;
+padding: 16px;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+transition: all 0.3s ease;
+display: flex;
+flex-direction: column;
+gap: 12px;
+position: relative;
+}
+
+.socialfeeds-google-review-item:hover {
+border-color: #d1d5db;
+}
+
+.socialfeeds-google-reviews-inner.layout-carousel .socialfeeds-google-review-item {
+flex-shrink: 0;
+scroll-snap-align: start;
+}
+
+.socialfeeds-google-review-header {
+display: flex;
+align-items: flex-start;
+gap: 12px;
+}
+
+.socialfeeds-google-review-avatar {
+width: 36px;
+height: 36px;
+border-radius: 50%;
+object-fit: cover;
+flex-shrink: 0;
+background: #f3f4f6;
+}
+
+.socialfeeds-google-review-author {
+flex: 1;
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
+
+.socialfeeds-google-review-name {
+margin: 0;
+font-size: 14px;
+font-weight: 600;
+color: #1f2937;
+}
+
+.socialfeeds-google-review-rating {
+display: flex;
+gap: 2px;
+font-size: 14px;
+}
+
+.socialfeeds-google-review-rating .dashicons {
+width: 16px;
+height: 16px;
+font-size: 16px;
+color: #fbbf24;
+}
+
+.socialfeeds-google-review-time {
+margin: 0;
+font-size: 12px;
+color: #6b7280;
+font-weight: 500;
+}
+
+.socialfeeds-google-review-text {
+margin: 0;
+font-size: 13px;
+line-height: 1.5;
+color: #374151;
+word-break: break-word;
+}
+
+@media (max-width: 768px) {
+.socialfeeds-google-reviews-inner.layout-grid {
+grid-template-columns: repeat(2, 1fr) !important;
+}
+}
+
+@media (max-width: 480px) {
+.socialfeeds-google-reviews-inner.layout-grid {
+grid-template-columns: 1fr !important;
+}
+}

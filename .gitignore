@@ -46,3 +46,11 @@ wp-config.php
 # Note: If you wish to whitelist themes,
 # uncomment the next line
 #/wp-content/themes
+/.vs/
+/.vs/phweb/CopilotIndices/18.7.1259.47395/CodeChunks.db
+/.vs/phweb/CopilotIndices/18.7.1259.47395/SemanticSymbols.db
+/.vs/slnx.sqlite
+/.vs/phweb.slnx/FileContentIndex/053177b3-b23b-4705-b9c8-a7e802af889f.vsidx
+/.vs/phweb.slnx/FileContentIndex/615146cf-4037-4799-8f68-cca84dd1c51f.vsidx
+/.vs/phweb.slnx/FileContentIndex/d5926a9a-5ae3-4a8a-858a-eb1662855035.vsidx
+/.vs/phweb.slnx/FileContentIndex/db7f4f05-5a04-4cd9-bff3-a4267324f465.vsidx

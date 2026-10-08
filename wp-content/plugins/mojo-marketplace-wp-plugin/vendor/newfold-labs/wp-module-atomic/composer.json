@@ -1,0 +1,53 @@
+{
+    "name": "newfold-labs/wp-module-atomic",
+    "description": "A module to customize a brand plugin for wp cloud environments.",
+    "type": "library",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Evan Mullins",
+            "homepage": "https://evanmullins.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://newfold-labs.github.io/satis/",
+            "only": [
+                "newfold-labs/*"
+            ]
+        }
+    ],
+    "require": {
+        "newfold-labs/wp-module-context": "^1.0"
+    },
+    "require-dev": {
+        "newfold-labs/wp-php-standards": "^1.2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "NewfoldLabs\\WP\\Module\\Atomic\\": "includes"
+        },
+        "files": [
+            "bootstrap.php"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "fix": [
+            "vendor/bin/phpcbf . --standard=phpcs.xml"
+        ],
+        "lint": [
+            "vendor/bin/phpcs . --standard=phpcs.xml -s"
+        ]
+    },
+    "scripts-descriptions": {
+        "fix": "Automatically fix coding standards issues where possible.",
+        "lint": "Check files against coding standards."
+    }
+}

@@ -1,0 +1,299 @@
+<?php
+if (!defined('ABSPATH')) {
+    exit('Hacking Attempt !');
+}
+
+// Add our license key if ANY
+function sharemypost_updater_filter_args($queryArgs) {
+    global $sharemypost;
+    
+    if(!empty($sharemypost->license['license'])){
+        $queryArgs['license'] = $sharemypost->license['license'];
+    }
+    
+    $queryArgs['url'] = rawurlencode(site_url());
+    
+    return $queryArgs;
+}
+
+function sharemypost_pro_updater_check_link($final_link) {
+    global $sharemypost;
+    
+    if(empty($sharemypost->license['license'])) {
+        return '<a href="' . admin_url('admin.php?page=sharemypost-license') . '">Install ShareMyPost Pro License Key</a>';
+    }
+    
+    return $final_link;
+}
+
+function sharemypost_pro_file_get_free_version_num() {
+    if(defined('SHAREMYPOST_VERSION')) {
+        return SHAREMYPOST_VERSION;
+    }
+    
+    return sharemypost_pro_file_get_version_num('sharemypost/sharemypost.php');
+}
+
+function sharemypost_pro_file_get_version_num($plugin) {
+    include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+    $plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/' . $plugin);
+
+    if (empty($plugin_data)) {
+        return false;
+    }
+
+    return $plugin_data['Version'];
+}
+
+// Keep the free and Pro plugins on the same version: only show an update
+// when both plugins end up on that same version. This also keeps a Pro
+// update from being offered ahead of the free one, which is the source of
+// truth on wp.org and subject to a 24-hour review delay.
+// https://wordpress.org/news/2026/06/pts/
+// Intentionally this also holds the free plugin back when the Pro license is
+// inactive: the Pro server then offers no update, and letting the free plugin
+// move on alone would break compatibility between the two.
+function sharemypost_pro_disable_manual_update_for_plugin($transient){
+	$free = 'sharemypost/sharemypost.php';
+	$pro = 'sharemypost-pro/sharemypost-pro.php';
+
+	if(!is_object($transient) || (empty($transient->response[$free]) && empty($transient->response[$pro]))){
+		return $transient;
+	}
+
+	// While the post-Pro-upgrade handler runs, SHAREMYPOST_PRO_VERSION is the pre-upgrade value.
+	$upgrading = !empty($GLOBALS['sharemypost_pro_is_upgraded']);
+	$pro_version = $upgrading ? sharemypost_pro_file_get_version_num($pro) : SHAREMYPOST_PRO_VERSION;
+	$free_version = sharemypost_pro_file_get_free_version_num();
+
+	// Where each plugin lands: its offered update, or its installed version if none.
+	$free_target = !empty($transient->response[$free]->new_version) ? $transient->response[$free]->new_version : $free_version;
+	$pro_target = !empty($transient->response[$pro]->new_version) ? $transient->response[$pro]->new_version : $pro_version;
+
+	// A version we cannot read means we cannot keep the two in step. If the free
+	// plugin is the missing one, updating Pro is pointless anyway: it cannot run
+	// without the free plugin.
+	if(empty($free_target) || empty($pro_target)){
+		unset($transient->response[$free], $transient->response[$pro]);
+		return $transient;
+	}
+
+	// An update is allowed only if it lands the plugin where the other one is now,
+	// or where the other one is heading. That lets a plugin left behind catch up
+	// to the other, and blocks anything that would push one ahead of the other.
+	if(version_compare($free_target, $pro_target, '!=') && version_compare($free_target, $pro_version, '!=')){
+		unset($transient->response[$free]);
+	}
+
+	if(version_compare($pro_target, $free_target, '!=') && version_compare($pro_target, $free_version, '!=')){
+		unset($transient->response[$pro]);
+	}
+
+	// Both have an update: show only Pro, it updates the free plugin once done.
+	if(isset($transient->response[$free], $transient->response[$pro])){
+		unset($transient->response[$upgrading ? $pro : $free]);
+	}
+
+	if(isset($transient->response[$free])){
+		$transient->response[$free]->new_version = $pro_version;
+		$transient->response[$free]->package = 'https://downloads.wordpress.org/plugin/sharemypost.'.$pro_version.'.zip';
+	}
+
+	return $transient;
+}
+
+function sharemypost_pro_update_free_after_pro($upgrader_object, $options) {
+    if($options['action'] != 'update' || $options['type'] != 'plugin'){
+        return;
+    }
+    $free_slug = 'sharemypost/sharemypost.php'; 
+    $pro_slug = 'sharemypost-pro/sharemypost-pro.php';
+
+    if(
+        (isset($options['plugins']) && in_array($pro_slug, $options['plugins']) && !in_array($free_slug, $options['plugins'])) ||
+        (isset($options['plugin']) && $pro_slug == $options['plugin'])
+    ){
+        $current_version = sharemypost_pro_file_get_free_version_num();
+        
+        if(empty($current_version)){
+            return;
+        }
+        
+        $GLOBALS['sharemypost_pro_is_upgraded'] = true;
+        
+        wp_update_plugins();
+
+        $update_plugins = get_site_transient('update_plugins');
+        
+        if(empty($update_plugins) || !isset($update_plugins->response[$free_slug]) || version_compare($update_plugins->response[$free_slug]->new_version, $current_version, '<=')) {
+            return;
+        }
+        
+        require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+        require_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
+        
+        $skin = wp_doing_ajax() ? new WP_Ajax_Upgrader_Skin() : null;
+        
+        $upgrader = new Plugin_Upgrader($skin);
+        $upgraded = $upgrader->upgrade($free_slug);
+        
+        if(!is_wp_error($upgraded) && $upgraded){
+            // Re-active free plugins
+            if(file_exists(WP_PLUGIN_DIR . '/' . $free_slug) && is_plugin_inactive($free_slug)){
+                activate_plugin($free_slug);
+            }
+            
+            // Re-active pro plugins
+            if(file_exists(WP_PLUGIN_DIR . '/' . $pro_slug) && is_plugin_inactive($pro_slug)){
+                activate_plugin($pro_slug); 
+            }
+        }
+    }
+}
+
+function sharemypost_pro_load_license($parent = 0){
+    global $sharemypost, $lic_resp, $sitepad;
+    
+    $license_field = 'sharemypost_license';
+    $license_api_url = SHAREMYPOST_API;
+    
+    // Save license
+    if(!empty($parent) && is_string($parent) && strlen($parent) > 5) {       
+        $lic['license'] = $parent;
+	delete_transient('sharemypost_license_check_retry');
+    
+    // Load license of Soft Pro
+    }elseif(!empty($parent)){
+        $license_field = 'softaculous_pro_license';
+        $lic = get_option('softaculous_pro_license', []);
+    
+    // My license
+    }else{
+        $lic = get_option($license_field, []);
+    }
+    
+    // Loaded license is a Soft Pro
+    if(!empty($lic['license']) && preg_match('/^softwp/is', $lic['license'])) {
+        $license_field = 'softaculous_pro_license';
+        $license_api_url = 'https://a.softaculous.com/softwp/';
+        $prods = apply_filters('softaculous_pro_products', []);
+    }else{
+        $prods = [];
+    }
+
+    if(empty($lic['last_update'])){
+        $lic['last_update'] = time() - 86600;
+    }
+	
+    // transient for ratelimit.
+    $retry = (int) get_transient('sharemypost_license_check_retry');
+
+    // Update license details as well
+    if(!empty($lic) && !empty($lic['license']) && (time() - (int) @$lic['last_update']) >= 86400 && $retry < 3){
+        $url = $license_api_url . '/license.php?license=' . $lic['license'] . '&prods=' . implode(',', $prods) . '&url=' . rawurlencode(site_url());
+        $resp = wp_remote_get($url);
+	$retry++; // updating the retry
+	set_transient('sharemypost_license_check_retry', $retry, 80000);
+
+        $lic_resp = $resp;
+
+        //Did we get a response ?
+        if(is_array($resp)){
+            $tosave = json_decode($resp['body'], true);
+            
+            //Is it the license ?
+            if(!empty($tosave['license'])){
+                $tosave['last_update'] = time();
+                update_option($license_field, $tosave);
+                $lic = $tosave;
+		delete_transient('sharemypost_license_check_retry');
+            }
+        }
+    }
+    
+    // If the license is Free or Expired check for Softaculous Pro license
+    if(empty($lic) || empty($lic['active'])){
+        if(function_exists('softaculous_pro_load_license')) {
+            $softaculous_license = softaculous_pro_load_license();
+            if(!empty($softaculous_license['license']) && 
+                (!empty($softaculous_license['active']) || empty($lic['license']))
+            ){
+                $lic = $softaculous_license;
+            }
+        }elseif(empty($parent)){
+            $lic = get_option('softaculous_pro_license', []);
+            
+            if(!empty($lic)){
+                return sharemypost_pro_load_license(1);
+            }
+        }
+    }
+    
+    if(!empty($lic['license'])){
+        $sharemypost->license = $lic;
+    }
+
+    if(defined('SITEPAD') && empty($sharemypost->license)){
+        $license = (!empty($sitepad['license']) ? $sitepad['license'] : (isset($sitepad['server_license']) ? $sitepad['server_license'] : []));
+        $license['active'] = isset($license['active']) ? $license['active'] : (isset($license['status']) ? $license['status'] : ''); 
+        $sharemypost->license = $license;
+    }
+}
+
+add_filter('softaculous_pro_products', 'sharemypost_softaculous_pro_products', 10, 1);
+function sharemypost_softaculous_pro_products($r = []) {
+    $r['sharemypost'] = 'sharemypost';
+    return $r;
+}
+
+function sharemypost_pro_api_url($main_server = 0, $suffix = 'sharemypost') {
+    global $sharemypost;
+    
+    $r = array(
+        'https://s0.softaculous.com/a/softwp/',
+        'https://s1.softaculous.com/a/softwp/',
+        'https://s2.softaculous.com/a/softwp/',
+        'https://s3.softaculous.com/a/softwp/',
+        'https://s4.softaculous.com/a/softwp/',
+        'https://s5.softaculous.com/a/softwp/',
+        'https://s7.softaculous.com/a/softwp/',
+        'https://s8.softaculous.com/a/softwp/'
+    );
+
+    $mirror = $r[array_rand($r)];
+
+    // If the license is newly issued, we need to fetch from API only
+    if(!empty($main_server) || empty($sharemypost->license['last_edit']) || 
+        (!empty($sharemypost->license['last_edit']) && (time() - 3600) < $sharemypost->license['last_edit'])
+    ){
+        $mirror = SHAREMYPOST_API;
+    }
+
+    if(!empty($suffix)){
+        $mirror = str_replace('/softwp', '/' . $suffix, $mirror);
+    }
+
+    return $mirror;
+}
+
+function sharemypost_pro_plugin_update_notice_filter($plugins = []) {
+    $plugins['sharemypost-pro/sharemypost-pro.php'] = 'sharemypost Pro';
+    return $plugins;
+}
+
+function sharemypost_pro_is_network_active($pluign) {
+    $is_network_wide = false;
+    
+    // Handling network site
+    if(!is_multisite()){
+        return $is_network_wide;
+    }
+    
+    $_tmp_plugins = get_site_option('active_sitewide_plugins');
+
+    if(!empty($_tmp_plugins) && preg_grep('/.*\/' . $pluign . '\.php$/', array_keys($_tmp_plugins))) {
+        $is_network_wide = true;
+    }
+    
+    return $is_network_wide;
+}

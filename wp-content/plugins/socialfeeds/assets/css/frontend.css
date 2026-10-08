@@ -1,0 +1,927 @@
+/* Frontend styles for Social Feeds Plugin */
+/* Center SocialFeeds at 70% width */
+.socialfeeds-youtube-feed {
+width: 100%;
+max-width: 70% !important;
+margin-left: auto !important;
+margin-right: auto !important;
+box-sizing: border-box;
+}
+
+.socialfeeds-youtube-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+width: 100%;
+box-sizing: border-box;
+}
+
+
+.socialfeeds-youtube-grid .socialfeeds-video-item {
+box-sizing: border-box;
+width: 100%;
+min-width: 0;
+/* Fix for grid blowout with long text */
+/* border: 1px solid #eee; - Removed default border */
+}
+
+.socialfeeds-video-stats {
+font-size: 12px;
+color: #666;
+margin-top: 4px;
+line-height: 1.4;
+overflow-wrap: break-word;
+word-wrap: break-word;
+}
+
+.socialfeeds-card-desc {
+margin-top: 8px;
+line-height: 1.5;
+overflow-wrap: break-word;
+word-wrap: break-word;
+}
+
+/* Play Icon Overlay */
+.socialfeeds-play-overlay{
+position: absolute;
+top: 45%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 64px;
+height: 44px;
+background: rgba(255, 0, 0, 0.7);
+border-radius: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.socialfeeds-play-overlay::before{
+content: '';
+width: 0;
+height: 0;
+border-left: 16px solid #fff;
+border-top: 10px solid transparent;
+border-bottom: 10px solid transparent;
+margin-left: 3px;
+}
+
+.socialfeeds-play-overlay:hover{
+background: #e60000;
+}
+
+/* Duration Overlay */
+.socialfeeds-video-duration{
+position: absolute;
+bottom: 8px !important;
+right: 8px !important;
+background: rgba(0, 0, 0, 0.85) !important;
+color: #fff !important;
+font-size: 15px !important;
+padding: 5px 6px !important;
+border-radius: 4px !important;
+font-weight: normal;
+line-height: 1.2;
+}
+
+.socialfeeds-youtube-grid .socialfeeds-video-item img {
+width: 100%;
+height: auto;
+display: block;
+border-radius: 4px;
+/* Enforce aspect ratio */
+object-fit: contain !important;
+background: #000;
+}
+
+.socialfeeds-video-title {
+margin: 8px 0 0;
+font-size: 14px;
+font-weight: 600;
+color: #333
+}
+
+/* Card theme - Apply border ONLY here */
+.socialfeeds-youtube-feed.socialfeeds-theme-card .socialfeeds-video-item {
+background: #fff;
+border: 1px solid #eee;
+border-radius: 4px;
+padding: 8px;
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04)
+}
+
+.socialfeeds-youtube-feed.socialfeeds-theme-card .socialfeeds-video-item .socialfeeds-video-title {
+font-weight: 600;
+color: #222
+}
+
+/* Clean theme */
+.socialfeeds-youtube-feed.socialfeeds-theme-clean .socialfeeds-video-item {
+background: transparent;
+border: none;
+padding: 0
+}
+
+.socialfeeds-youtube-feed.socialfeeds-theme-clean .socialfeeds-video-item .socialfeeds-video-title {
+font-weight: 600;
+color: #111
+}
+
+/* Grid columns override via class */
+.socialfeeds-youtube-grid .socialfeeds-grid-col-1 {
+grid-column: span 1;
+}
+
+.socialfeeds-youtube-grid .socialfeeds-grid-col-2 {
+grid-column: span 2;
+}
+
+.socialfeeds-youtube-grid .socialfeeds-grid-col-3 {
+grid-column: span 3;
+}
+
+.socialfeeds-youtube-grid .socialfeeds-grid-col-4 {
+grid-column: span 4;
+}
+
+.socialfeeds-youtube-grid .socialfeeds-grid-col-5 {
+grid-column: span 5;
+}
+
+.socialfeeds-youtube-grid .socialfeeds-grid-col-6 {
+grid-column: span 6;
+}
+
+/* LIST */
+.socialfeeds-container-list {
+max-width: 850px;
+margin: 0 auto !important;
+}
+
+.socialfeeds-youtube-list .socialfeeds-list-item {
+margin-bottom: 20px
+}
+
+
+.socialfeeds-video-iframe-wrap {
+position: relative;
+padding-bottom: 56.25%;
+height: 0;
+overflow: hidden;
+margin: 15px 0;
+/* background: #000; Removed to fix 'half black' issue reported by user */
+border-radius: 4px;
+}
+
+.socialfeeds-video-iframe-wrap iframe {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100% !important;
+}
+
+/* Nav Buttons for Carousel (injected via JS) */
+/* Nav Buttons for Carousel (injected via JS into .socialfeeds-carousel-stage) */
+.socialfeeds-carousel-nav {
+
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+pointer-events: none;
+z-index: 5;
+}
+
+.socialfeeds-carousel-btn {
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+width: 40px;
+height: 40px;
+border-radius: 50%;
+background: #fff;
+border: 1px solid rgba(0, 0, 0, 0.1);
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+color: #333;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+font-size: 20px;
+transition: all 0.2s ease;
+line-height: 1;
+pointer-events: auto;
+z-index: 10;
+}
+
+.socialfeeds-carousel-btn.prev {
+left: -20px;
+/* Slightly outside or on edge. User said "same as preview" which often means on edge. Let's try inside edge slightly or centred on edge. 
+Let's try 10px from edge inside? Or -20px outside? 
+If full width, outside might be cut off. Let's put it at 10px inside for safety, or 0.
+Screenshot shows it sitting on top of the image. 
+*/
+left: 10px;
+}
+
+.socialfeeds-carousel-btn.next {
+right: 10px;
+}
+
+.socialfeeds-carousel-btn:hover {
+background: #fff;
+box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+transform: translateY(-50%) scale(1.05);
+color: #000;
+}
+
+.socialfeeds-carousel-dots {
+display: flex;
+justify-content: center;
+gap: 8px;
+margin-top: 25px;
+margin-bottom: 10px;
+}
+
+.socialfeeds-dot {
+width: 10px;
+height: 10px;
+border-radius: 50%;
+background: #ddd;
+cursor: pointer;
+transition: 0.2s;
+}
+
+.socialfeeds-dot.active,
+.socialfeeds-dot:hover {
+background: #333;
+transform: scale(1.1);
+}
+
+.socialfeeds-carousel-btn.prev:hover,
+.socialfeeds-carousel-btn.next:hover {
+background: #555;
+/* Match Admin Dark Hover if desired? User said "same as preview" */
+/* Actually Admin preview has simple styling but maybe the user wants it to look nice */
+background: #f0f0f0;
+}
+
+/* .socialfeeds-youtube-list iframe rule removed to avoid conflict with responsive wrapper */
+
+.socialfeeds-video-desc {
+color: #555;
+font-size: 13px
+}
+
+/* NOTE: Removed duplicate/older modal rules. Consolidated modal styling appears later in this file. */
+
+/* Carousel visuals */
+.socialfeeds-youtube-carousel {
+padding: 12px 6px;
+display: flex;
+overflow-x: auto;
+gap: 12px;
+scrollbar-width: none;
+/* Firefox */
+-ms-overflow-style: none;
+/* IE 10+ */
+}
+
+.socialfeeds-youtube-carousel::-webkit-scrollbar {
+display: none;
+/* Safari and Chrome */
+}
+
+.socialfeeds-youtube-carousel .socialfeeds-carousel-item {
+background: #fff;
+padding: 6px;
+flex: 0 0 280px;
+}
+
+.socialfeeds-youtube-carousel .socialfeeds-carousel-item img {
+border-radius: 4px;
+width: 100%;
+height: auto;
+display: block
+}
+
+/* Universal card grid (product-like) */
+.socialfeeds-card-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 18px;
+align-items: stretch
+}
+
+.socialfeeds-card {
+background: #fff;
+border: 1px solid #eee;
+border-radius: 4px;
+padding: 22px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+transition: 0.2s ease
+}
+
+.socialfeeds-card:hover {
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+border-color: #ddd
+}
+
+.socialfeeds-card .socialfeeds-card-top {
+display: flex;
+align-items: flex-start;
+gap: 14px
+}
+
+.socialfeeds-card .socialfeeds-card-icon {
+width: 46px;
+height: 46px;
+border-radius: 4px;
+background: #f5f5f5;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0
+}
+
+.socialfeeds-card .socialfeeds-card-icon img {
+width: 24px;
+height: 24px
+}
+
+.socialfeeds-card h3 {
+margin: 0;
+font-size: 18px;
+color: #222;
+font-weight: 600
+}
+
+
+.socialfeeds-card-desc {
+font-size: 14px;
+color: #444444;
+margin: 4px 0 0 0;
+line-height: 1.3em;
+max-height: 2.6em;
+/* 2 lines only */
+overflow: hidden;
+text-overflow: ellipsis;
+
+}
+
+
+.socialfeeds-card-actions {
+display: flex;
+flex-direction: column;
+gap: 6px
+}
+
+.socialfeeds-btn {
+display: inline-block;
+padding: 8px 14px;
+border-radius: 4px;
+text-decoration: none;
+font-weight: 600;
+font-size: 12px;
+border: none;
+cursor: pointer;
+transition: 0.2s ease
+}
+
+.socialfeeds-btn-primary {
+background: #135e96;
+color: #fff
+}
+
+.socialfeeds-btn-primary:hover {
+background: #135e96
+}
+
+.socialfeeds-btn-secondary {
+background: #f7f7f7;
+color: #333;
+border: 1px solid #ddd
+}
+
+.socialfeeds-btn-secondary:hover {
+background: #f0f0f0
+}
+
+.socialfeeds-wrap table .button {
+background: #fff;
+color: #222;
+border: 1px solid #eee;
+padding: 6px 8px;
+border-radius: 4px;
+text-decoration: none
+}
+
+.socialfeeds-wrap table .button:hover {
+background: #fafafa
+}
+
+.socialfeeds-wrap table .button:focus {
+outline: none;
+box-shadow: none
+}
+
+.socialfeeds-wrap .fa-pen {
+color: #000 !important
+}
+
+.socialfeeds-wrap .fa-copy {
+color: #555 !important
+}
+
+.socialfeeds-wrap .fa-trash {
+color: #c62828 !important
+}
+
+.socialfeeds-wrap .button.button-secondary .fa-trash {
+color: #c62828 !important
+}
+
+/* Responsive: two cols then one */
+@media(max-width:1000px) {
+.socialfeeds-card-grid {
+	grid-template-columns: repeat(2, 1fr)
+}
+}
+
+@media(max-width:640px) {
+.socialfeeds-card-grid {
+	grid-template-columns: 1fr
+}
+}
+
+/* Responsive tweaks */
+@media(max-width:800px) {
+.socialfeeds-youtube-grid .socialfeeds-video-item {
+	flex: 0 0 calc(50% - 6px)
+}
+
+.socialfeeds-youtube-carousel .socialfeeds-carousel-item {
+	flex: 0 0 200px
+}
+}
+
+/* Video player styling */
+.socialfeeds-video-player {
+max-width: 100%;
+height: auto;
+display: block;
+margin: 0 auto;
+border-radius: 4px
+}
+
+.socialfeeds-card-img {
+max-width: 100%;
+height: auto;
+display: block;
+margin: 0 auto;
+object-fit: cover
+}
+
+/* Modal styling - professional design */
+.socialfeeds-modal {
+position: fixed;
+left: 0;
+top: 0;
+right: 0;
+bottom: 0;
+z-index: 99999;
+display: flex;
+align-items: center;
+justify-content: center
+}
+
+.socialfeeds-modal.socialfeeds-modal-hidden {
+display: none !important
+}
+
+.socialfeeds-modal-backdrop {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0, 0, 0, 0.7);
+cursor: pointer;
+z-index: -1
+}
+
+.socialfeeds-modal-inner {
+position: relative;
+max-width: 85%;
+max-height: 90vh;
+background: #fff;
+border-radius: 4px;
+overflow: auto;
+padding: 0;
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+animation: socialfeeds-modal-slide-in 0.3s ease;
+z-index: 1
+}
+
+@keyframes socialfeeds-modal-slide-in {
+from {
+	transform: translateY(-50px);
+	opacity: 0
+}
+
+to {
+	transform: translateY(0);
+	opacity: 1
+}
+}
+
+.socialfeeds-modal-close {
+position: absolute;
+top: 12px;
+right: 12px;
+width: 36px;
+height: 36px;
+border: none;
+background: #f0f0f0;
+color: #333;
+font-size: 20px;
+font-weight: bold;
+border-radius: 4px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: 0.2s ease;
+z-index: 10
+}
+
+.socialfeeds-modal-close:hover {
+background: #e0e0e0
+}
+
+.socialfeeds-modal-close:active {
+transform: scale(0.95)
+}
+
+.socialfeeds-modal-media {
+padding: 24px;
+text-align: center;
+background: #fafafa;
+min-height: 300px;
+display: flex;
+align-items: center;
+justify-content: center
+}
+
+.socialfeeds-modal-media video,
+.socialfeeds-modal-media img {
+max-width: 100%;
+max-height: 60vh;
+height: auto;
+border-radius: 4px
+}
+
+.socialfeeds-modal-caption {
+padding: 20px 24px;
+font-size: 15px;
+color: #222;
+line-height: 1.6;
+word-wrap: break-word;
+overflow-wrap: break-word
+}
+
+.socialfeeds-modal-hashtags {
+padding: 0 24px 12px;
+font-size: 14px;
+color: #0073aa;
+font-weight: 600;
+word-wrap: break-word;
+overflow-wrap: break-word
+}
+
+.socialfeeds-modal-footer {
+padding: 16px 24px;
+border-top: 1px solid #eee;
+text-align: right;
+background: #fafafa
+}
+
+.socialfeeds-modal-link {
+display: inline-block;
+padding: 10px 18px;
+background: #3a3b3c;
+color: #fff;
+text-decoration: none;
+border-radius: 4px;
+font-weight: 600;
+font-size: 14px;
+transition: 0.2s ease
+}
+
+.socialfeeds-modal-link:hover {
+background: #135e96
+}
+
+.socialfeeds-modal-video {
+max-width: 100%;
+height: auto;
+border-radius: 4px
+}
+
+.socialfeeds-modal-img {
+max-width: 100%;
+height: auto;
+border-radius: 4px
+}
+
+/* Utility: hide interactive buttons when feed configured to hide them */
+.socialfeeds-hide-buttons .socialfeeds-btn,
+.socialfeeds-hide-buttons .socialfeeds-load-more-btn,
+.socialfeeds-hide-buttons .socialfeeds-btn-subscribe,
+.socialfeeds-hide-buttons .socialfeeds-post-engagement {
+display: none !important
+}
+
+/* Modal responsive */
+@media(max-width:800px) {
+.socialfeeds-modal-inner {
+max-width: 95%;
+padding: 0;
+border-radius: 4px
+}
+
+.socialfeeds-modal-media {
+min-height: 250px;
+padding: 16px
+}
+
+.socialfeeds-modal-caption {
+padding: 16px;
+font-size: 14px
+}
+
+.socialfeeds-modal-footer {
+padding: 12px 16px
+}
+
+.socialfeeds-modal-close {
+width: 32px;
+height: 32px;
+font-size: 18px
+}
+}
+
+@media(max-width:480px) {
+.socialfeeds-modal-inner {
+max-width: 100%;
+max-height: 100vh;
+border-radius: 0;
+height: 100vh;
+display: flex;
+flex-direction: column
+}
+
+.socialfeeds-modal-media {
+min-height: 200px;
+flex-grow: 1;
+overflow-y: auto
+}
+
+.socialfeeds-modal-caption {
+padding: 12px;
+font-size: 13px;
+max-height: 150px;
+overflow-y: auto
+}
+
+.socialfeeds-modal-close {
+width: 32px;
+height: 32px;
+font-size: 18px;
+top: 8px;
+right: 8px
+}
+}
+
+/* Header for YouTube feed */
+.socialfeeds-youtube-header {
+display: block;
+margin-bottom: 20px;
+}
+
+.socialfeeds-channel-info {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.socialfeeds-youtube-header .socialfeeds-channel-logo {
+width: 48px;
+height: 48px;
+border-radius: 50%;
+object-fit: cover;
+flex-shrink: 0;
+}
+
+.socialfeeds-youtube-header .socialfeeds-channel-name {
+font-weight: 700;
+font-size: 18px;
+color: #222
+}
+
+.socialfeeds-youtube-header .socialfeeds-header-text {
+color: #666;
+font-size: 14px
+}
+
+/* Responsive Header */
+@media(max-width: 600px) {
+.socialfeeds-channel-info {
+flex-direction: column;
+text-align: center;
+gap: 10px;
+}
+
+.socialfeeds-youtube-header .socialfeeds-channel-logo {
+width: 60px;
+height: 60px;
+margin: 0 auto;
+}
+
+.socialfeeds-youtube-header .socialfeeds-channel-name {
+font-size: 16px;
+}
+
+.socialfeeds-youtube-header .socialfeeds-header-text {
+font-size: 13px;
+}
+}
+
+/* COLOR SCHEMES */
+.socialfeeds-youtube-feed.socialfeeds-scheme-dark {
+background: #0f0f0f !important;
+}
+
+.socialfeeds-youtube-feed.socialfeeds-scheme-light {
+background: #ffffff !important;
+}
+
+.socialfeeds-youtube-feed.socialfeeds-scheme-dark,
+.socialfeeds-youtube-feed.socialfeeds-scheme-light,
+.socialfeeds-youtube-feed.socialfeeds-scheme-custom {
+padding: 20px;
+border-radius: 8px;
+}
+
+.socialfeeds-scheme-dark .socialfeeds-video-item {
+background: #0f0f0f !important;
+border: none !important;
+border-radius: 0 !important;
+box-shadow: none !important;
+}
+
+.socialfeeds-scheme-dark .socialfeeds-video-item img,
+.socialfeeds-scheme-dark .socialfeeds-video-item .socialfeeds-card-media {
+border-radius: 0 !important;
+}
+
+.socialfeeds-scheme-dark .socialfeeds-video-title,
+.socialfeeds-scheme-dark h5,
+.socialfeeds-scheme-dark .socialfeeds-channel-name {
+color: #ffffff !important;
+}
+
+.socialfeeds-scheme-dark .socialfeeds-video-desc,
+.socialfeeds-scheme-dark .socialfeeds-card-desc,
+.socialfeeds-scheme-dark .socialfeeds-header-text {
+color: #cccccc !important;
+}
+
+.socialfeeds-scheme-dark .socialfeeds-video-stats {
+color: #aaaaaa !important;
+}
+
+.socialfeeds-scheme-light .socialfeeds-video-item {
+background: #ffffff !important;
+border-color: #eeeeee !important;
+}
+
+.socialfeeds-scheme-light .socialfeeds-video-title,
+.socialfeeds-scheme-light h5,
+.socialfeeds-scheme-light .socialfeeds-channel-name {
+color: #222222 !important;
+}
+
+.socialfeeds-scheme-light .socialfeeds-video-desc,
+.socialfeeds-scheme-light .socialfeeds-card-desc,
+.socialfeeds-scheme-light .socialfeeds-header-text {
+color: #666666 !important;
+}
+
+.socialfeeds-scheme-light .socialfeeds-video-stats {
+color: #666666 !important;
+}
+
+.socialfeeds-load-more-container {
+display: flex !important;
+justify-content: center !important;
+align-items: center !important;
+gap: 15px;
+margin-top: 30px;
+width: 100%;
+}
+
+.socialfeeds-video-stats {
+font-size: 12px;
+margin-top: 4px;
+line-height: 1.4;
+display: flex;
+flex-wrap: wrap;
+gap: 6px 10px;
+align-items: center;
+white-space: normal;
+overflow: visible;
+text-overflow: unset;
+}
+
+/* Metadata Styling */
+.socialfeeds-video-meta-line {
+font-size: 13px;
+color: #606060;
+margin-top: 6px;
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+}
+
+/* Load More & Subscribe Button Styles */
+.socialfeeds-load-more-btn,
+.socialfeeds-btn-subscribe {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+padding: 10px 24px;
+font-size: 14px;
+font-weight: 400;
+border-radius: 4px;
+border: none;
+cursor: pointer;
+transition: all 0.2s ease;
+text-decoration: none;
+line-height: normal;
+}
+
+.socialfeeds-load-more-btn {
+background-color: #f0f0f0;
+/* Default fallback */
+color: #333;
+}
+
+.socialfeeds-load-more-btn:hover{
+filter: brightness(0.95);
+}
+
+.socialfeeds-btn-subscribe{
+background-color: #cc0000;
+/* Default YouTube Red */
+color: #fff;
+}
+
+.socialfeeds-btn-subscribe:hover{
+background-color: #b30000;
+}
+
+/* Disabled state */
+.socialfeeds-load-more-btn:disabled{
+opacity: 0.8;
+cursor: not-allowed;
+}
+
+/* Loading Spinner */
+.socialfeeds-load-more-btn.socialfeeds-loading::after {
+content: "";
+width: 16px;
+height: 16px;
+border: 2px solid currentColor;
+border-radius: 50%;
+border-top-color: transparent;
+animation: sf-rotate 0.6s linear infinite;
+display: inline-block;
+margin-left: 10px;
+vertical-align: middle;
+}
+.socialfeeds-meta-item:not(:first-child)::before {
+content: "•";
+margin: 0 3px;
+font-size: 16px; 
+}
+@keyframes sf-rotate {
+to {
+	transform: rotate(360deg);
+}
+}

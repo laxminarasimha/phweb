@@ -1,0 +1,46 @@
+{
+  "name": "newfold-labs/wp-module-performance",
+  "description": "A module for managing caching functionality.",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Micah Wood",
+      "email": "micah@wpscholar.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "NewfoldLabs\\WP\\Module\\Performance\\": "includes"
+    },
+    "files": [
+      "includes/PerformanceFeature.php",
+      "includes/functions.php",
+      "bootstrap.php"
+    ]
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://newfold-labs.github.io/satis/",
+      "only": [
+        "newfold-labs/*"
+      ]
+    }
+  ],
+  "require": {
+    "newfold-labs/wp-module-context": "^1.0",
+    "wp-forge/collection": "^1.0.2",
+    "wp-forge/wp-htaccess-manager": "^1.0",
+    "wpscholar/url": "^1.2.5",
+    "newfold-labs/wp-module-features": "^1.4",
+    "newfold-labs/wp-module-installer": "^1.3.0"
+  },
+  "require-dev": {
+    "newfold-labs/wp-php-standards": "^1.2.4"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}
