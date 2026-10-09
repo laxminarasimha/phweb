@@ -6,7 +6,7 @@
 
  * Description: Patient registration and management for Prasanthi Hospitals.
 
- * Version: 1.0.2
+ * Version: 1.1.0
 
  * Author: Prasanthi Hospitals
 
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 
-define( 'PH_PATIENTS_VERSION', '1.0.2' );
+define( 'PH_PATIENTS_VERSION', '1.1.0' );
 
 
 
@@ -654,6 +654,14 @@ function ph_patients_admin_styles( $hook ) {
 
             font-size: 14px;
 
+        }
+
+        .ph-dashboard-table {
+            overflow-x: auto;
+        }
+
+        .ph-dashboard-table table {
+            min-width: 900px;
         }
 
 
@@ -3758,6 +3766,39 @@ function ph_patients_detail_page(
 
 
 
+    /*
+     * --------------------------------------------------------
+     * APPOINTMENT HISTORY
+     * --------------------------------------------------------
+     *
+     * Appointments are linked to patients through patient_id,
+     * which stores the patient reference such as PH-PAT-000001.
+     */
+    $appointment_history = array();
+
+    $appointments_table = $wpdb->prefix . 'ph_appointments';
+
+    $appointments_table_exists = $wpdb->get_var(
+        $wpdb->prepare(
+            'SHOW TABLES LIKE %s',
+            $appointments_table
+        )
+    );
+
+    if ( $appointments_table_exists === $appointments_table ) {
+        $appointment_history = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT *
+                 FROM {$appointments_table}
+                 WHERE patient_id = %s
+                 ORDER BY created_at DESC
+                 LIMIT 100",
+                $patient->patient_reference
+            )
+        );
+    }
+
+
     $edit_url =
 
         add_query_arg(
@@ -4525,6 +4566,99 @@ function ph_patients_detail_page(
 
 
         </div>
+        <div class="ph-patient-box">
+            <h2>Appointment History</h2>
+
+            <?php if ( empty( $appointment_history ) ) : ?>
+
+                <p>No appointments linked to this patient.</p>
+
+            <?php else : ?>
+
+                <div class="ph-dashboard-table">
+                    <table class="wp-list-table widefat fixed striped">
+                        <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Booked By</th>
+                                <th>Mobile</th>
+                                <th>Doctor</th>
+                                <th>Preferred Date</th>
+                                <th>Confirmed Date</th>
+                                <th>Confirmed Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ( $appointment_history as $appointment ) : ?>
+                                <?php
+                                $doctor_name = 'Any Doctor / Front Desk';
+
+                                if ( ! empty( $appointment->doctor_id ) ) {
+                                    $doctor = get_post( (int) $appointment->doctor_id );
+
+                                    if ( $doctor ) {
+                                        $doctor_name = get_the_title( $doctor );
+                                    }
+                                }
+
+                                $appointment_url = add_query_arg(
+                                    array(
+                                        'page'           => 'ph-appointments',
+                                        'appointment_id' => (int) $appointment->id,
+                                    ),
+                                    admin_url( 'admin.php' )
+                                );
+                                ?>
+                                <tr>
+                                    <td>
+                                        <strong>
+                                            <a href="<?php echo esc_url( $appointment_url ); ?>">
+                                                <?php echo esc_html( $appointment->request_reference ); ?>
+                                            </a>
+                                        </strong>
+                                    </td>
+                                    <td><?php echo esc_html( $appointment->patient_name ); ?></td>
+                                    <td><?php echo esc_html( $appointment->mobile ); ?></td>
+                                    <td><?php echo esc_html( $doctor_name ); ?></td>
+                                    <td>
+                                        <?php
+                                        echo ! empty( $appointment->preferred_date )
+                                            ? esc_html( wp_date( 'd M Y', strtotime( $appointment->preferred_date ) ) )
+                                            : '—';
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        echo ! empty( $appointment->confirmed_date )
+                                            ? esc_html( wp_date( 'd M Y', strtotime( $appointment->confirmed_date ) ) )
+                                            : '—';
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        echo ! empty( $appointment->confirmed_time )
+                                            ? esc_html( wp_date( 'g:i A', strtotime( $appointment->confirmed_time ) ) )
+                                            : '—';
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        echo esc_html(
+                                            ucfirst( str_replace( '_', ' ', $appointment->status ) )
+                                        );
+                                        ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+            <?php endif; ?>
+        </div>
+
+
 
 
 

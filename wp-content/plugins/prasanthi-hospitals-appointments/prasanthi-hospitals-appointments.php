@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Prasanthi Hospitals Appointments
  * Description: Appointment request form and front-desk appointment management for Prasanthi Hospitals.
- * Version: 1.3.0
+ * Version: 1.3.2
  * Author: Prasanthi Hospitals
  */
 
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'PH_APPOINTMENTS_VERSION', '1.3.0' );
+define( 'PH_APPOINTMENTS_VERSION', '1.3.2' );
 
 /**
  * ============================================================
@@ -745,11 +745,29 @@ function ph_appointments_list_page() {
                             </td>
 
                             <td>
-                                <?php
-                                echo esc_html(
-                                    $appointment->patient_name
-                                );
-                                ?>
+                                <strong>
+                                    <?php
+                                    echo esc_html(
+                                        $appointment->patient_name
+                                    );
+                                    ?>
+                                </strong>
+
+                                <br>
+
+                                <?php if ( ! empty( $appointment->patient_id ) ) : ?>
+
+                                    <span style="color:#2271b1;font-size:12px;">
+                                        Linked: <?php echo esc_html( $appointment->patient_id ); ?>
+                                    </span>
+
+                                <?php else : ?>
+
+                                    <span style="color:#8c8f94;font-size:12px;">
+                                        Not linked to patient record
+                                    </span>
+
+                                <?php endif; ?>
                             </td>
 
                             <td>
@@ -1184,10 +1202,36 @@ function ph_appointments_detail_page( $appointment_id ) {
         }
 
         /*
-         * If appointment is confirmed, actual date/time
-         * should be supplied.
+         * A confirmed/active appointment must belong to a
+         * registered hospital patient.
+         *
+         * New requests may remain unlinked because they can
+         * originate from the public website. The front desk
+         * must register/link the patient before the request
+         * becomes a booked appointment.
          */
         if (
+            in_array(
+                $status,
+                array(
+                    'confirmed',
+                    'arrived',
+                    'in_consultation',
+                    'completed',
+                ),
+                true
+            )
+            &&
+            empty( $appointment->patient_id )
+        ) {
+
+            echo '<div class="notice notice-error is-dismissible">';
+            echo '<p>';
+            echo '<strong>Please register and link a patient before booking this appointment.</strong>';
+            echo '</p>';
+            echo '</div>';
+
+        } elseif (
             'confirmed' === $status
             &&
             (
@@ -1597,6 +1641,25 @@ function ph_appointments_detail_page( $appointment_id ) {
                 <p>
                     This appointment is not linked to a registered patient.
                     Search by Patient ID, name or mobile number.
+                </p>
+
+                <p>
+                    <a
+                        href="<?php
+                        echo esc_url(
+                            add_query_arg(
+                                array(
+                                    'page'   => 'ph-patients',
+                                    'action' => 'add',
+                                ),
+                                admin_url( 'admin.php' )
+                            )
+                        );
+                        ?>"
+                        class="button button-primary"
+                    >
+                        Register New Patient
+                    </a>
                 </p>
 
                 <form method="get">
