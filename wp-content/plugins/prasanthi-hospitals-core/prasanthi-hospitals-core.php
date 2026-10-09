@@ -712,3 +712,160 @@ register_deactivation_hook(
         flush_rewrite_rules();
     }
 );
+
+
+/**
+ * Prasanthi Hospitals - WordPress Login Branding
+ */
+
+/**
+ * Add hospital branding to the WordPress login screen.
+ */
+function prasanthi_hospital_login_branding() {
+    $logo_url = content_url( '/uploads/2026/10/cropped-logo.png' );
+    ?>
+    <style>
+        body.login {
+            background: #f5f3fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 24px 16px;
+            box-sizing: border-box;
+        }
+
+        body.login #login {
+            width: 100%;
+            max-width: 360px;
+            padding: 0;
+            margin: 0;
+        }
+
+        body.login h1 a {
+            background-image: url('<?php echo esc_url( $logo_url ); ?>');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 110px;
+            margin: 0 auto 24px;
+        }
+
+        body.login #loginform,
+        body.login #lostpasswordform,
+        body.login #registerform {
+            background: #ffffff;
+            border: 1px solid #e8e2f0;
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 8px 28px rgba(70, 40, 100, 0.10);
+        }
+
+        body.login label {
+            color: #43345c;
+            font-weight: 500;
+        }
+
+        body.login input[type="text"],
+        body.login input[type="password"],
+        body.login input[type="email"] {
+            border: 1px solid #d8cfe5;
+            border-radius: 7px;
+            padding: 8px 10px;
+            min-height: 42px;
+            box-shadow: none;
+        }
+
+        body.login input[type="text"]:focus,
+        body.login input[type="password"]:focus,
+        body.login input[type="email"]:focus {
+            border-color: #6b3fa0;
+            box-shadow: 0 0 0 1px #6b3fa0;
+            outline: none;
+        }
+
+        
+body.login .wp-core-ui .button-primary {
+    background: #6b3fa0 !important;
+    border-color: #6b3fa0 !important;
+    color: #ffffff !important;
+    border-radius: 7px;
+    padding: 4px 18px;
+    min-height: 40px;
+    text-shadow: none;
+    box-shadow: none;
+}
+
+body.login .wp-core-ui .button-primary:hover,
+body.login .wp-core-ui .button-primary:focus {
+    background: #512d7d !important;
+    border-color: #512d7d !important;
+    color: #ffffff !important;
+}
+
+
+        body.login .wp-core-ui .button-primary:hover,
+        body.login .wp-core-ui .button-primary:focus {
+            background: #512d7d;
+            border-color: #512d7d;
+        }
+
+        body.login a {
+            color: #6b3fa0;
+        }
+
+        body.login a:hover {
+            color: #e47b36;
+        }
+
+        body.login #backtoblog,
+        body.login #nav {
+            text-align: center;
+        }
+
+        body.login #backtoblog {
+            margin-top: 18px;
+        }
+
+        body.login #login_error,
+        body.login .message,
+        body.login .success {
+            border-left-color: #e47b36;
+            border-radius: 5px;
+        }
+
+        @media screen and (max-width: 480px) {
+            body.login {
+                align-items: flex-start;
+                padding-top: 36px;
+            }
+
+            body.login #loginform,
+            body.login #lostpasswordform,
+            body.login #registerform {
+                padding: 22px;
+            }
+
+            body.login h1 a {
+                height: 90px;
+                margin-bottom: 18px;
+            }
+        }
+    </style>
+    <?php
+}
+add_action( 'login_enqueue_scripts', 'prasanthi_hospital_login_branding' );
+
+/**
+ * Replace the WordPress logo link and hover title.
+ */
+function prasanthi_hospital_login_logo_url() {
+    return home_url( '/' );
+}
+add_filter( 'login_headerurl', 'prasanthi_hospital_login_logo_url' );
+
+function prasanthi_hospital_login_logo_title() {
+    return 'Prasanthi Hospitals';
+}
+add_filter( 'login_headertext', 'prasanthi_hospital_login_logo_title' );

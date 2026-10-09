@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Prasanthi Hospitals Visits
  * Description: Visit management for Prasanthi Hospitals.
- * Version: 1.0.4
+ * Version: 1.0.5
  * Author: Prasanthi Hospitals
  */
 
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'PH_VISITS_VERSION', '1.0.4' );
+define( 'PH_VISITS_VERSION', '1.0.5' );
 define( 'PH_VISITS_DB_VERSION', '1.0.2' );
 define( 'PH_VISITS_TABLE', 'ph_visits' );
 
@@ -482,6 +482,10 @@ function ph_visits_add() {
     <div class="wrap phv">
         <h1>Add Visit</h1>
 
+        <?php if ( $success ) : ?>
+            <div class="notice notice-success is-dismissible"><p><strong>Visit updated successfully.</strong></p></div>
+        <?php endif; ?>
+
         <?php if ( $errors ) : ?>
             <div class="notice notice-error">
                 <p><strong>Please correct the following:</strong></p>
@@ -622,7 +626,13 @@ function ph_visits_detail( $id ) {
     ?>
     <div class="wrap phv">
         <h1><?php echo esc_html( $visit->visit_reference ); ?></h1>
-        <p><a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits' ) ); ?>">← Back to Visits</a></p>
+        <p>
+            <a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits' ) ); ?>">← Back to Visits</a>
+            <a class="button button-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits&edit_visit_id=' . (int) $visit->id ) ); ?>">Edit Visit / Update Status</a>
+        </p>
+        <?php if ( isset( $_GET['updated'] ) && '1' === sanitize_text_field( wp_unslash( $_GET['updated'] ) ) ) : ?>
+            <div class="notice notice-success is-dismissible"><p>Visit updated successfully.</p></div>
+        <?php endif; ?>
 
         <div class="card">
             <h2>Visit Information</h2>
@@ -644,9 +654,180 @@ function ph_visits_detail( $id ) {
     <?php
 }
 
+
+function ph_visits_edit( $id ) {
+    if ( ! current_user_can( ph_visits_cap() ) ) {
+        wp_die( 'You do not have permission to manage visits.' );
+    }
+
+    global $wpdb;
+
+    $table = $wpdb->prefix . PH_VISITS_TABLE;
+    $visit = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d LIMIT 1", $id ) );
+
+    if ( ! $visit ) {
+        echo '<div class="wrap phv"><div class="notice notice-error"><p>Visit not found.</p></div></div>';
+        return;
+    }
+
+    $errors = array();
+    $success = false;
+    $status = $visit->status;
+    $visit_date = $visit->visit_date;
+    $visit_time = ( '00:00:00' === $visit->visit_time ) ? '' : substr( (string) $visit->visit_time, 0, 5 );
+    $doctor_id = (int) $visit->doctor_id;
+    $notes = $visit->visit_notes;
+
+    if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['ph_visits_action'] ) && 'update' === sanitize_key( wp_unslash( $_POST['ph_visits_action'] ) ) ) {
+        check_admin_referer( 'ph_visits_update_' . (int) $visit->id );
+
+        $status = isset( $_POST['status'] ) ? sanitize_key( wp_unslash( $_POST['status'] ) ) : '';
+        $visit_date = isset( $_POST['visit_date'] ) ? sanitize_text_field( wp_unslash( $_POST['visit_date'] ) ) : '';
+        $visit_time = isset( $_POST['visit_time'] ) ? sanitize_text_field( wp_unslash( $_POST['visit_time'] ) ) : '';
+        $doctor_id = isset( $_POST['doctor_id'] ) ? absint( $_POST['doctor_id'] ) : 0;
+        $notes = isset( $_POST['visit_notes'] ) ? sanitize_textarea_field( wp_unslash( $_POST['visit_notes'] ) ) : '';
+
+        if ( ! isset( ph_visits_statuses()[ $status ] ) ) {
+            $errors[] = 'Please select a valid visit status.';
+        }
+
+        if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $visit_date ) ) {
+            $errors[] = 'Please enter a valid visit date.';
+        } else {
+            $date_parts = explode( '-', $visit_date );
+            if ( ! checkdate( (int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[0] ) ) {
+                $errors[] = 'Please enter a valid calendar date.';
+            }
+        }
+
+        if ( '' !== $visit_time && ! preg_match( '/^(?:[01]\d|2[0-3]):[0-5]\d$/', $visit_time ) ) {
+            $errors[] = 'Please enter a valid visit time.';
+        }
+
+        if ( $doctor_id ) {
+            $doctor_post = get_post( $doctor_id );
+            if ( ! $doctor_post || 'doctor' !== $doctor_post->post_type || 'publish' !== $doctor_post->post_status ) {
+                $errors[] = 'Please select a valid published doctor.';
+            }
+        }
+
+        if ( ! $errors ) {
+            $updated = $wpdb->update(
+                $table,
+                array(
+                    'status'     => $status,
+                    'visit_date' => $visit_date,
+                    'visit_time' => '' !== $visit_time ? $visit_time . ':00' : null,
+                    'doctor_id'  => $doctor_id ? $doctor_id : null,
+                    'visit_notes'=> $notes,
+                    'updated_at' => current_time( 'mysql' ),
+                ),
+                array( 'id' => (int) $visit->id ),
+                array( '%s', '%s', '%s', '%d', '%s', '%s' ),
+                array( '%d' )
+            );
+
+            if ( false === $updated ) {
+                $errors[] = 'The visit could not be updated. Please try again.';
+            } else {
+                // Admin page callbacks may run after output has started, so render a success
+                // notice here instead of redirecting and risking a blank response.
+                $success = true;
+                $visit = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d LIMIT 1", (int) $visit->id ) );
+                $status = $visit->status;
+                $visit_date = $visit->visit_date;
+                $visit_time = ( '00:00:00' === $visit->visit_time ) ? '' : substr( (string) $visit->visit_time, 0, 5 );
+                $doctor_id = (int) $visit->doctor_id;
+                $notes = $visit->visit_notes;
+            }
+        }
+    }
+
+    $doctors = get_posts(
+        array(
+            'post_type'      => 'doctor',
+            'post_status'    => 'publish',
+            'posts_per_page' => -1,
+            'orderby'        => 'title',
+            'order'          => 'ASC',
+        )
+    );
+    ?>
+    <div class="wrap phv">
+        <h1>Edit Visit — <?php echo esc_html( $visit->visit_reference ); ?></h1>
+        <p><a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits&visit_id=' . (int) $visit->id ) ); ?>">← Cancel and View Visit</a></p>
+
+        <?php if ( $success ) : ?>
+            <div class="notice notice-success is-dismissible"><p><strong>Visit updated successfully.</strong></p></div>
+        <?php endif; ?>
+
+        <?php if ( $errors ) : ?>
+            <div class="notice notice-error">
+                <p><strong>Please correct the following:</strong></p>
+                <ul><?php foreach ( $errors as $error ) : ?><li><?php echo esc_html( $error ); ?></li><?php endforeach; ?></ul>
+            </div>
+        <?php endif; ?>
+
+        <div class="card">
+            <p><strong>Patient:</strong> <?php echo esc_html( $visit->patient_id ); ?> &nbsp; | &nbsp;
+            <strong>Type:</strong> <?php echo esc_html( ph_visits_types()[ $visit->visit_type ] ?? $visit->visit_type ); ?>
+            <?php if ( $visit->appointment_id ) : ?> &nbsp; | &nbsp; <strong>Appointment ID:</strong> <?php echo (int) $visit->appointment_id; ?><?php endif; ?></p>
+            <p class="help">Patient, visit source, and linked appointment are fixed here to preserve the visit's original association.</p>
+
+            <form method="post">
+                <?php wp_nonce_field( 'ph_visits_update_' . (int) $visit->id ); ?>
+                <input type="hidden" name="ph_visits_action" value="update">
+
+                <div class="row">
+                    <label for="ph-edit-visit-status">Status *</label>
+                    <select id="ph-edit-visit-status" name="status" required>
+                        <?php foreach ( ph_visits_statuses() as $key => $label ) : ?>
+                            <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $status, $key ); ?>><?php echo esc_html( $label ); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <label for="ph-edit-visit-date">Visit Date *</label>
+                    <input type="date" id="ph-edit-visit-date" name="visit_date" value="<?php echo esc_attr( $visit_date ); ?>" required>
+                </div>
+
+                <div class="row">
+                    <label for="ph-edit-visit-time">Visit Time</label>
+                    <input type="time" id="ph-edit-visit-time" name="visit_time" value="<?php echo esc_attr( $visit_time ); ?>">
+                </div>
+
+                <div class="row">
+                    <label for="ph-edit-doctor-id">Doctor</label>
+                    <select id="ph-edit-doctor-id" name="doctor_id">
+                        <option value="0">Not specified</option>
+                        <?php foreach ( $doctors as $doctor ) : ?>
+                            <option value="<?php echo (int) $doctor->ID; ?>" <?php selected( $doctor_id, $doctor->ID ); ?>><?php echo esc_html( get_the_title( $doctor ) ); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <label for="ph-edit-visit-notes">Visit Notes</label>
+                    <textarea id="ph-edit-visit-notes" name="visit_notes"><?php echo esc_textarea( $notes ); ?></textarea>
+                </div>
+
+                <p><button type="submit" class="button button-primary">Save Visit Changes</button>
+                <a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits&visit_id=' . (int) $visit->id ) ); ?>">Cancel</a></p>
+            </form>
+        </div>
+    </div>
+    <?php
+}
+
 function ph_visits_admin_page() {
     if ( ! current_user_can( ph_visits_cap() ) ) {
         wp_die( 'You do not have permission to manage visits.' );
+    }
+
+    if ( isset( $_GET['edit_visit_id'] ) && absint( $_GET['edit_visit_id'] ) ) {
+        ph_visits_edit( absint( $_GET['edit_visit_id'] ) );
+        return;
     }
 
     if ( isset( $_GET['visit_id'] ) && absint( $_GET['visit_id'] ) ) {
