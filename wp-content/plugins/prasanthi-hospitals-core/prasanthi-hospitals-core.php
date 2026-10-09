@@ -33,6 +33,7 @@ function prasanthi_register_doctor_cpt() {
 
         'public'             => true,
         'show_in_rest'       => true,
+        'show_in_menu'       => 'prasanthi-hospitals',
         'menu_icon'          => 'dashicons-id',
         'supports'           => array(
             'title',
@@ -52,6 +53,80 @@ function prasanthi_register_doctor_cpt() {
 }
 
 add_action('init', 'prasanthi_register_doctor_cpt');
+
+/*
+|--------------------------------------------------------------------------
+| Prasanthi Hospitals Admin Menu and Dashboard
+|--------------------------------------------------------------------------
+| The shared parent is registered here once. Feature plugins add their own
+| submenu pages beneath this slug. Existing page slugs remain unchanged.
+*/
+function prasanthi_hospitals_admin_menu() {
+    add_menu_page(
+        'Prasanthi Hospitals',
+        'Prasanthi Hospitals',
+        'read',
+        'prasanthi-hospitals',
+        'prasanthi_hospitals_dashboard_page',
+        'dashicons-heart',
+        25
+    );
+}
+add_action( 'admin_menu', 'prasanthi_hospitals_admin_menu', 5 );
+
+function prasanthi_hospitals_dashboard_page() {
+    if ( ! current_user_can( 'read' ) ) {
+        wp_die( 'You do not have permission to view this page.' );
+    }
+
+    global $wpdb;
+    $patients_table     = $wpdb->prefix . 'ph_patients';
+    $appointments_table = $wpdb->prefix . 'ph_appointments';
+    $visits_table       = $wpdb->prefix . 'ph_visits';
+
+    $count_table = static function ( $table ) use ( $wpdb ) {
+        $exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
+        if ( $exists !== $table ) {
+            return null;
+        }
+        return (int) $wpdb->get_var( "SELECT COUNT(*) FROM `" . esc_sql( $table ) . "`" );
+    };
+
+    $patients_count     = $count_table( $patients_table );
+    $appointments_count = $count_table( $appointments_table );
+    $visits_count       = $count_table( $visits_table );
+    $doctors_count      = (int) wp_count_posts( 'doctor' )->publish;
+    ?>
+    <div class="wrap">
+        <h1>Prasanthi Hospitals</h1>
+        <p>Hospital administration dashboard. Choose a module below to continue.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;max-width:1100px;margin-top:22px;">
+            <?php if ( current_user_can( 'ph_manage_patients' ) ) : ?>
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=ph-patients' ) ); ?>" style="display:block;background:#fff;border:1px solid #dcdcde;border-radius:8px;padding:20px;text-decoration:none;color:#1d2327;">
+                    <strong style="font-size:16px;">Patients</strong><div style="font-size:28px;font-weight:700;margin:10px 0;"><?php echo null === $patients_count ? '—' : esc_html( number_format_i18n( $patients_count ) ); ?></div><span>Register and manage patient records</span>
+                </a>
+            <?php endif; ?>
+            <?php if ( current_user_can( 'ph_manage_appointments' ) ) : ?>
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=ph-appointments' ) ); ?>" style="display:block;background:#fff;border:1px solid #dcdcde;border-radius:8px;padding:20px;text-decoration:none;color:#1d2327;">
+                    <strong style="font-size:16px;">Appointments</strong><div style="font-size:28px;font-weight:700;margin:10px 0;"><?php echo null === $appointments_count ? '—' : esc_html( number_format_i18n( $appointments_count ) ); ?></div><span>Review requests and manage bookings</span>
+                </a>
+            <?php endif; ?>
+            <?php if ( current_user_can( 'ph_manage_visits' ) ) : ?>
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits' ) ); ?>" style="display:block;background:#fff;border:1px solid #dcdcde;border-radius:8px;padding:20px;text-decoration:none;color:#1d2327;">
+                    <strong style="font-size:16px;">Visits</strong><div style="font-size:28px;font-weight:700;margin:10px 0;"><?php echo null === $visits_count ? '—' : esc_html( number_format_i18n( $visits_count ) ); ?></div><span>Manage outpatient visits</span>
+                </a>
+            <?php endif; ?>
+            <?php if ( current_user_can( 'edit_posts' ) ) : ?>
+                <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=doctor' ) ); ?>" style="display:block;background:#fff;border:1px solid #dcdcde;border-radius:8px;padding:20px;text-decoration:none;color:#1d2327;">
+                    <strong style="font-size:16px;">Doctors</strong><div style="font-size:28px;font-weight:700;margin:10px 0;"><?php echo esc_html( number_format_i18n( $doctors_count ) ); ?></div><span>Maintain doctor profiles</span>
+                </a>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php
+}
+
+
 
 
 /*

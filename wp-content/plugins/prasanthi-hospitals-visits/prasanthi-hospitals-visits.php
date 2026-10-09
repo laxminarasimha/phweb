@@ -166,18 +166,17 @@ function ph_visits_cap() {
 }
 
 function ph_visits_menu() {
-    add_menu_page(
+    add_submenu_page(
+        'prasanthi-hospitals',
         'Visits',
         'Visits',
         ph_visits_cap(),
         'ph-visits',
-        'ph_visits_admin_page',
-        'dashicons-clipboard',
-        26
+        'ph_visits_admin_page'
     );
 
     add_submenu_page(
-        'ph-visits',
+        'prasanthi-hospitals',
         'Add Visit',
         'Add Visit',
         ph_visits_cap(),

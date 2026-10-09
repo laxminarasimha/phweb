@@ -437,27 +437,14 @@ function ph_patients_generate_reference() {
 
 
 function ph_patients_admin_menu() {
-
-
-
-    add_menu_page(
-
+    add_submenu_page(
+        'prasanthi-hospitals',
         'Patients',
-
         'Patients',
-
         'ph_manage_patients',
-
         'ph-patients',
-
-        'ph_patients_admin_page',
-
-        'dashicons-id-alt',
-
-        27
-
+        'ph_patients_admin_page'
     );
-
 }
 
 
@@ -490,7 +477,7 @@ function ph_patients_admin_styles( $hook ) {
 
     if (
 
-        'toplevel_page_ph-patients' !== $hook
+        'prasanthi-hospitals_page_ph-patients' !== $hook && 'toplevel_page_ph-patients' !== $hook
 
     ) {
 

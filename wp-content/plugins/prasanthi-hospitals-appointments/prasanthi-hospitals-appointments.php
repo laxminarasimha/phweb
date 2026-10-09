@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Prasanthi Hospitals Appointments
  * Description: Appointment request form and front-desk appointment management for Prasanthi Hospitals.
- * Version: 1.3.2
+ * Version: 1.3.3
  * Author: Prasanthi Hospitals
  */
 
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'PH_APPOINTMENTS_VERSION', '1.3.2' );
+define( 'PH_APPOINTMENTS_VERSION', '1.3.3' );
 
 /**
  * ============================================================
@@ -258,15 +258,13 @@ function ph_generate_request_reference() {
  */
 
 function ph_appointments_admin_menu() {
-
-    add_menu_page(
+    add_submenu_page(
+        'prasanthi-hospitals',
         'Appointments',
         'Appointments',
         'ph_manage_appointments',
         'ph-appointments',
-        'ph_appointments_admin_page',
-        'dashicons-calendar-alt',
-        26
+        'ph_appointments_admin_page'
     );
 }
 
@@ -283,7 +281,7 @@ add_action(
 
 function ph_appointments_admin_styles( $hook ) {
 
-    if ( 'toplevel_page_ph-appointments' !== $hook ) {
+    if ( 'prasanthi-hospitals_page_ph-appointments' !== $hook && 'toplevel_page_ph-appointments' !== $hook ) {
         return;
     }
 
@@ -1339,6 +1337,45 @@ function ph_appointments_detail_page( $appointment_id ) {
             );
             ?>
         </h1>
+
+        <?php
+        /*
+         * Appointment-to-Visit workflow.
+         * A visit can only be started from an eligible appointment that
+         * already has a registered patient linked to it.
+         */
+        $ph_visit_table = $wpdb->prefix . 'ph_visits';
+        $ph_visit_table_exists = $wpdb->get_var(
+            $wpdb->prepare( 'SHOW TABLES LIKE %s', $ph_visit_table )
+        ) === $ph_visit_table;
+        $ph_existing_visit_id = 0;
+
+        if ( $ph_visit_table_exists ) {
+            $ph_existing_visit_id = (int) $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT id FROM {$ph_visit_table} WHERE appointment_id = %d LIMIT 1",
+                    $appointment_id
+                )
+            );
+        }
+
+        $ph_visit_eligible_statuses = array( 'confirmed', 'arrived', 'in_consultation' );
+        ?>
+        <div class="ph-appointment-visit-action" style="margin: 16px 0;">
+            <?php if ( $ph_existing_visit_id ) : ?>
+                <a class="button button-secondary" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits&visit_id=' . $ph_existing_visit_id ) ); ?>">View Existing Visit</a>
+                <span class="description">A visit has already been created for this appointment.</span>
+            <?php elseif ( empty( $appointment->patient_id ) ) : ?>
+                <p class="description">Register and link a patient before creating a visit from this appointment.</p>
+            <?php elseif ( ! in_array( $appointment->status, $ph_visit_eligible_statuses, true ) ) : ?>
+                <p class="description">A visit can be created when this appointment is Confirmed, Arrived, or In Consultation.</p>
+            <?php elseif ( ! $ph_visit_table_exists ) : ?>
+                <p class="description">The Visits module is not active. Activate Prasanthi Hospitals Visits to create a visit.</p>
+            <?php else : ?>
+                <a class="button button-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits-add&appointment_id=' . (int) $appointment_id ) ); ?>">Create Visit</a>
+                <span class="description">Patient and doctor details will be prefilled from this appointment.</span>
+            <?php endif; ?>
+        </div>
 
         <div class="ph-detail-box">
 
