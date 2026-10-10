@@ -207,7 +207,22 @@ function ph_visits_css( $hook ) {
         .phv .lbl { font-weight:600; }
         .phv .source-choice { display:inline-flex; align-items:center; gap:7px; margin-right:25px; font-weight:500; }
         .phv .source-choice input { margin:0; }
-        @media (max-width:700px) { .phv .grid { grid-template-columns:1fr; gap:4px; } }
+        .phv .phv-patient-select-row { display:flex; align-items:center; gap:8px; max-width:850px; }
+        .phv .phv-patient-select-row select { flex:1; min-width:0; }
+        .phv .phv-modal { position:fixed; inset:0; z-index:100100; display:flex; align-items:center; justify-content:center; padding:24px; }
+        .phv .phv-modal-backdrop { position:absolute; inset:0; background:rgba(0,0,0,.55); }
+        .phv .phv-modal-panel { position:relative; z-index:1; background:#fff; border-radius:8px; box-shadow:0 10px 40px rgba(0,0,0,.25); width:100%; max-width:560px; max-height:calc(100vh - 48px); overflow:auto; padding:24px; }
+        .phv .phv-modal-header { display:flex; justify-content:space-between; align-items:center; gap:16px; }
+        .phv .phv-modal-header h2 { margin:0; }
+        .phv .phv-modal-header .button-link { font-size:26px; text-decoration:none; }
+        .phv .phv-modal-panel input, .phv .phv-modal-panel select { width:100%; max-width:none; }
+        .phv .phv-modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:20px; }
+        @media (max-width:700px) {
+            .phv .grid { grid-template-columns:1fr; gap:4px; }
+            .phv .phv-patient-select-row { align-items:stretch; flex-direction:column; }
+            .phv .phv-modal { padding:12px; }
+            .phv .phv-modal-panel { max-height:calc(100vh - 24px); padding:18px; }
+        }
     </style>
     <?php
 }
@@ -335,6 +350,88 @@ function ph_visits_get_patients() {
          LIMIT 500"
     );
 }
+
+
+/**
+ * Create a registered patient from the Add Visit screen.
+ * Uses the existing Patients plugin table and reference generator.
+ */
+function ph_visits_ajax_add_patient() {
+    if ( ! current_user_can( ph_visits_cap() ) || ! current_user_can( 'ph_manage_patients' ) ) {
+        wp_send_json_error( array( 'message' => 'You do not have permission to register patients.' ), 403 );
+    }
+
+    check_ajax_referer( 'ph_visits_add_patient', 'nonce' );
+
+    if ( ! function_exists( 'ph_patients_table' ) || ! function_exists( 'ph_patients_generate_reference' ) ) {
+        wp_send_json_error( array( 'message' => 'The Patients plugin is not available. Please register the patient from the Patients page.' ), 500 );
+    }
+
+    global $wpdb;
+
+    $patient_name = isset( $_POST['patient_name'] ) ? sanitize_text_field( wp_unslash( $_POST['patient_name'] ) ) : '';
+    $mobile       = isset( $_POST['mobile'] ) ? sanitize_text_field( wp_unslash( $_POST['mobile'] ) ) : '';
+    $gender       = isset( $_POST['gender'] ) ? sanitize_key( wp_unslash( $_POST['gender'] ) ) : '';
+    $date_of_birth = isset( $_POST['date_of_birth'] ) ? sanitize_text_field( wp_unslash( $_POST['date_of_birth'] ) ) : '';
+    $city         = isset( $_POST['city'] ) ? sanitize_text_field( wp_unslash( $_POST['city'] ) ) : '';
+
+    if ( '' === $patient_name ) {
+        wp_send_json_error( array( 'message' => 'Patient name is required.' ), 400 );
+    }
+
+    if ( '' === $mobile || ! preg_match( '/^[0-9+\-\s()]{7,20}$/', $mobile ) ) {
+        wp_send_json_error( array( 'message' => 'Please enter a valid mobile number.' ), 400 );
+    }
+
+    if ( '' !== $gender && ! in_array( $gender, array( 'male', 'female', 'other' ), true ) ) {
+        wp_send_json_error( array( 'message' => 'Please select a valid gender.' ), 400 );
+    }
+
+    if ( '' !== $date_of_birth ) {
+        if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date_of_birth ) ) {
+            wp_send_json_error( array( 'message' => 'Please enter a valid date of birth.' ), 400 );
+        }
+        $date_parts = explode( '-', $date_of_birth );
+        if ( ! checkdate( (int) $date_parts[1], (int) $date_parts[2], (int) $date_parts[0] ) ) {
+            wp_send_json_error( array( 'message' => 'Please enter a valid calendar date of birth.' ), 400 );
+        }
+    }
+
+    $table = ph_patients_table();
+    $reference = ph_patients_generate_reference();
+    $now = current_time( 'mysql' );
+
+    $inserted = $wpdb->insert(
+        $table,
+        array(
+            'patient_reference' => $reference,
+            'patient_name'      => $patient_name,
+            'mobile'            => $mobile,
+            'gender'            => '' !== $gender ? $gender : null,
+            'date_of_birth'     => '' !== $date_of_birth ? $date_of_birth : null,
+            'city'              => '' !== $city ? $city : null,
+            'created_at'        => $now,
+            'updated_at'        => $now,
+        ),
+        array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+    );
+
+    if ( false === $inserted ) {
+        wp_send_json_error( array( 'message' => 'The patient could not be saved. Please try again.' ), 500 );
+    }
+
+    wp_send_json_success(
+        array(
+            'patient' => array(
+                'reference' => $reference,
+                'name'      => $patient_name,
+                'mobile'    => $mobile,
+            ),
+            'message' => 'Patient registered successfully.',
+        )
+    );
+}
+add_action( 'wp_ajax_ph_visits_add_patient', 'ph_visits_ajax_add_patient' );
 
 function ph_visits_add() {
     if ( ! current_user_can( ph_visits_cap() ) ) {
@@ -529,15 +626,60 @@ function ph_visits_add() {
 
                 <div class="row" id="ph-patient-row">
                     <label for="ph-patient-id">Registered Patient *</label>
-                    <select id="ph-patient-id" name="patient_id">
-                        <option value="">Select a registered patient</option>
-                        <?php foreach ( $patients as $patient ) : ?>
-                            <option value="<?php echo esc_attr( $patient->patient_reference ); ?>" <?php selected( $patient_id, $patient->patient_reference ); ?>>
-                                <?php echo esc_html( $patient->patient_reference . ' — ' . $patient->patient_name . ' — ' . $patient->mobile ); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                    <div class="help">For walk-ins, select an existing registered patient. New patients must be registered in Patients first.</div>
+                    <div class="phv-patient-select-row">
+                        <select id="ph-patient-id" name="patient_id">
+                            <option value="">Select a registered patient</option>
+                            <?php foreach ( $patients as $patient ) : ?>
+                                <option value="<?php echo esc_attr( $patient->patient_reference ); ?>" <?php selected( $patient_id, $patient->patient_reference ); ?>>
+                                    <?php echo esc_html( $patient->patient_reference . ' — ' . $patient->patient_name . ' — ' . $patient->mobile ); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <button type="button" class="button" id="phv-open-add-patient">Add Patient</button>
+                    </div>
+                    <div class="help">Select an existing patient or register a new patient here without leaving this page.</div>
+                    <div id="phv-add-patient-message" class="notice-box" role="status" aria-live="polite" style="display:none;"></div>
+
+                    <div id="phv-add-patient-modal" class="phv-modal" style="display:none;" aria-hidden="true">
+                        <div class="phv-modal-backdrop"></div>
+                        <div class="phv-modal-panel" role="dialog" aria-modal="true" aria-labelledby="phv-add-patient-title">
+                            <div class="phv-modal-header">
+                                <h2 id="phv-add-patient-title">Add Patient</h2>
+                                <button type="button" class="button-link" id="phv-close-add-patient" aria-label="Close">×</button>
+                            </div>
+                            <p class="help">Required fields are marked with an asterisk.</p>
+                            <div class="row">
+                                <label for="phv-new-patient-name">Patient Name *</label>
+                                <input type="text" id="phv-new-patient-name" maxlength="150" required>
+                            </div>
+                            <div class="row">
+                                <label for="phv-new-patient-mobile">Mobile Number *</label>
+                                <input type="text" id="phv-new-patient-mobile" maxlength="30" inputmode="tel" required>
+                            </div>
+                            <div class="row">
+                                <label for="phv-new-patient-gender">Gender</label>
+                                <select id="phv-new-patient-gender">
+                                    <option value="">Not specified</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="row">
+                                <label for="phv-new-patient-dob">Date of Birth</label>
+                                <input type="date" id="phv-new-patient-dob">
+                            </div>
+                            <div class="row">
+                                <label for="phv-new-patient-city">City</label>
+                                <input type="text" id="phv-new-patient-city" maxlength="100">
+                            </div>
+                            <div id="phv-new-patient-error" class="notice notice-error" style="display:none;"><p></p></div>
+                            <div class="phv-modal-actions">
+                                <button type="button" class="button" id="phv-cancel-add-patient">Cancel</button>
+                                <button type="button" class="button button-primary" id="phv-save-add-patient">Save Patient</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -601,6 +743,116 @@ function ph_visits_add() {
         if (appointmentRadio) appointmentRadio.addEventListener('change', refreshFields);
         if (walkInRadio) walkInRadio.addEventListener('change', refreshFields);
         refreshFields();
+
+        const addPatientButton = document.getElementById('phv-open-add-patient');
+        const modal = document.getElementById('phv-add-patient-modal');
+        const closeButton = document.getElementById('phv-close-add-patient');
+        const cancelButton = document.getElementById('phv-cancel-add-patient');
+        const saveButton = document.getElementById('phv-save-add-patient');
+        const messageBox = document.getElementById('phv-add-patient-message');
+        const errorBox = document.getElementById('phv-new-patient-error');
+        const nameInput = document.getElementById('phv-new-patient-name');
+        const mobileInput = document.getElementById('phv-new-patient-mobile');
+        const genderInput = document.getElementById('phv-new-patient-gender');
+        const dobInput = document.getElementById('phv-new-patient-dob');
+        const cityInput = document.getElementById('phv-new-patient-city');
+
+        function openPatientModal() {
+            if (!modal) return;
+            modal.style.display = 'flex';
+            modal.setAttribute('aria-hidden', 'false');
+            if (errorBox) errorBox.style.display = 'none';
+            if (nameInput) nameInput.focus();
+        }
+        function closePatientModal() {
+            if (!modal) return;
+            modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+        }
+        function showPatientError(message) {
+            if (!errorBox) return;
+            errorBox.querySelector('p').textContent = message;
+            errorBox.style.display = '';
+        }
+
+        if (addPatientButton) addPatientButton.addEventListener('click', openPatientModal);
+        if (closeButton) closeButton.addEventListener('click', closePatientModal);
+        if (cancelButton) cancelButton.addEventListener('click', closePatientModal);
+        if (modal) {
+            const backdrop = modal.querySelector('.phv-modal-backdrop');
+            if (backdrop) backdrop.addEventListener('click', closePatientModal);
+        }
+
+        if (saveButton) saveButton.addEventListener('click', function () {
+            if (!nameInput.value.trim()) {
+                showPatientError('Patient name is required.');
+                nameInput.focus();
+                return;
+            }
+            if (!mobileInput.value.trim()) {
+                showPatientError('Mobile number is required.');
+                mobileInput.focus();
+                return;
+            }
+
+            const body = new URLSearchParams();
+            body.append('action', 'ph_visits_add_patient');
+            body.append('nonce', '<?php echo esc_js( wp_create_nonce( 'ph_visits_add_patient' ) ); ?>');
+            body.append('patient_name', nameInput.value.trim());
+            body.append('mobile', mobileInput.value.trim());
+            body.append('gender', genderInput.value);
+            body.append('date_of_birth', dobInput.value);
+            body.append('city', cityInput.value.trim());
+
+            saveButton.disabled = true;
+            saveButton.textContent = 'Saving…';
+            if (errorBox) errorBox.style.display = 'none';
+
+            fetch(ajaxurl, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                body: body.toString()
+            })
+            .then(function (response) {
+                return response.json().then(function (data) {
+                    if (!response.ok || !data || !data.success) {
+                        const message = data && data.data && data.data.message
+                            ? data.data.message
+                            : 'The patient could not be saved. Please try again.';
+                        throw new Error(message);
+                    }
+                    return data.data;
+                });
+            })
+            .then(function (data) {
+                const patient = data.patient;
+                const option = document.createElement('option');
+                option.value = patient.reference;
+                option.textContent = patient.reference + ' — ' + patient.name + ' — ' + patient.mobile;
+                option.selected = true;
+                patientSelect.appendChild(option);
+                patientSelect.value = patient.reference;
+
+                if (messageBox) {
+                    messageBox.textContent = data.message + ' ' + patient.reference;
+                    messageBox.style.display = '';
+                }
+                closePatientModal();
+                nameInput.value = '';
+                mobileInput.value = '';
+                genderInput.value = '';
+                dobInput.value = '';
+                cityInput.value = '';
+            })
+            .catch(function (error) {
+                showPatientError(error.message || 'The patient could not be saved. Please try again.');
+            })
+            .finally(function () {
+                saveButton.disabled = false;
+                saveButton.textContent = 'Save Patient';
+            });
+        });
     });
     </script>
     <?php
