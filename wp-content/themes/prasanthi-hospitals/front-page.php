@@ -24,25 +24,32 @@
       </p>
 
 
-      <div class="hero-actions">
+     <div class="hero-actions">
 
-        <a
-          class="button"
-          href="tel:8956969895"
-        >
-          Call for an Appointment
-        </a>
+    <a
+        class="button"
+        href="<?php echo esc_url( home_url( '/book-an-appointment/' ) ); ?>"
+    >
+        Book an Appointment
+    </a>
 
-        <a
-          class="button secondary"
-          href="https://wa.me/918956969895?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20an%20appointment%20at%20Prasanthi%20Hospitals."
-          target="_blank"
-          rel="noopener"
-        >
-          WhatsApp Us
-        </a>
+    <a
+        class="button secondary"
+        href="tel:8956969895"
+    >
+        Call for an Appointment
+    </a>
 
-      </div>
+    <a
+        class="button secondary"
+        href="https://wa.me/918956969895?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20an%20appointment%20at%20Prasanthi%20Hospitals."
+        target="_blank"
+        rel="noopener"
+    >
+        WhatsApp Us
+    </a>
+
+</div>
 
 
       <div class="hero-opd">
@@ -320,12 +327,23 @@
               <?php endif; ?>
 
 
-              <a
-                class="view-profile"
-                href="<?php echo esc_url(get_permalink()); ?>"
-              >
-                View Profile
-              </a>
+              <div class="doctor-card-actions">
+
+    <a
+        class="view-profile"
+        href="<?php echo esc_url( get_permalink() ); ?>"
+    >
+        View Profile
+    </a>
+
+    <a
+        class="view-profile"
+        href="<?php echo esc_url( home_url( '/book-an-appointment/' ) ); ?>"
+    >
+        Book Appointment
+    </a>
+
+</div>
 
             </div>
 

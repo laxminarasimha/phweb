@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Prasanthi Hospitals Staff Portal
  * Description: Adds a dedicated dashboard and restricted administration menu for the existing Hospital Front Desk role.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Prasanthi Hospitals
  * License: GPL-2.0-or-later
  */
@@ -80,6 +80,18 @@ function ph_staff_portal_render_dashboard() {
     $patient_count = ph_staff_portal_count_rows( $patients_table );
     $appointment_count = ph_staff_portal_count_rows( $appointments_table, 'COALESCE(confirmed_date, preferred_date) = %s', array( $today ) );
     $visit_count = ph_staff_portal_count_rows( $visits_table, 'visit_date = %s', array( $today ) );
+
+    // Load today's appointments for the front-desk overview.
+    $today_appointments = array();
+    $appointments_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $appointments_table ) ) );
+    if ( $appointments_exists === $appointments_table ) {
+        $today_appointments = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM `{$appointments_table}` WHERE COALESCE(confirmed_date, preferred_date) = %s ORDER BY confirmed_time IS NULL ASC, confirmed_time ASC, id DESC LIMIT 10",
+                $today
+            )
+        );
+    }
     ?>
     <div class="wrap ph-staff-portal">
         <h1>Hospital Front Desk Dashboard</h1>
@@ -91,6 +103,12 @@ function ph_staff_portal_render_dashboard() {
             .ph-staff-portal .phsp-number{font-size:30px;font-weight:700;line-height:1.2;margin-bottom:14px;color:#51417a}
             .ph-staff-portal .phsp-actions{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0}
             .ph-staff-portal .phsp-actions .button{padding:5px 14px}
+            .ph-staff-portal .phsp-table-wrap{max-width:1200px;overflow-x:auto;background:#fff;border:1px solid #dcdcde;border-radius:8px;margin:12px 0 24px}
+            .ph-staff-portal .phsp-table{width:100%;border-collapse:collapse;min-width:760px}
+            .ph-staff-portal .phsp-table th,.ph-staff-portal .phsp-table td{padding:12px;text-align:left;border-bottom:1px solid #eee;vertical-align:middle}
+            .ph-staff-portal .phsp-table th{background:#f6f7f7;font-weight:600}
+            .ph-staff-portal .phsp-table tr:last-child td{border-bottom:0}
+            .ph-staff-portal .phsp-status{display:inline-block;padding:3px 8px;border-radius:12px;background:#f0edf7;color:#51417a;font-size:12px}
             @media(max-width:782px){.ph-staff-portal .phsp-cards{grid-template-columns:1fr}}
         </style>
         <div class="phsp-cards">
@@ -103,6 +121,46 @@ function ph_staff_portal_render_dashboard() {
             <a class="button button-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-patients&action=add' ) ); ?>">Register Patient</a>
             <a class="button button-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-appointments' ) ); ?>">Manage Appointments</a>
             <a class="button button-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits-add' ) ); ?>">Create Visit / Walk-in</a>
+        </div>
+        <h2>Today's Appointments</h2>
+        <div class="phsp-table-wrap">
+            <table class="phsp-table">
+                <thead><tr><th>Time</th><th>Patient</th><th>Doctor</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody>
+                <?php if ( null === $appointment_count ) : ?>
+                    <tr><td colspan="5">Appointment data is currently unavailable.</td></tr>
+                <?php elseif ( empty( $today_appointments ) ) : ?>
+                    <tr><td colspan="5">No appointments scheduled for today.</td></tr>
+                <?php else : ?>
+                    <?php foreach ( $today_appointments as $appointment ) : ?>
+                        <?php
+                        $dashboard_doctor_name = 'Any Doctor / Front Desk';
+                        if ( ! empty( $appointment->doctor_id ) ) {
+                            $dashboard_doctor = get_post( (int) $appointment->doctor_id );
+                            if ( $dashboard_doctor ) {
+                                $dashboard_doctor_name = get_the_title( $dashboard_doctor );
+                            }
+                        }
+                        $dashboard_time = ! empty( $appointment->confirmed_time )
+                            ? wp_date( 'g:i A', strtotime( $appointment->confirmed_time ) )
+                            : ( ! empty( $appointment->preferred_session ) ? ucfirst( $appointment->preferred_session ) : 'Not set' );
+                        $dashboard_detail_url = add_query_arg(
+                            array( 'page' => 'ph-appointments', 'appointment_id' => (int) $appointment->id ),
+                            admin_url( 'admin.php' )
+                        );
+                        $dashboard_status = isset( $appointment->status ) ? ucfirst( str_replace( '_', ' ', $appointment->status ) ) : 'Unknown';
+                        ?>
+                        <tr>
+                            <td><?php echo esc_html( $dashboard_time ); ?></td>
+                            <td><strong><?php echo esc_html( isset( $appointment->patient_name ) ? $appointment->patient_name : '—' ); ?></strong><?php if ( ! empty( $appointment->request_reference ) ) : ?><br><small><?php echo esc_html( $appointment->request_reference ); ?></small><?php endif; ?></td>
+                            <td><?php echo esc_html( $dashboard_doctor_name ); ?></td>
+                            <td><span class="phsp-status"><?php echo esc_html( $dashboard_status ); ?></span></td>
+                            <td><a class="button button-small" href="<?php echo esc_url( $dashboard_detail_url ); ?>">View</a></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
         </div>
         <p class="description">Patient access is available to authorized Hospital Front Desk accounts. Please sign out when leaving the reception desk.</p>
     </div>

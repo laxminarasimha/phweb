@@ -2818,83 +2818,205 @@ function ph_appointment_form_shortcode() {
     </div>
 
     <style>
-        .ph-appointment-form-wrapper {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+    /* Appointment form container */
+    .ph-appointment-form-wrapper {
+        max-width: 850px;
+        margin: 30px auto;
+        padding: 32px;
+        background: #ffffff;
+        border: 1px solid #e8e4f0;
+        border-radius: 14px;
+        box-shadow: 0 6px 24px rgba(45, 30, 75, 0.08);
+        box-sizing: border-box;
+    }
 
-        .ph-appointment-form {
-            display: block;
+    .ph-appointment-form {
+        display: block;
+        width: 100%;
+    }
+
+    /* Two-column field rows */
+    .ph-form-row {
+        display: flex;
+        gap: 24px;
+    }
+
+    .ph-form-row .ph-form-group {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .ph-form-group {
+        margin-bottom: 22px;
+    }
+
+    /* Labels */
+    .ph-form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #29213d;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    .ph-form-group label span {
+        color: #d92d20;
+    }
+
+    .ph-form-group label small {
+        color: #777184;
+        font-size: 13px;
+        font-weight: 400;
+    }
+
+    /* Form controls */
+    .ph-appointment-form .ph-form-group input:not([type="checkbox"]),
+    .ph-appointment-form .ph-form-group select,
+    .ph-appointment-form .ph-form-group textarea {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        min-height: 46px;
+        padding: 11px 13px;
+        color: #302943;
+        background: #ffffff;
+        border: 1px solid #d7d1e2;
+        border-radius: 7px;
+        font-family: inherit;
+        font-size: 15px;
+        line-height: 1.4;
+        box-sizing: border-box;
+        transition: border-color 0.2s ease,
+                    box-shadow 0.2s ease;
+    }
+
+    .ph-appointment-form .ph-form-group textarea {
+        min-height: 110px;
+        resize: vertical;
+    }
+
+    .ph-appointment-form .ph-form-group input:focus,
+    .ph-appointment-form .ph-form-group select:focus,
+    .ph-appointment-form .ph-form-group textarea:focus {
+        outline: none;
+        border-color: #6741a5;
+        box-shadow: 0 0 0 3px rgba(103, 65, 165, 0.12);
+    }
+
+    /* Consent checkbox */
+    .ph-appointment-form .ph-consent {
+        margin-top: 8px;
+        margin-bottom: 24px;
+    }
+
+    .ph-appointment-form .ph-consent label {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        color: #514960;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.6;
+        cursor: pointer;
+    }
+
+    .ph-appointment-form .ph-consent input[type="checkbox"] {
+        flex: 0 0 auto;
+        width: 17px;
+        height: 17px;
+        margin: 3px 0 0;
+        accent-color: #6741a5;
+    }
+
+    /* Submit button */
+    .ph-appointment-form .ph-appointment-submit {
+        display: inline-block;
+        min-height: 48px;
+        padding: 13px 26px;
+        color: #ffffff;
+        background: #6741a5;
+        border: 0;
+        border-radius: 7px;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1.4;
+        cursor: pointer;
+        transition: background-color 0.2s ease,
+                    transform 0.2s ease;
+    }
+
+    .ph-appointment-form .ph-appointment-submit:hover {
+        background: #503080;
+        transform: translateY(-1px);
+    }
+
+    .ph-appointment-form .ph-appointment-submit:focus-visible {
+        outline: 3px solid #f4a340;
+        outline-offset: 3px;
+    }
+
+    /* Validation errors */
+    .ph-appointment-errors {
+        max-width: 850px;
+        margin: 0 auto 20px;
+        padding: 16px 20px;
+        color: #991b1b;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        box-sizing: border-box;
+    }
+
+    .ph-appointment-errors p {
+        margin: 5px 0;
+        line-height: 1.5;
+    }
+
+    /* Success message */
+    .ph-appointment-success {
+        max-width: 850px;
+        margin: 30px auto;
+        padding: 28px;
+        color: #166534;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 12px;
+        box-sizing: border-box;
+    }
+
+    .ph-appointment-success h2 {
+        margin-top: 0;
+        color: #166534;
+    }
+
+    /* Mobile layout */
+    @media (max-width: 700px) {
+        .ph-appointment-form-wrapper {
+            margin: 20px auto;
+            padding: 20px 16px;
+            border-radius: 10px;
         }
 
         .ph-form-row {
-            display: flex;
-            gap: 20px;
-        }
-
-        .ph-form-row .ph-form-group {
-            flex: 1;
+            flex-direction: column;
+            gap: 0;
         }
 
         .ph-form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
-        .ph-form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 7px;
-        }
-
-        .ph-form-group label span {
-            color: #c00;
-        }
-
-        .ph-form-group input,
-        .ph-form-group select,
-        .ph-form-group textarea {
+        .ph-appointment-form .ph-appointment-submit {
             width: 100%;
-            box-sizing: border-box;
         }
 
-        .ph-consent label {
-            font-weight: 400;
+        .ph-appointment-success {
+            padding: 22px 18px;
         }
-
-        .ph-consent input {
-            width: auto;
-        }
-
-        .ph-appointment-submit {
-            border: 0;
-            border-radius: 6px;
-            padding: 12px 22px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .ph-appointment-errors {
-            max-width: 800px;
-            margin: 0 auto 20px;
-            padding: 15px 20px;
-            border-radius: 6px;
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-        }
-
-        .ph-appointment-errors p {
-            margin: 5px 0;
-        }
-
-        @media (max-width: 700px) {
-
-            .ph-form-row {
-                flex-direction: column;
-                gap: 0;
-            }
-
-        }
-    </style>
+    }
+</style>
 
     <?php
 

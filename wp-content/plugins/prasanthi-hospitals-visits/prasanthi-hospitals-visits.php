@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Prasanthi Hospitals Visits
  * Description: Visit management for Prasanthi Hospitals.
- * Version: 1.0.5
+ * Version: 1.0.8
  * Author: Prasanthi Hospitals
  */
 
@@ -650,11 +650,11 @@ function ph_visits_add() {
                             <p class="help">Required fields are marked with an asterisk.</p>
                             <div class="row">
                                 <label for="phv-new-patient-name">Patient Name *</label>
-                                <input type="text" id="phv-new-patient-name" maxlength="150" required>
+                                <input type="text" id="phv-new-patient-name" maxlength="150">
                             </div>
                             <div class="row">
                                 <label for="phv-new-patient-mobile">Mobile Number *</label>
-                                <input type="text" id="phv-new-patient-mobile" maxlength="30" inputmode="tel" required>
+                                <input type="text" id="phv-new-patient-mobile" maxlength="30" inputmode="tel">
                             </div>
                             <div class="row">
                                 <label for="phv-new-patient-gender">Gender</label>
