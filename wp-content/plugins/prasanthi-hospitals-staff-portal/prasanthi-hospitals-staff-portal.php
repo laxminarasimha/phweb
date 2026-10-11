@@ -68,13 +68,20 @@ function ph_staff_portal_count_rows( $table, $where_sql = '', $where_args = arra
 }
 
 function ph_staff_portal_render_dashboard() {
+
     if ( ! current_user_can( 'ph_manage_patients' ) ) {
-        wp_die( esc_html__( 'You do not have permission to access this page.', 'prasanthi-hospitals' ), 403 );
+        wp_die(
+            esc_html__( 'You do not have permission to access this page.', 'prasanthi-hospitals' ),
+            403
+        );
     }
+
     global $wpdb;
-    $patients_table = $wpdb->prefix . 'ph_patients';
+
+    $patients_table     = $wpdb->prefix . 'ph_patients';
     $appointments_table = $wpdb->prefix . 'ph_appointments';
-    $visits_table = $wpdb->prefix . 'ph_visits';
+    $visits_table       = $wpdb->prefix . 'ph_visits';
+
     $today = current_time( 'Y-m-d' );
 
     $patient_count = ph_staff_portal_count_rows( $patients_table );
@@ -93,9 +100,16 @@ function ph_staff_portal_render_dashboard() {
         );
     }
     ?>
+
     <div class="wrap ph-staff-portal">
+
         <h1>Hospital Front Desk Dashboard</h1>
-        <p>Welcome to Prasanthi Hospitals. Use the shortcuts below to manage patient registration, appointments, and visits.</p>
+
+        <p>
+            Welcome to Prasanthi Hospitals.
+            Here is today's reception overview.
+        </p>
+
         <style>
             .ph-staff-portal .phsp-cards{display:grid;grid-template-columns:repeat(3,minmax(180px,1fr));gap:16px;max-width:1100px;margin:22px 0}
             .ph-staff-portal .phsp-card{background:#fff;border:1px solid #dcdcde;border-radius:10px;padding:20px}
@@ -111,16 +125,150 @@ function ph_staff_portal_render_dashboard() {
             .ph-staff-portal .phsp-status{display:inline-block;padding:3px 8px;border-radius:12px;background:#f0edf7;color:#51417a;font-size:12px}
             @media(max-width:782px){.ph-staff-portal .phsp-cards{grid-template-columns:1fr}}
         </style>
+
         <div class="phsp-cards">
-            <section class="phsp-card"><h2>Registered Patients</h2><div class="phsp-number"><?php echo null === $patient_count ? '—' : esc_html( number_format_i18n( $patient_count ) ); ?></div><a class="button button-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-patients' ) ); ?>">Manage Patients</a></section>
-            <section class="phsp-card"><h2>Appointments Today</h2><div class="phsp-number"><?php echo null === $appointment_count ? '—' : esc_html( number_format_i18n( $appointment_count ) ); ?></div><a class="button button-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-appointments' ) ); ?>">View Appointments</a></section>
-            <section class="phsp-card"><h2>Visits Today</h2><div class="phsp-number"><?php echo null === $visit_count ? '—' : esc_html( number_format_i18n( $visit_count ) ); ?></div><a class="button button-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits' ) ); ?>">View Visits</a></section>
+
+            <section class="phsp-card">
+                <h2>Today's Appointments</h2>
+
+                <div class="phsp-number">
+                    <?php
+                    echo null === $appointment_count
+                        ? '—'
+                        : esc_html( number_format_i18n( $appointment_count ) );
+                    ?>
+                </div>
+
+                <a
+                    class="button button-primary"
+                    href="<?php echo esc_url( admin_url( 'admin.php?page=ph-appointments' ) ); ?>"
+                >
+                    View Appointments
+                </a>
+            </section>
+
+            <section class="phsp-card">
+                <h2>New Requests</h2>
+
+                <div class="phsp-number">
+                    <?php
+                    echo null === $new_request_count
+                        ? '—'
+                        : esc_html( number_format_i18n( $new_request_count ) );
+                    ?>
+                </div>
+
+                <a
+                    class="button button-primary"
+                    href="<?php echo esc_url( admin_url( 'admin.php?page=ph-appointments' ) ); ?>"
+                >
+                    Review Requests
+                </a>
+            </section>
+
+            <section class="phsp-card">
+                <h2>Patients Registered Today</h2>
+
+                <div class="phsp-number">
+                    <?php
+                    echo null === $patients_today_count
+                        ? '—'
+                        : esc_html( number_format_i18n( $patients_today_count ) );
+                    ?>
+                </div>
+
+                <a
+                    class="button button-primary"
+                    href="<?php echo esc_url( admin_url( 'admin.php?page=ph-patients' ) ); ?>"
+                >
+                    View Patients
+                </a>
+            </section>
+
+            <section class="phsp-card">
+                <h2>Today's Visits</h2>
+
+                <div class="phsp-number">
+                    <?php
+                    echo null === $visit_count
+                        ? '—'
+                        : esc_html( number_format_i18n( $visit_count ) );
+                    ?>
+                </div>
+
+                <a
+                    class="button button-primary"
+                    href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits' ) ); ?>"
+                >
+                    View Visits
+                </a>
+            </section>
+
+            <section class="phsp-card">
+                <h2>Waiting for Consultation</h2>
+
+                <div class="phsp-number">
+                    <?php
+                    echo null === $waiting_count
+                        ? '—'
+                        : esc_html( number_format_i18n( $waiting_count ) );
+                    ?>
+                </div>
+
+                <a
+                    class="button button-primary"
+                    href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits' ) ); ?>"
+                >
+                    View Waiting Visits
+                </a>
+            </section>
+
+            <section class="phsp-card">
+                <h2>In Consultation</h2>
+
+                <div class="phsp-number">
+                    <?php
+                    echo null === $consultation_count
+                        ? '—'
+                        : esc_html( number_format_i18n( $consultation_count ) );
+                    ?>
+                </div>
+
+                <a
+                    class="button button-primary"
+                    href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits' ) ); ?>"
+                >
+                    View Visits
+                </a>
+            </section>
+
         </div>
+
         <h2>Quick Actions</h2>
+
         <div class="phsp-actions">
-            <a class="button button-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-patients&action=add' ) ); ?>">Register Patient</a>
-            <a class="button button-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-appointments' ) ); ?>">Manage Appointments</a>
-            <a class="button button-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits-add' ) ); ?>">Create Visit / Walk-in</a>
+
+            <a
+                class="button button-primary"
+                href="<?php echo esc_url( admin_url( 'admin.php?page=ph-patients&action=add' ) ); ?>"
+            >
+                Register Patient
+            </a>
+
+            <a
+                class="button button-primary"
+                href="<?php echo esc_url( admin_url( 'admin.php?page=ph-appointments' ) ); ?>"
+            >
+                Manage Appointments
+            </a>
+
+            <a
+                class="button button-primary"
+                href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits-add' ) ); ?>"
+            >
+                Create Walk-in Visit
+            </a>
+
         </div>
         <h2>Today's Appointments</h2>
         <div class="phsp-table-wrap">
@@ -164,6 +312,7 @@ function ph_staff_portal_render_dashboard() {
         </div>
         <p class="description">Patient access is available to authorized Hospital Front Desk accounts. Please sign out when leaving the reception desk.</p>
     </div>
+
     <?php
 }
 
