@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Prasanthi Hospitals Appointments
  * Description: Appointment request form and front-desk appointment management for Prasanthi Hospitals.
- * Version: 1.3.3
+ * Version: 1.3.5
  * Author: Prasanthi Hospitals
  */
 
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'PH_APPOINTMENTS_VERSION', '1.3.3' );
+define( 'PH_APPOINTMENTS_VERSION', '1.3.5' );
 
 /**
  * ============================================================
@@ -506,6 +506,135 @@ add_action(
  * ============================================================
  */
 
+function ph_appointments_handle_check_in() {
+    if ( ! isset( $_POST['ph_check_in_appointment'] ) ) {
+        return;
+    }
+
+    if ( ! current_user_can( 'ph_manage_appointments' ) ) {
+        wp_die( 'You do not have permission to check in appointments.' );
+    }
+
+    $appointment_id = isset( $_POST['appointment_id'] )
+        ? absint( $_POST['appointment_id'] )
+        : 0;
+
+    if (
+        ! $appointment_id
+        || ! isset( $_POST['_wpnonce'] )
+        || ! wp_verify_nonce(
+            sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ),
+            'ph_check_in_appointment_' . $appointment_id
+        )
+    ) {
+        wp_die( 'Security verification failed. Please return to the appointment and try again.' );
+    }
+
+    global $wpdb;
+
+    $appointment_table = ph_appointments_table();
+    $appointment = $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT * FROM {$appointment_table} WHERE id = %d LIMIT 1",
+            $appointment_id
+        )
+    );
+
+    $result = 'error';
+
+    if ( $appointment && 'confirmed' === $appointment->status && ! empty( $appointment->patient_id ) ) {
+        $visit_table = $wpdb->prefix . 'ph_visits';
+        $visit_table_exists = $wpdb->get_var(
+            $wpdb->prepare( 'SHOW TABLES LIKE %s', $visit_table )
+        ) === $visit_table;
+
+        if ( $visit_table_exists ) {
+            $existing_visit = $wpdb->get_row(
+                $wpdb->prepare(
+                    "SELECT id, status FROM {$visit_table} WHERE appointment_id = %d LIMIT 1",
+                    $appointment_id
+                )
+            );
+
+            $now = current_time( 'mysql' );
+
+            if ( $existing_visit ) {
+                // Reuse the existing visit; do not downgrade an active/completed visit.
+                if ( in_array( $existing_visit->status, array( 'scheduled', 'arrived' ), true ) ) {
+                    $wpdb->update(
+                        $visit_table,
+                        array(
+                            'status'     => 'arrived',
+                            'updated_at' => $now,
+                        ),
+                        array( 'id' => (int) $existing_visit->id ),
+                        array( '%s', '%s' ),
+                        array( '%d' )
+                    );
+                }
+
+                $result = 'success';
+            } else {
+                $last_visit_id = (int) $wpdb->get_var( "SELECT MAX(id) FROM {$visit_table}" );
+                $visit_reference = 'PH-VIS-' . str_pad( (string) ( $last_visit_id + 1 ), 6, '0', STR_PAD_LEFT );
+
+                $inserted = $wpdb->insert(
+                    $visit_table,
+                    array(
+                        'visit_reference' => $visit_reference,
+                        'patient_id'      => $appointment->patient_id,
+                        'appointment_id'  => $appointment_id,
+                        'doctor_id'       => ! empty( $appointment->doctor_id ) ? (int) $appointment->doctor_id : null,
+                        'visit_date'      => current_time( 'Y-m-d' ),
+                        'visit_time'      => ! empty( $appointment->confirmed_time ) ? $appointment->confirmed_time : current_time( 'H:i:s' ),
+                        'visit_type'      => 'appointment',
+                        'status'          => 'arrived',
+                        'visit_notes'     => '',
+                        'created_at'      => $now,
+                        'updated_at'      => $now,
+                    ),
+                    array( '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+                );
+
+                if ( false !== $inserted ) {
+                    $result = 'success';
+                }
+            }
+
+            if ( 'success' === $result ) {
+                $wpdb->update(
+                    $appointment_table,
+                    array(
+                        'status'     => 'arrived',
+                        'updated_at' => $now,
+                    ),
+                    array( 'id' => $appointment_id ),
+                    array( '%s', '%s' ),
+                    array( '%d' )
+                );
+            }
+        }
+    } elseif ( $appointment && 'arrived' === $appointment->status && ! empty( $appointment->patient_id ) ) {
+        // An already-arrived appointment is idempotent: leave its status unchanged.
+        $result = 'success';
+    }
+
+    $redirect_url = add_query_arg(
+        array(
+            'page'           => 'ph-appointments',
+            'appointment_id' => $appointment_id,
+            'ph_check_in'    => $result,
+        ),
+        admin_url( 'admin.php' )
+    );
+
+    wp_safe_redirect( $redirect_url );
+    exit;
+}
+
+// Process the POST before WordPress renders the admin page, so the redirect works.
+add_action( 'admin_init', 'ph_appointments_handle_check_in' );
+
 function ph_appointments_admin_page() {
 
     if ( ! current_user_can( 'ph_manage_appointments' ) ) {
@@ -687,6 +816,7 @@ function ph_appointments_list_page() {
                         <th>Confirmed Time</th>
                         <th>Status</th>
                         <th>Created</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
 
@@ -695,7 +825,7 @@ function ph_appointments_list_page() {
                 <?php if ( empty( $appointments ) ) : ?>
 
                     <tr>
-                        <td colspan="10">
+                        <td colspan="11">
                             No appointments found.
                         </td>
                     </tr>
@@ -872,6 +1002,20 @@ function ph_appointments_list_page() {
                                     )
                                 );
                                 ?>
+                            </td>
+
+                            <td>
+                                <?php if ( 'confirmed' === $appointment->status && ! empty( $appointment->patient_id ) ) : ?>
+                                    <form method="post" style="display:inline;">
+                                        <?php wp_nonce_field( 'ph_check_in_appointment_' . (int) $appointment->id ); ?>
+                                        <input type="hidden" name="appointment_id" value="<?php echo esc_attr( (int) $appointment->id ); ?>">
+                                        <button type="submit" name="ph_check_in_appointment" class="button button-primary">Check In</button>
+                                    </form>
+                                <?php elseif ( 'arrived' === $appointment->status ) : ?>
+                                    <span class="description">Checked in</span>
+                                <?php else : ?>
+                                    <a class="button" href="<?php echo esc_url( $detail_url ); ?>">View</a>
+                                <?php endif; ?>
                             </td>
 
                         </tr>
@@ -1338,6 +1482,14 @@ function ph_appointments_detail_page( $appointment_id ) {
             ?>
         </h1>
 
+        <?php if ( isset( $_GET['ph_check_in'] ) ) : ?>
+            <?php if ( 'success' === sanitize_key( wp_unslash( $_GET['ph_check_in'] ) ) ) : ?>
+                <div class="notice notice-success is-dismissible"><p><strong>Patient checked in.</strong> The appointment is marked Arrived and its visit was created or reused.</p></div>
+            <?php else : ?>
+                <div class="notice notice-error is-dismissible"><p><strong>Check-in could not be completed.</strong> Confirm the appointment is linked to a registered patient and the Visits module is active.</p></div>
+            <?php endif; ?>
+        <?php endif; ?>
+
         <?php
         /*
          * Appointment-to-Visit workflow.
@@ -1362,6 +1514,13 @@ function ph_appointments_detail_page( $appointment_id ) {
         $ph_visit_eligible_statuses = array( 'confirmed', 'arrived', 'in_consultation' );
         ?>
         <div class="ph-appointment-visit-action" style="margin: 16px 0;">
+            <?php if ( 'confirmed' === $appointment->status && ! empty( $appointment->patient_id ) && $ph_visit_table_exists ) : ?>
+                <form method="post" style="display:inline-block;margin-right:8px;">
+                    <?php wp_nonce_field( 'ph_check_in_appointment_' . (int) $appointment_id ); ?>
+                    <input type="hidden" name="appointment_id" value="<?php echo esc_attr( (int) $appointment_id ); ?>">
+                    <button type="submit" name="ph_check_in_appointment" class="button button-primary">Check In Patient</button>
+                </form>
+            <?php endif; ?>
             <?php if ( $ph_existing_visit_id ) : ?>
                 <a class="button button-secondary" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits&visit_id=' . $ph_existing_visit_id ) ); ?>">View Existing Visit</a>
                 <span class="description">A visit has already been created for this appointment.</span>

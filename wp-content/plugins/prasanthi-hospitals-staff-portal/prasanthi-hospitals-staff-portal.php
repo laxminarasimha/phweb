@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Prasanthi Hospitals Staff Portal
  * Description: Adds a dedicated dashboard and restricted administration menu for the existing Hospital Front Desk role.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Prasanthi Hospitals
  * License: GPL-2.0-or-later
  */
@@ -55,6 +55,18 @@ function ph_staff_portal_register_menu() {
 }
 add_action( 'admin_menu', 'ph_staff_portal_register_menu', 5 );
 
+function ph_staff_portal_register_waiting_list_menu() {
+    add_submenu_page(
+        'prasanthi-hospitals',
+        'Waiting List',
+        'Waiting List',
+        'ph_manage_visits',
+        'ph-staff-waiting-list',
+        'ph_staff_portal_render_waiting_list'
+    );
+}
+add_action( 'admin_menu', 'ph_staff_portal_register_waiting_list_menu', 6 );
+
 function ph_staff_portal_count_rows( $table, $where_sql = '', $where_args = array() ) {
     global $wpdb;
     $exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) );
@@ -65,6 +77,89 @@ function ph_staff_portal_count_rows( $table, $where_sql = '', $where_args = arra
         return (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$table}` WHERE {$where_sql}", $where_args ) );
     }
     return (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$table}`" );
+}
+
+/**
+ * Show today's arrived visits in a receptionist-friendly waiting list.
+ * Uses the existing Visits table; it does not create queue or duplicate visit records.
+ */
+function ph_staff_portal_render_waiting_list() {
+    if ( ! current_user_can( 'ph_manage_visits' ) ) {
+        wp_die( esc_html__( 'You do not have permission to access the waiting list.', 'prasanthi-hospitals' ), 403 );
+    }
+
+    global $wpdb;
+    $visits_table = $wpdb->prefix . 'ph_visits';
+    $today = current_time( 'Y-m-d' );
+    $exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $visits_table ) ) );
+
+    if ( $exists !== $visits_table ) {
+        echo '<div class="wrap"><h1>Waiting List</h1><div class="notice notice-error"><p>The Visits module is not available. Please activate Prasanthi Hospitals Visits.</p></div></div>';
+        return;
+    }
+
+    $visits = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT * FROM `{$visits_table}` WHERE visit_date = %s AND status = %s ORDER BY visit_time ASC, id ASC",
+            $today,
+            'arrived'
+        )
+    );
+    ?>
+    <div class="wrap ph-staff-portal">
+        <h1>Waiting List</h1>
+        <p>Patients who have arrived and are waiting for consultation today.</p>
+        <p><a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-staff-dashboard' ) ); ?>">← Back to Dashboard</a>
+        <a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits' ) ); ?>">All Visits</a></p>
+
+        <style>
+            .ph-staff-waiting-table { width:100%; border-collapse:collapse; margin-top:16px; background:#fff; }
+            .ph-staff-waiting-table th, .ph-staff-waiting-table td { padding:11px 12px; border:1px solid #e2dced; text-align:left; vertical-align:top; }
+            .ph-staff-waiting-table th { background:#f7f4fb; }
+            .ph-staff-waiting-table .ph-waiting-status { display:inline-block; padding:3px 9px; border-radius:12px; background:#fff1df; color:#7a4300; font-weight:600; }
+            @media(max-width:782px) { .ph-staff-waiting-table { display:block; overflow-x:auto; white-space:nowrap; } }
+        </style>
+
+        <p><strong>Waiting patients:</strong> <?php echo esc_html( number_format_i18n( count( $visits ) ) ); ?></p>
+
+        <?php if ( empty( $visits ) ) : ?>
+            <div class="notice notice-info inline"><p>No patients are currently waiting for consultation today.</p></div>
+        <?php else : ?>
+            <table class="ph-staff-waiting-table">
+                <thead>
+                    <tr>
+                        <th>Visit Reference</th>
+                        <th>Patient</th>
+                        <th>Patient ID</th>
+                        <th>Doctor</th>
+                        <th>Arrival / Visit Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach ( $visits as $visit ) :
+                    $patient = function_exists( 'ph_visits_patient' ) ? ph_visits_patient( $visit->patient_id ) : null;
+                    $doctor_name = function_exists( 'ph_visits_doctor' ) ? ph_visits_doctor( $visit->doctor_id ) : '—';
+                    $patient_name = ( $patient && ! empty( $patient->patient_name ) ) ? $patient->patient_name : 'Patient record unavailable';
+                    $patient_reference = ( $patient && ! empty( $patient->patient_reference ) ) ? $patient->patient_reference : $visit->patient_id;
+                    $time_label = ( ! empty( $visit->visit_time ) && '00:00:00' !== $visit->visit_time ) ? mysql2date( get_option( 'time_format' ), $visit->visit_time ) : '—';
+                    ?>
+                    <tr>
+                        <td><?php echo esc_html( $visit->visit_reference ); ?></td>
+                        <td><?php echo esc_html( $patient_name ); ?></td>
+                        <td><?php echo esc_html( $patient_reference ); ?></td>
+                        <td><?php echo esc_html( $doctor_name ); ?></td>
+                        <td><?php echo esc_html( $time_label ); ?></td>
+                        <td><span class="ph-waiting-status">Arrived</span></td>
+                        <td><a class="button button-small" href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits&visit_id=' . (int) $visit->id ) ); ?>">View Visit</a></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </div>
+    <?php
 }
 
 function ph_staff_portal_render_dashboard() {
@@ -84,21 +179,53 @@ function ph_staff_portal_render_dashboard() {
 
     $today = current_time( 'Y-m-d' );
 
-    $patient_count = ph_staff_portal_count_rows( $patients_table );
-    $appointment_count = ph_staff_portal_count_rows( $appointments_table, 'COALESCE(confirmed_date, preferred_date) = %s', array( $today ) );
-    $visit_count = ph_staff_portal_count_rows( $visits_table, 'visit_date = %s', array( $today ) );
+    // Registered patients.
+    $patient_count = ph_staff_portal_count_rows(
+        $patients_table
+    );
 
-    // Load today's appointments for the front-desk overview.
-    $today_appointments = array();
-    $appointments_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $appointments_table ) ) );
-    if ( $appointments_exists === $appointments_table ) {
-        $today_appointments = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT * FROM `{$appointments_table}` WHERE COALESCE(confirmed_date, preferred_date) = %s ORDER BY confirmed_time IS NULL ASC, confirmed_time ASC, id DESC LIMIT 10",
-                $today
-            )
-        );
-    }
+    // Appointments scheduled for today.
+    $appointment_count = ph_staff_portal_count_rows(
+        $appointments_table,
+        'COALESCE(confirmed_date, preferred_date) = %s',
+        array( $today )
+    );
+
+    // New appointment requests awaiting processing.
+    $new_request_count = ph_staff_portal_count_rows(
+        $appointments_table,
+        'status = %s',
+        array( 'new_request' )
+    );
+
+    // Patients registered today.
+    $patients_today_count = ph_staff_portal_count_rows(
+        $patients_table,
+        'DATE(created_at) = %s',
+        array( $today )
+    );
+
+    // Visits recorded for today.
+    $visit_count = ph_staff_portal_count_rows(
+        $visits_table,
+        'visit_date = %s',
+        array( $today )
+    );
+
+    // Visits for patients who have arrived and are awaiting consultation.
+    $waiting_count = ph_staff_portal_count_rows(
+        $visits_table,
+        'visit_date = %s AND status = %s',
+        array( $today, 'arrived' )
+    );
+
+    // Visits currently in consultation.
+    $consultation_count = ph_staff_portal_count_rows(
+        $visits_table,
+        'visit_date = %s AND status = %s',
+        array( $today, 'in_consultation' )
+    );
+
     ?>
 
     <div class="wrap ph-staff-portal">
@@ -111,19 +238,62 @@ function ph_staff_portal_render_dashboard() {
         </p>
 
         <style>
-            .ph-staff-portal .phsp-cards{display:grid;grid-template-columns:repeat(3,minmax(180px,1fr));gap:16px;max-width:1100px;margin:22px 0}
-            .ph-staff-portal .phsp-card{background:#fff;border:1px solid #dcdcde;border-radius:10px;padding:20px}
-            .ph-staff-portal .phsp-card h2{font-size:15px;margin:0 0 12px}
-            .ph-staff-portal .phsp-number{font-size:30px;font-weight:700;line-height:1.2;margin-bottom:14px;color:#51417a}
-            .ph-staff-portal .phsp-actions{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0}
-            .ph-staff-portal .phsp-actions .button{padding:5px 14px}
-            .ph-staff-portal .phsp-table-wrap{max-width:1200px;overflow-x:auto;background:#fff;border:1px solid #dcdcde;border-radius:8px;margin:12px 0 24px}
-            .ph-staff-portal .phsp-table{width:100%;border-collapse:collapse;min-width:760px}
-            .ph-staff-portal .phsp-table th,.ph-staff-portal .phsp-table td{padding:12px;text-align:left;border-bottom:1px solid #eee;vertical-align:middle}
-            .ph-staff-portal .phsp-table th{background:#f6f7f7;font-weight:600}
-            .ph-staff-portal .phsp-table tr:last-child td{border-bottom:0}
-            .ph-staff-portal .phsp-status{display:inline-block;padding:3px 8px;border-radius:12px;background:#f0edf7;color:#51417a;font-size:12px}
-            @media(max-width:782px){.ph-staff-portal .phsp-cards{grid-template-columns:1fr}}
+            .ph-staff-portal .phsp-cards {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 18px;
+                max-width: 1200px;
+                margin: 24px 0;
+            }
+
+            .ph-staff-portal .phsp-card {
+                background: #fff;
+                border: 1px solid #e2dced;
+                border-radius: 10px;
+                padding: 22px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            }
+
+            .ph-staff-portal .phsp-card h2 {
+                font-size: 15px;
+                line-height: 1.5;
+                margin: 0 0 14px;
+            }
+
+            .ph-staff-portal .phsp-number {
+                font-size: 34px;
+                font-weight: 700;
+                line-height: 1.2;
+                margin-bottom: 18px;
+                color: #51417a;
+            }
+
+            .ph-staff-portal .phsp-card .button {
+                white-space: normal;
+            }
+
+            .ph-staff-portal .phsp-actions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                margin: 20px 0;
+            }
+
+            .ph-staff-portal .phsp-actions .button {
+                padding: 5px 14px;
+            }
+
+            @media (max-width: 1000px) {
+                .ph-staff-portal .phsp-cards {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+            }
+
+            @media (max-width: 600px) {
+                .ph-staff-portal .phsp-cards {
+                    grid-template-columns: 1fr;
+                }
+            }
         </style>
 
         <div class="phsp-cards">
@@ -217,9 +387,9 @@ function ph_staff_portal_render_dashboard() {
 
                 <a
                     class="button button-primary"
-                    href="<?php echo esc_url( admin_url( 'admin.php?page=ph-visits' ) ); ?>"
+                    href="<?php echo esc_url( admin_url( 'admin.php?page=ph-staff-waiting-list' ) ); ?>"
                 >
-                    View Waiting Visits
+                    View Waiting List
                 </a>
             </section>
 
@@ -270,47 +440,11 @@ function ph_staff_portal_render_dashboard() {
             </a>
 
         </div>
-        <h2>Today's Appointments</h2>
-        <div class="phsp-table-wrap">
-            <table class="phsp-table">
-                <thead><tr><th>Time</th><th>Patient</th><th>Doctor</th><th>Status</th><th>Action</th></tr></thead>
-                <tbody>
-                <?php if ( null === $appointment_count ) : ?>
-                    <tr><td colspan="5">Appointment data is currently unavailable.</td></tr>
-                <?php elseif ( empty( $today_appointments ) ) : ?>
-                    <tr><td colspan="5">No appointments scheduled for today.</td></tr>
-                <?php else : ?>
-                    <?php foreach ( $today_appointments as $appointment ) : ?>
-                        <?php
-                        $dashboard_doctor_name = 'Any Doctor / Front Desk';
-                        if ( ! empty( $appointment->doctor_id ) ) {
-                            $dashboard_doctor = get_post( (int) $appointment->doctor_id );
-                            if ( $dashboard_doctor ) {
-                                $dashboard_doctor_name = get_the_title( $dashboard_doctor );
-                            }
-                        }
-                        $dashboard_time = ! empty( $appointment->confirmed_time )
-                            ? wp_date( 'g:i A', strtotime( $appointment->confirmed_time ) )
-                            : ( ! empty( $appointment->preferred_session ) ? ucfirst( $appointment->preferred_session ) : 'Not set' );
-                        $dashboard_detail_url = add_query_arg(
-                            array( 'page' => 'ph-appointments', 'appointment_id' => (int) $appointment->id ),
-                            admin_url( 'admin.php' )
-                        );
-                        $dashboard_status = isset( $appointment->status ) ? ucfirst( str_replace( '_', ' ', $appointment->status ) ) : 'Unknown';
-                        ?>
-                        <tr>
-                            <td><?php echo esc_html( $dashboard_time ); ?></td>
-                            <td><strong><?php echo esc_html( isset( $appointment->patient_name ) ? $appointment->patient_name : '—' ); ?></strong><?php if ( ! empty( $appointment->request_reference ) ) : ?><br><small><?php echo esc_html( $appointment->request_reference ); ?></small><?php endif; ?></td>
-                            <td><?php echo esc_html( $dashboard_doctor_name ); ?></td>
-                            <td><span class="phsp-status"><?php echo esc_html( $dashboard_status ); ?></span></td>
-                            <td><a class="button button-small" href="<?php echo esc_url( $dashboard_detail_url ); ?>">View</a></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-        <p class="description">Patient access is available to authorized Hospital Front Desk accounts. Please sign out when leaving the reception desk.</p>
+
+        <p class="description">
+            Please sign out when leaving the reception desk.
+        </p>
+
     </div>
 
     <?php
@@ -334,7 +468,7 @@ function ph_staff_portal_restrict_admin_menu() {
     }
 
     // Keep only the workflow items beneath the hospital menu.
-    $allowed_submenus = array( 'ph-staff-dashboard', 'ph-patients', 'ph-appointments', 'ph-visits', 'ph-visits-add' );
+    $allowed_submenus = array( 'ph-staff-dashboard', 'ph-staff-waiting-list', 'ph-patients', 'ph-appointments', 'ph-visits', 'ph-visits-add' );
     if ( isset( $submenu['prasanthi-hospitals'] ) && is_array( $submenu['prasanthi-hospitals'] ) ) {
         foreach ( $submenu['prasanthi-hospitals'] as $item ) {
             if ( isset( $item[2] ) && ! in_array( $item[2], $allowed_submenus, true ) ) {

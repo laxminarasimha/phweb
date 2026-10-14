@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Prasanthi Hospitals Visits
  * Description: Visit management for Prasanthi Hospitals.
- * Version: 1.0.8
+ * Version: 1.0.9
  * Author: Prasanthi Hospitals
  */
 
@@ -938,6 +938,15 @@ function ph_visits_edit( $id ) {
         $visit_time = isset( $_POST['visit_time'] ) ? sanitize_text_field( wp_unslash( $_POST['visit_time'] ) ) : '';
         $doctor_id = isset( $_POST['doctor_id'] ) ? absint( $_POST['doctor_id'] ) : 0;
         $notes = isset( $_POST['visit_notes'] ) ? sanitize_textarea_field( wp_unslash( $_POST['visit_notes'] ) ) : '';
+
+        // When a visit transitions into an active reception state, use the site's
+        // current local date so today's dashboard and waiting-list counts stay accurate.
+        if (
+            $status !== $visit->status
+            && in_array( $status, array( 'arrived', 'in_consultation' ), true )
+        ) {
+            $visit_date = current_time( 'Y-m-d' );
+        }
 
         if ( ! isset( ph_visits_statuses()[ $status ] ) ) {
             $errors[] = 'Please select a valid visit status.';
