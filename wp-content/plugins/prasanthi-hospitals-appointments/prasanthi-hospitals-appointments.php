@@ -23,6 +23,29 @@ function ph_appointments_table() {
     return $wpdb->prefix . 'ph_appointments';
 }
 
+/** Format a stored local clock time without treating it as UTC. */
+function ph_appointments_format_local_time( $stored_time ) {
+    $stored_time = trim( (string) $stored_time );
+
+    if ( ! preg_match( '/^\d{2}:\d{2}(?::\d{2})?$/', $stored_time ) ) {
+        return '—';
+    }
+
+    $format   = strlen( $stored_time ) === 5 ? 'H:i' : 'H:i:s';
+    $timezone = wp_timezone();
+    $time     = DateTimeImmutable::createFromFormat(
+        '!' . $format,
+        $stored_time,
+        $timezone
+    );
+
+    if ( ! $time || $time->format( $format ) !== $stored_time ) {
+        return '—';
+    }
+
+    return wp_date( 'g:i A', $time->getTimestamp(), $timezone );
+}
+
 function ph_appointments_statuses() {
     return array(
         'new_request'     => 'New Request',
@@ -964,11 +987,8 @@ function ph_appointments_list_page() {
                                     $appointment->confirmed_time
                                 )
                                     ? esc_html(
-                                        wp_date(
-                                            'g:i A',
-                                            strtotime(
-                                                $appointment->confirmed_time
-                                            )
+                                        ph_appointments_format_local_time(
+                                            $appointment->confirmed_time
                                         )
                                     )
                                     : '—';

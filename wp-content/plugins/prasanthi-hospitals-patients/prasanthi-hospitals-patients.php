@@ -48,6 +48,29 @@ function ph_patients_table() {
 
 }
 
+/** Format a stored local clock time without treating it as UTC. */
+function ph_patients_format_local_time( $stored_time ) {
+    $stored_time = trim( (string) $stored_time );
+
+    if ( ! preg_match( '/^\d{2}:\d{2}(?::\d{2})?$/', $stored_time ) ) {
+        return '—';
+    }
+
+    $format   = strlen( $stored_time ) === 5 ? 'H:i' : 'H:i:s';
+    $timezone = wp_timezone();
+    $time     = DateTimeImmutable::createFromFormat(
+        '!' . $format,
+        $stored_time,
+        $timezone
+    );
+
+    if ( ! $time || $time->format( $format ) !== $stored_time ) {
+        return '—';
+    }
+
+    return wp_date( 'g:i A', $time->getTimestamp(), $timezone );
+}
+
 
 
 /**
@@ -4625,7 +4648,7 @@ function ph_patients_detail_page(
                                     <td>
                                         <?php
                                         echo ! empty( $appointment->confirmed_time )
-                                            ? esc_html( wp_date( 'g:i A', strtotime( $appointment->confirmed_time ) ) )
+                                            ? esc_html( ph_patients_format_local_time( $appointment->confirmed_time ) )
                                             : '—';
                                         ?>
                                     </td>
